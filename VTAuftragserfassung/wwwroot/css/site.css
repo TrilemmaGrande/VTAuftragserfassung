@@ -1,0 +1,65 @@
+/* Global Styles */
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #165b9e;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+    font-size: 14px;
+    color: #165b9e;
+}
+
+footer {
+    background-color: #165b9e;
+    color:white;
+    bottom:0;
+}
+
+body {
+    height:100%;
+    margin-bottom: 60px;
+}
+
+/* Grid Styles */
+.gridContainer {
+    margin-top: 30px;
+    border: solid 1px;
+}
+
+.headerListWrapper {
+    position: sticky;
+    top: 0;
+    border: solid 1px;
+}
+
+.gridListContent {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(100px, 1fr));
+    background-color: #f2f2f2;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+.assignmentListRow {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(100px, 1fr));
+    background-color: #f2f2f2;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .assignmentListRow:hover {
+        background-color: #165b9eD7;
+        color:#f2f2f2
+    }
+

@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Assignment Page";
+}
+@model List<AssignmentViewModel>
+
+<div class="gridContainer">
+    <div class="headerListWrapper">
+        <div class="gridListContent">
+            <div>Auftrag ID</div>
+            <div>Firma</div>
+            <div>Firmenname</div>
+            <div>Summe Auftrag</div>
+            <div>Hat Zugabe</div>
+            <div>Erstellt Am</div>
+            <div>Letzte Statusänderung</div>
+            <div>Status</div>
+        </div>
+    </div>
+
+    <div>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            @Html.DisplayFor(m => Model[i], "AssignmentListRow")
+        }
+    </div>
+</div>

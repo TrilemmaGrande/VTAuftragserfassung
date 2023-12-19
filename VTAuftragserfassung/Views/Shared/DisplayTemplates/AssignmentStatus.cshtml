@@ -1,0 +1,25 @@
+﻿@model int
+@{
+    var statusString = string.Empty;
+
+    switch (Model)
+    {
+        case (int)Auftragsstatus.Erfasst:
+            statusString = "Erfasst";
+            break;
+        case (int)Auftragsstatus.Geprueft:
+            statusString = "Geprüft";
+            break;
+        case (int)Auftragsstatus.Erledigt:
+            statusString = "Erledigt";
+            break;
+        case (int)Auftragsstatus.Storniert:
+            statusString = "Storniert";
+            break;
+        default:
+            statusString = "Unbekannt";
+            break;
+    }
+}
+
+@statusString
