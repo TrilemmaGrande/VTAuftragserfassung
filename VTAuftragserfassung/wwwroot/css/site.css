@@ -29,7 +29,7 @@ body {
 
 /* Grid Styles */
 .gridContainer {
-    margin-top: 30px;
+    margin-top: 1px;
     border: solid 1px;
 }
 
@@ -53,6 +53,8 @@ body {
     display: grid;
     grid-template-columns: repeat(8, minmax(100px, 1fr));
     background-color: #f2f2f2;
+    border-top: dotted 1px #165b9e6b;
+    border-bottom: dotted 1px #165b9e6b;
     padding: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -60,6 +62,37 @@ body {
 
     .assignmentListRow:hover {
         background-color: #165b9eD7;
-        color:#f2f2f2
+        color:#f2f2f2;
     }
 
+.btnLogout {
+    padding: 10px;
+    font-size: 18px;
+    margin: 10px;
+    border: none;
+    color: white;
+    background-color: black;
+    text-decoration: none;
+    border-radius: 12px;
+}
+
+.btnNav {
+    padding: 10px;
+    font-size: 18px;
+    margin: 10px;
+    border: none;
+    color: #f2f2f2;
+    background-color: Black;
+    text-decoration: none;
+    border-radius: 12px;
+}
+
+.txtNav {
+    padding: 10px;
+    font-size: 18px;
+    margin: 10px;
+    border: none;
+    color: #f2f2f2;
+    background-color: #165b9eD7;
+    border-radius: 12px;
+}

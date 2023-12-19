@@ -20,11 +20,11 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Assignments">Aufträge</a>
+                            <a class="btnNav" asp-area="" asp-controller="Home" asp-action="Assignments">Aufträge</a>
                         </li>
                     </ul>
-                    <label class="nav-link text-dark align-self-end">ID: @User.Identity?.Name</label>
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
+                    <label class="txtNav align-self-end">ID: @User.Identity?.Name</label>
+                    <a class="btnLogout" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
                 </div>
             </div>
         </nav>
@@ -35,7 +35,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer">
         <div class="container">
             Global Automotive Service - Auftragserfassung
         </div>
