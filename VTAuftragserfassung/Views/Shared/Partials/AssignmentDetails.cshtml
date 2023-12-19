@@ -1,24 +1,31 @@
 ﻿@model AssignmentViewModel
 
-<div class="gridContainer" class="gridListContent">
-    <div>
-        @Model?.Auftrag?.PK_Auftrag
-        adress Oben Link
+<div class="grid">
+    <div class="row">
+        <div>
+            @Model?.Auftrag?.PK_Auftrag
+            adresse Oben Links
+        </div>
+        <div>
+            gesellschafter Oben Rechts
+        </div>
     </div>
-    <div>
-        gesellschafter Oben Rechts
+    <div class="row">
+        @foreach (var position in Model!.PositionenVM!)
+        {
+            <p>@position.Artikel.Artikelnummer
+            @position.Artikel.Bezeichnung1
+            @position.Artikel.Bezeichnung2
+            @position.Artikel.Verpackungseinheit
+            @position.Artikel.Preis
+            @position.Position.Menge
+            @position.Position.SummePosition</p>
+        }
     </div>
-    <div>
-        List of Articles Mitte
-    </div>
-    <div>
+    <div class="row">
         Zugabe Unten
     </div>
-    <div>
+    <div class="row">
         Hinweis Ganz Unten
     </div>
 </div>
-
-<style>
-
-</style>
