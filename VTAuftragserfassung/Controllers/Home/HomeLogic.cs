@@ -41,14 +41,16 @@ namespace VTAuftragserfassung.Controllers.Home
             Gesellschafter shareholder = new();
             Kunde? customer;
             List<Position> positions;
+          
+
             foreach (var assignment in assignments)
             {
+
                 customer = _repo.GetObjectByPrimaryKey(new Kunde(), assignment.FK_Kunde);
                 if (customer != null)
                 {
                     shareholder = _repo.GetObjectByPrimaryKey(new Gesellschafter(), customer.FK_Gesellschafter)!;
-                }  
-                
+                }
                 // change following later: JOIN Articles + Positions to get List of articles, then filter with LINQ
                 positions = _repo.GetObjectListByForeignKey(new Position(), assignment, assignment.PK_Auftrag) ?? new();
                 foreach (var position in positions)
@@ -68,6 +70,11 @@ namespace VTAuftragserfassung.Controllers.Home
                     Gesellschafter = shareholder
                 });
             }
+
+            // lade Aufträge zu BenutzerId
+            // lade Kunden mit Gesellschafter zu Aufträge
+            // lade Positionen mit Artikeln zu Aufträge
+
             return assignmentVM;
         }
 

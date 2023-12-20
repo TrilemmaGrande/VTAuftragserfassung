@@ -18,12 +18,12 @@ html {
 
 footer {
     background-color: #165b9e;
-    color:white;
-    bottom:0;
+    color: white;
+    bottom: 0;
 }
 
 body {
-    height:100%;
+    height: 100%;
     margin-bottom: 60px;
 }
 
@@ -48,7 +48,6 @@ body {
     transition: background-color 0.3s ease;
 }
 
-
 .assignmentListRow {
     display: grid;
     grid-template-columns: repeat(8, minmax(100px, 1fr));
@@ -62,7 +61,7 @@ body {
 
     .assignmentListRow:hover {
         background-color: #165b9eD7;
-        color:#f2f2f2;
+        color: #f2f2f2;
     }
 
 .btnLogout {
@@ -95,4 +94,18 @@ body {
     color: #f2f2f2;
     background-color: #165b9eD7;
     border-radius: 12px;
+}
+
+/*Assignment Details*/
+.assignmentListRow .assignmentDetailsPartial {
+    visibility: hidden;
+    opacity: 0;
+    max-height: 0;
+}
+
+.assignmentListRow.show .assignmentDetailsPartial {
+    visibility: visible;
+    opacity: 1;
+    max-height: max-content;
+    transition: 1s all linear;
 }

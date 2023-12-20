@@ -14,13 +14,6 @@ namespace VTAuftragserfassung.Controllers.Home
 
         public IActionResult Index() => View();
 
-        [HttpPost("/Home/GetAssignmentDetailsPartial")]
-        public PartialViewResult GetAssignmentDetailsPartial([FromBody] string data)
-        {
-            AssignmentViewModel avm = JsonSerializer.Deserialize<AssignmentViewModel>(data)!;
-            return PartialView("Partials/AssignmentDetails", avm);
-        }
-
         public IActionResult Assignments()
         {
             List<AssignmentViewModel> avm = _logic.GetAssignmentViewModels();

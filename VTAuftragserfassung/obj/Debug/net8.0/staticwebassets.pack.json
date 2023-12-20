@@ -17,6 +17,14 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\nils.reinshagen\\source\\repos\\VTAuftragserfassung\\VTAuftragserfassung\\wwwroot\\js\\home.js",
+      "PackagePath": "staticwebassets\\js\\home.js"
+    },
+    {
+      "Id": "C:\\Users\\nils.reinshagen\\source\\repos\\VTAuftragserfassung\\VTAuftragserfassung\\wwwroot\\js\\login.js",
+      "PackagePath": "staticwebassets\\js\\login.js"
+    },
+    {
       "Id": "C:\\Users\\nils.reinshagen\\source\\repos\\VTAuftragserfassung\\VTAuftragserfassung\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

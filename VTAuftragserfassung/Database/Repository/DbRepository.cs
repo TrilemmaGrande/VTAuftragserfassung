@@ -1,5 +1,6 @@
 ﻿using VTAuftragserfassung.Database.DataAccess;
 using VTAuftragserfassung.Models;
+using VTAuftragserfassung.Models.ViewModels;
 
 namespace VTAuftragserfassung.Database.Repository
 {

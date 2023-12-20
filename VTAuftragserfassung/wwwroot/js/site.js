@@ -15,29 +15,8 @@ function backendRequest(requestMethod, requestURL, data) {
     }
 }
 
-// Login
-function submitLogin() {
-    let userId = document.getElementById("userId").value;
-    let auth = document.getElementById("auth").value;
-    let model = { UserId: userId, Auth: auth };
-    let htmlResponse = backendRequest("POST", "/LoginVerification", model);
-    document.open();
-    document.write(htmlResponse);
-    document.close();
-}
-// Assignments
 function onEnterPressButton(buttonId, e) {
     if (e.keyCode === 13) {
         document.getElementById(buttonId).click();
-    }
-}
-function toggleAssignmentDetails(rowId) {
-    let rowPartialDiv = document.getElementById("partialAssignmentDetailsToggled_" + rowId)
-    if (rowPartialDiv.innerHTML == "") {
-        let model = rowPartialDiv.dataset.avm;
-        rowPartialDiv.innerHTML = backendRequest("POST", "/Home/GetAssignmentDetailsPartial/", model);
-    }
-    else {
-        rowPartialDiv.innerHTML = "";
     }
 }

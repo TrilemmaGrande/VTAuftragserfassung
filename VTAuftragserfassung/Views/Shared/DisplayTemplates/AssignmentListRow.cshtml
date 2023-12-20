@@ -1,15 +1,14 @@
-﻿@{ 
-    int rowId = Model.Auftrag!.PK_Auftrag;
+﻿@{
     var jsonModel = Html.Raw(System.Text.Json.JsonSerializer.Serialize(@Model));
 }
 @model AssignmentViewModel
 
-<div class="assignmentListRow" onclick="toggleAssignmentDetails(@rowId)">
+<div class="assignmentListRow" onclick="toggleAssignmentDetails(this)">
     <div>@Model.Auftrag?.PK_Auftrag</div>
     <div>@Model.Kunde?.Firma</div>
     <div>@Model.Gesellschafter?.Firmenname</div>
     <div>@Html.DisplayFor(modelItem => (@Model.Auftrag!.SummeAuftrag), "FormatCurrency")</div>
-    @if (@Model.Auftrag?.HatZugabe != 0) 
+    @if (@Model.Auftrag?.HatZugabe != 0)
     {
         <div><input type="checkbox" checked disabled /></div>
     }
@@ -20,5 +19,5 @@
     <div>@Model.Auftrag?.ErstelltAm</div>
     <div>@Model.Auftrag?.LetzteStatusAenderung</div>
     <div>@Html.DisplayFor(modelItem => (@Model.Auftrag!.Auftragsstatus), "AssignmentStatus")</div>
+    <div class="assignmentDetailsPartial">@await Html.PartialAsync("Partials/AssignmentDetails", Model)</div>
 </div>
-<div id="partialAssignmentDetailsToggled_@rowId" data-avm='@jsonModel'></div>
