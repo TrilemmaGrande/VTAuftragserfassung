@@ -25,24 +25,24 @@ namespace VTAuftragserfassung.Database.Repository
 
         public List<IDatabaseObject> GetAll(IDatabaseObject dbModel) => _dataAccess.GetAll(dbModel);
 
-        public List<Auftrag> GetAssignmentsByUserId(string userId) => _dataAccess.GetByCondition(new Auftrag(), "*", $" " +
-            $"INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) WHERE MitarbeiterId = '{userId}'").ToList();
+        public List<Auftrag> GetAssignmentsByUserId(string userId) => _dataAccess.GetAllByCondition(new Auftrag(), "*", $" " +
+            $"INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) WHERE MitarbeiterId = '{userId}'");
 
-        public Vertriebsmitarbeiter? GetUserByUserId(string userId) => _dataAccess.GetByCondition(new Vertriebsmitarbeiter(), "*", $"WHERE MitarbeiterId = '{userId}'").FirstOrDefault();
+        public Vertriebsmitarbeiter? GetUserByUserId(string userId) => _dataAccess.GetByCondition(new Vertriebsmitarbeiter(), "*", $"WHERE MitarbeiterId = '{userId}'");
 
-        public Auth? GetAuthByUserPk(int pk_vertriebsmitarbeiter) => _dataAccess.GetByCondition(new Auth(), "*", $"WHERE FK_Vertriebsmitarbeiter = {pk_vertriebsmitarbeiter}").FirstOrDefault();
+        public Auth? GetAuthByUserPk(int pk_vertriebsmitarbeiter) => _dataAccess.GetByCondition(new Auth(), "*", $"WHERE FK_Vertriebsmitarbeiter = {pk_vertriebsmitarbeiter}");
 
-        public T? GetObjectByPrimaryKey<T>(T model, int pk) where T : IDatabaseObject => _dataAccess.GetByCondition(model, "*", $"WHERE PK_{model.GetType().Name} = {pk}").FirstOrDefault()!;
+        public T? GetObjectByPrimaryKey<T>(T model, int pk) where T : IDatabaseObject => _dataAccess.GetByCondition(model, "*", $"WHERE PK_{model.GetType().Name} = {pk}");
 
         public T1? GetObjectByForeignKey<T1, T2>(T1 model, T2 foreignModel, int fk)
           where T1 : IDatabaseObject
           where T2 : IDatabaseObject
-           => _dataAccess.GetByCondition(model, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}")!.FirstOrDefault()!;
+           => _dataAccess.GetByCondition(model, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}");
 
         public List<T1>? GetObjectListByForeignKey<T1, T2>(T1 model, T2 foreignModel, int fk)
             where T1 : IDatabaseObject
             where T2 : IDatabaseObject
-            => _dataAccess.GetByCondition(model, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}");
+            => _dataAccess.GetAllByCondition(model, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}");
 
         #endregion Public Methods
     }
