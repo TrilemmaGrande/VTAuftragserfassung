@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Reflection;
+using System.Reflection.Metadata;
 using VTAuftragserfassung.Database.Connection;
 
 namespace VTAuftragserfassung.Database.DataAccess
@@ -23,30 +24,42 @@ namespace VTAuftragserfassung.Database.DataAccess
 
         #region Public Methods
 
-        private List<T> GetAll<T>(T dbModel, string cmd) where T : IDatabaseObject
+        private List<T> GetAll<T>(string cmd) where T : IDatabaseObject
         {
             List<T> listOfT = new();
             DataTable dt = _conn.ConnectionRead(cmd);
             if (dt != null && dt.Rows.Count > 0)
             {
-                PropertyInfo[] properties = dbModel.GetType().GetProperties();
                 foreach (DataRow dr in dt.Rows)
                 {
-                    T obj = Activator.CreateInstance<T>();
-                    foreach (DataColumn column in dr.Table.Columns)
-                    {
-                        foreach (PropertyInfo property in properties)
-                        {
-                            if (column.ColumnName == property.Name)
-                            {
-                                property.SetValue(obj, dr[column.ColumnName]);
-                            }
-                        }
-                    }
+                    T obj = SetProperties(dr, Activator.CreateInstance<T>());
                     listOfT.Add(obj);
                 }
             }
             return listOfT;
+        }
+
+        private T SetProperties<T>(DataRow dr, T obj)
+        {
+            List<PropertyInfo> properties = obj.GetType().GetProperties().ToList();
+            properties.ForEach(property =>
+            {
+                if (property.PropertyType.IsClass && property.PropertyType.Namespace!.Contains(GetType().Namespace!.Split('.')[0]))
+                {
+                    property.SetValue(obj, SetProperties(dr, Activator.CreateInstance(property.PropertyType)));
+                }
+                else
+                {
+                    foreach (DataColumn column in dr.Table.Columns)
+                    {
+                        if (column.ColumnName == property.Name)
+                        {
+                            property.SetValue(obj, dr[column.ColumnName]);
+                        }
+                    }
+                }
+            });
+            return obj;
         }
 
         private T? Get<T>(T dbModel, string cmd) where T : IDatabaseObject
@@ -73,10 +86,10 @@ namespace VTAuftragserfassung.Database.DataAccess
             return default;
         }
 
-        public List<T> GetAll<T>(T dbModel) where T : IDatabaseObject => GetAll(dbModel, $"SELECT * FROM {dbModel.TableName}");
+        public List<T> GetAll<T>(T dbModel) where T : IDatabaseObject => GetAll<T>($"SELECT * FROM {dbModel.TableName}");
 
         public List<T> GetAllByCondition<T>(T dbModel, string getColumn, string condition) where T : IDatabaseObject
-            => GetAll(dbModel, $"SELECT {getColumn} FROM {dbModel.TableName} {condition}");
+            => GetAll<T>($"SELECT {getColumn} FROM {dbModel.TableName} {condition}");
 
         public T? GetByCondition<T>(T dbModel, string getColumn, string condition) where T : IDatabaseObject
           => Get(dbModel, $"SELECT TOP 1 {getColumn} FROM {dbModel.TableName} {condition}");

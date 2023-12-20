@@ -1,5 +1,6 @@
 ﻿using VTAuftragserfassung.Database.DataAccess;
 using VTAuftragserfassung.Models;
+using VTAuftragserfassung.Models.ViewModels;
 
 namespace VTAuftragserfassung.Database.Repository
 {
@@ -12,6 +13,10 @@ namespace VTAuftragserfassung.Database.Repository
         public Auth? GetAuthByUserPk(int pk_vertriebsmitarbeiter);
 
         public List<Auftrag>? GetAssignmentsByUserId(string userId);
+
+        public List<AssignmentViewModel> GetAssignmentVMsWithoutPositionsByUserId(string userId);
+
+        public List<PositionViewModel> GetPositionVMsByUserId(string userId);
 
         public T? GetObjectByPrimaryKey<T>(T model, int pk) where T : IDatabaseObject;
 
