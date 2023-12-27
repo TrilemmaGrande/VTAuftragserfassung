@@ -1,31 +1,21 @@
 ﻿@model AssignmentViewModel
 
-<div class="gridContainer" style="padding:20px;">
-    <div class="row">
-        <div class="col">
-            @Model?.Auftrag?.PK_Auftrag
-            adresse Oben Links
+<div class="assignmentDetailsWrapper">
+    <div class="gridListContent">
+        <div>
+            @await Html.PartialAsync("Partials/CustomerDetails", @Model!.Kunde) 
         </div>
-        <div class="col">
-            gesellschafter Oben Rechts
+        <div>
+            @await Html.PartialAsync("Partials/ShareholderDetails", @Model!.Gesellschafter)
         </div>
     </div>
-    <div class="row">
-        @foreach (var position in Model!.PositionenVM!)
-        {
-            <p>@position.Artikel.Artikelnummer
-            @position.Artikel.Bezeichnung1
-            @position.Artikel.Bezeichnung2
-            @position.Artikel.Verpackungseinheit
-            @position.Artikel.Preis
-            @position.Position.Menge
-            @position.Position.SummePosition</p>
-        }
+    <div>
+        @await Html.PartialAsync("Partials/PositionList", @Model!.PositionenVM)
     </div>
-    <div class="row">
+    <div class="gridListContent">
         Zugabe Unten
     </div>
-    <div class="row">
+    <div class="gridListContent">
         Hinweis Ganz Unten
     </div>
 </div>

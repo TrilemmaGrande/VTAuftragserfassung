@@ -9,6 +9,7 @@ namespace VTAuftragserfassung.Models
         public string TableName { get; set; } = "vta_Kunde";
         public int PK_Kunde { get; set; }
         public int FK_Gesellschafter { get; set; }
+        public string Kundennummer { get; set; } = string.Empty;
         public string Vorname { get; set; } = string.Empty;
         public string Nachname { get; set; } = string.Empty;
         public int IstWerkstatt { get; set; }

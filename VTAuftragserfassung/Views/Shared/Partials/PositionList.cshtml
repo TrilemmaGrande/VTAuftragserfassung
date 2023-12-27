@@ -1,0 +1,19 @@
+﻿@model List<PositionViewModel>
+
+<div>
+    <div class="headerListWrapper">
+        <div class="gridListContent">
+            <div>Art. Nr.</div>
+            <div>Bezeichnung</div>
+            <div>Zusatzbezeichnung</div>
+            <div>Einzelpreis Netto</div>
+            <div>Verpackungseinheit</div>
+            <div>Menge</div>
+            <div>Pos. Gesamtpreis Netto</div>
+        </div>
+    </div>
+    @foreach (var pvm in Model)
+    {
+        @await Html.PartialAsync("Partials/PositionListRowDetails", pvm)
+    }
+</div>

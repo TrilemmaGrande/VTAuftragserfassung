@@ -27,42 +27,7 @@ body {
     margin-bottom: 60px;
 }
 
-/* Grid Styles */
-.gridContainer {
-    margin-top: 1px;
-    border: solid 1px;
-}
 
-.headerListWrapper {
-    position: sticky;
-    top: 0;
-    border: solid 1px;
-}
-
-.gridListContent {
-    display: grid;
-    grid-template-columns: repeat(8, minmax(100px, 1fr));
-    background-color: #f2f2f2;
-    padding: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.assignmentListRow {
-    display: grid;
-    grid-template-columns: repeat(8, minmax(100px, 1fr));
-    background-color: #f2f2f2;
-    border-top: dotted 1px #165b9e6b;
-    border-bottom: dotted 1px #165b9e6b;
-    padding: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-    .assignmentListRow:hover {
-        background-color: #165b9eD7;
-        color: #f2f2f2;
-    }
 
 .btnLogout {
     padding: 10px;
@@ -96,16 +61,104 @@ body {
     border-radius: 12px;
 }
 
-/*Assignment Details*/
-.assignmentListRow .assignmentDetailsPartial {
-    visibility: hidden;
-    opacity: 0;
-    max-height: 0;
+
+/* Grid Styles */
+.gridContainer {
+    border: solid 1px;
 }
 
-.assignmentListRow.show .assignmentDetailsPartial {
-    visibility: visible;
+.headerListWrapper {
+    position: sticky;
+    top: 0;
+    border: solid 1px;
+}
+
+.gridListContent {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(100px, 1fr));
+    background-color: #f2f2f2;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/*Assignment List*/
+.assignmentListRowWrapper {
+    background-color: #f2f2f2;
+    border-top: dotted 1px #165b9e6b;
+    border-bottom: dotted 1px #165b9e6b;
+    cursor: pointer;
+}
+
+.assignmentListRowContent {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(100px, 1fr));
+    background-color: #f2f2f2;
+    border-top: dotted 1px #165b9e6b;
+    border-bottom: dotted 1px #165b9e6b;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+    .assignmentListRowContent:hover {
+        background-color: #165b9eD7;
+        color: #f2f2f2;
+    }
+
+/*AssignmentList Details*/
+
+
+.assignmentListRowWrapper .assignmentDetailsPartial {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.2s ease-out;
+    border: none;
+}
+
+.assignmentListRowWrapper.show .assignmentDetailsPartial {
+    grid-template-rows: 1fr;
     opacity: 1;
-    max-height: max-content;
-    transition: 1s all linear;
+}
+.assignmentListRowWrapper .assignmentDetailsPartial > .assignmentDetailsWrapper {
+    overflow: hidden;
+}
+
+.assignmentListRowWrapper.show .assignmentDetailsPartial > .assignmentDetailsWrapper {
+    padding: 20px;
+    width: 100%;
+    border: solid 2px;
+}
+
+
+/* Position List */
+
+.positionListRowWrapper {
+    background-color: #f2f2f2;
+    border-top: dotted 1px #165b9e6b;
+    border-bottom: dotted 1px #165b9e6b;
+    cursor: pointer;
+}
+
+.positionListRowContent {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(100px, 1fr));
+    background-color: #f2f2f2;
+    border-top: dotted 1px #165b9e6b;
+    border-bottom: dotted 1px #165b9e6b;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* New Assignment */
+.assignmentModal {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    opacity: 0.3;
+    z-index: 1;
+    left:0;
+    top:0;
+    overflow:auto;
+    background: #000
 }

@@ -28,23 +28,15 @@ namespace VTAuftragserfassung.Controllers.Home
 
         public List<AssignmentViewModel> GetAssignmentViewModels()
         {
+            List<AssignmentViewModel> avm = [];
             string userId = _httpContextAccessor.HttpContext?.User.Identity?.Name ?? string.Empty;
-            if (string.IsNullOrEmpty(userId))
+            if (!string.IsNullOrEmpty(userId))
             {
-                return new();
+                List<PositionViewModel> pvm = _repo.GetPositionVMsByUserId(userId);
+                avm = _repo.GetAssignmentVMsWithoutPositionsByUserId(userId);
+                avm.ForEach(item => item.PositionenVM!.AddRange(pvm.Where(x => x.Position?.FK_Auftrag == item.Auftrag?.PK_Auftrag).ToList()));
             }
-            List<AssignmentViewModel> assignmentVMs = _repo.GetAssignmentVMsWithoutPositionsByUserId(userId);
-            List<PositionViewModel> positionVMs = _repo.GetPositionVMsByUserId(userId);
-            foreach (var assignmentVM in assignmentVMs)
-            {
-                assignmentVM.PositionenVM = positionVMs.Where(i => i.Position.FK_Auftrag == assignmentVM.Auftrag.PK_Auftrag).ToList();
-            }
-
-            // lade Aufträge zu BenutzerId
-            // lade Kunden mit Gesellschafter zu Aufträge
-            // lade Positionen mit Artikeln zu Aufträge
-
-            return assignmentVMs;
+            return avm;
         }
 
         public void Logout()

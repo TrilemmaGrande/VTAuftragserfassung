@@ -22,16 +22,12 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBc3NpZ25tZW50cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+[C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Home/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxEYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Login/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/DisplayTemplates/AssignmentListRow.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXERpc3BsYXlUZW1wbGF0ZXNcQXNzaWdubWVudExpc3RSb3cuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/DisplayTemplates/AssignmentStatus.cshtml]
@@ -44,6 +40,54 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/Partials/AssignmentDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWxzXEFzc2lnbm1lbnREZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/Partials/AssignmentForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWxzXEFzc2lnbm1lbnRGb3JtLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/Partials/AssignmentListRow.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWxzXEFzc2lnbm1lbnRMaXN0Um93LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/Partials/BonusDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWxzXEJvbnVzRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/Partials/BonusForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWxzXEJvbnVzRm9ybS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/Partials/CustomerDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWxzXEN1c3RvbWVyRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/Partials/CustomerForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWxzXEN1c3RvbWVyRm9ybS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/Partials/NoticeDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWxzXE5vdGljZURldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/Partials/NoticeForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWxzXE5vdGljZUZvcm0uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/Partials/PositionList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWxzXFBvc2l0aW9uTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/Partials/PositionListRowDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWxzXFBvc2l0aW9uTGlzdFJvd0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/Partials/ShareholderDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWxzXFNoYXJlaG9sZGVyRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/Partials/ShareholderForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWxzXFNoYXJlaG9sZGVyRm9ybS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/_LoginLayout.cshtml]

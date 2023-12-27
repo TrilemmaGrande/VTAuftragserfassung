@@ -30,7 +30,7 @@ namespace VTAuftragserfassung.Controllers.Login
         [HttpPost("/LoginVerification")]
         public IActionResult LoginVerification([FromBody] LoginViewModel loginViewModel)
         {
-            return _logic.VerifyLogin(loginViewModel) ? RedirectToAction("Index", "Home") : RedirectToAction("Index");
+            return _logic.VerifyLogin(loginViewModel) ? RedirectToAction("Dashboard", "Home") : RedirectToAction("Index");
         }
 
         #endregion Public Methods

@@ -1,0 +1,8 @@
+﻿@model bool
+
+<div>
+    <input type="checkbox" disabled
+           @if (Model) { @: unchecked
+           } else { @: checked
+           } />Zugabe erhalten?
+</div> 

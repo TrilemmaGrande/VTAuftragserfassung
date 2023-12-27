@@ -1,0 +1,14 @@
+﻿
+@model PositionViewModel
+
+<div class="positionListRowWrapper">
+    <div class="positionListRowContent">
+        <div>@Model.Artikel!.Artikelnummer</div>
+        <div>@Model.Artikel.Bezeichnung1</div>
+        <div>@Model.Artikel.Bezeichnung2</div>
+        <div>@Html.DisplayFor(modelItem => (@Model.Artikel.Preis), "FormatCurrency")</div>
+        <div>@Model.Artikel.Verpackungseinheit</div>
+        <div>@Model.Position!.Menge</div>
+        <div>@Model.Position.SummePosition</div>
+    </div>
+</div>

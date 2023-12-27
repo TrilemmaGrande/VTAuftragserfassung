@@ -7,7 +7,7 @@ namespace VTAuftragserfassung.Models.ViewModels
     {
         [JsonIgnore]
         public string TableName => "vta_Auftrag";
-        public List<PositionViewModel>? PositionenVM { get; set; }
+        public List<PositionViewModel>? PositionenVM { get; set; } = [];
         public Auftrag? Auftrag { get; set; }
         public Kunde? Kunde { get; set; }
         public Gesellschafter? Gesellschafter { get; set; }

@@ -88,11 +88,11 @@ namespace VTAuftragserfassung.Database.DataAccess
 
         public List<T> GetAll<T>(T dbModel) where T : IDatabaseObject => GetAll<T>($"SELECT * FROM {dbModel.TableName}");
 
-        public List<T> GetAllByCondition<T>(T dbModel, string getColumn, string condition) where T : IDatabaseObject
-            => GetAll<T>($"SELECT {getColumn} FROM {dbModel.TableName} {condition}");
+        public List<T> GetAllByCondition<T>(T dbModel, string getterColumn, string condition) where T : IDatabaseObject
+            => GetAll<T>($"SELECT {getterColumn} FROM {dbModel.TableName} {condition}");
 
-        public T? GetByCondition<T>(T dbModel, string getColumn, string condition) where T : IDatabaseObject
-          => Get(dbModel, $"SELECT TOP 1 {getColumn} FROM {dbModel.TableName} {condition}");
+        public T? GetByCondition<T>(T dbModel, string getterColumn, string condition) where T : IDatabaseObject
+          => Get(dbModel, $"SELECT TOP 1 {getterColumn} FROM {dbModel.TableName} {condition}");
 
         public int CountDataSets(string table, string column, string condition)
         {
