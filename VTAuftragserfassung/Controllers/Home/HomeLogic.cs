@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using VTAuftragserfassung.Database.Repository;
+using VTAuftragserfassung.Models;
 using VTAuftragserfassung.Models.ViewModels;
 
 namespace VTAuftragserfassung.Controllers.Home
@@ -11,6 +12,7 @@ namespace VTAuftragserfassung.Controllers.Home
 
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IDbRepository _repo;
+        private readonly string _userId = string.Empty;
 
         #endregion Private Fields
 
@@ -20,6 +22,8 @@ namespace VTAuftragserfassung.Controllers.Home
         {
             _repo = repo;
             _httpContextAccessor = httpContextAccessor;
+            _userId = _httpContextAccessor.HttpContext?.User.Identity?.Name ?? string.Empty;
+
         }
 
         #endregion Public Constructors
@@ -28,15 +32,7 @@ namespace VTAuftragserfassung.Controllers.Home
 
         public List<AssignmentViewModel> GetAssignmentViewModels()
         {
-            List<AssignmentViewModel> avm = [];
-            string userId = _httpContextAccessor.HttpContext?.User.Identity?.Name ?? string.Empty;
-            if (!string.IsNullOrEmpty(userId))
-            {
-                List<PositionViewModel> pvm = _repo.GetPositionVMsByUserId(userId);
-                avm = _repo.GetAssignmentVMsWithoutPositionsByUserId(userId);
-                avm.ForEach(item => item.PositionenVM!.AddRange(pvm.Where(x => x.Position?.FK_Auftrag == item.Auftrag?.PK_Auftrag).ToList()));
-            }
-            return avm;
+            return !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentVMsByUserId(_userId) : [];
         }
 
         public void Logout()

@@ -10,7 +10,7 @@
         </div>
     </div>
     <div>
-        @await Html.PartialAsync("Partials/PositionList", @Model!.PositionenVM)
+        @await Html.PartialAsync("Partials/PositionListDetails", @Model!.PositionenVM)
     </div>
     <div class="gridListContent">
         @await Html.PartialAsync("Partials/BonusDetails", @Model!.Auftrag?.HatZugabe)

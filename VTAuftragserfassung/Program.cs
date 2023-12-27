@@ -27,6 +27,7 @@ namespace VTAuftragserfassung
             builder.Services.AddScoped<ILoginLogic, LoginLogic>();
             builder.Services.AddScoped<IHomeLogic, HomeLogic>();
             builder.Services.AddControllersWithViews();
+            builder.Services.AddMemoryCache();
             builder.Services.AddResponseCompression();
             builder.Services.AddHttpContextAccessor();
             builder.Services.Configure<GzipCompressionProviderOptions>(

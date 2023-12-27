@@ -6,7 +6,11 @@ namespace VTAuftragserfassung.Database.Repository
 {
     public interface IDbRepository
     {
-        public List<IDatabaseObject> GetAll(IDatabaseObject dbModel);
+        public List<Gesellschafter> GetAllShareholders();
+
+        public List<Artikel> GetAllArticles();
+
+        public List<Kunde> GetAllCustomers();
 
         public Vertriebsmitarbeiter? GetUserByUserId(string userId);
 
@@ -14,7 +18,7 @@ namespace VTAuftragserfassung.Database.Repository
 
         public List<Auftrag>? GetAssignmentsByUserId(string userId);
 
-        public List<AssignmentViewModel> GetAssignmentVMsWithoutPositionsByUserId(string userId);
+        public List<AssignmentViewModel> GetAssignmentVMsByUserId(string userId);
 
         public List<PositionViewModel> GetPositionVMsByUserId(string userId);
 

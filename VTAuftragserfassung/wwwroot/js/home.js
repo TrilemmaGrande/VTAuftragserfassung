@@ -10,7 +10,7 @@ function newAssignment() {
     let modalDiv = document.createElement('div');
     modalDiv.ClassName = 'assignmentModal';
     modalDiv.innerHTML = backendRequest("GET", "/Home/NewAssignment");
-    let main = document.querySelector('main'); // Passen Sie dies entsprechend Ihrer HTML-Struktur an
+    let main = document.querySelector('main');
     if (main) {
         main.parentNode.insertBefore(modalDiv, main.nextSibling);
     }

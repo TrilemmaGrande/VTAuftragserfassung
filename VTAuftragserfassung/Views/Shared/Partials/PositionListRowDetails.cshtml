@@ -9,6 +9,6 @@
         <div>@Html.DisplayFor(modelItem => (@Model.Artikel.Preis), "FormatCurrency")</div>
         <div>@Model.Artikel.Verpackungseinheit</div>
         <div>@Model.Position!.Menge</div>
-        <div>@Model.Position.SummePosition</div>
+        <div>@Html.DisplayFor(modelItem => (@Model.Position.SummePosition), "FormatCurrency")</div>
     </div>
 </div>

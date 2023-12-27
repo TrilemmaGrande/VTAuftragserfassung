@@ -1,1 +1,9 @@
-﻿
+﻿@model int
+
+<div>
+    <label>Zugabe erhalten?</label>
+    <input type="checkbox" @if (Model > 0)
+	{
+        @:disabled
+	}/>
+</div>

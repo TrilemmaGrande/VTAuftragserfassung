@@ -1,11 +1,20 @@
-﻿<div>
-
-    <div><input type="text" placeholder="Kundennummer" /></div>
-    <div><input type="text" placeholder="Gesellschafter" /></div>
-    <div><input type="text" placeholder="Industrie/Verkaufsberater" /></div>
-    <div><input type="text" placeholder="Suche Artikel" /></div>
-    <div>Artikelliste</div>
-    <div><label>Zugabe:</label><input type="checkbox" />Ja<input type="checkbox" />Nein</div>
-    <div><input type="text" placeholder="Wichtiger Hinweis:" /></div>
-    <a class="btn btn-check" asp-controller="Home" asp-action="Index">Auftrag anlegen</a>
+﻿ <div class="assignmentDetailsWrapper">
+    <div class="gridListContent">
+        <div>
+            @await Html.PartialAsync("Partials/CustomerForm")
+        </div>
+        <div>
+            @await Html.PartialAsync("Partials/ShareholderForm")
+        </div>
+    </div>
+    <div>
+        @await Html.PartialAsync("Partials/PositionListForm")
+    </div>
+    <div class="gridListContent">
+        @await Html.PartialAsync("Partials/BonusForm", 1)
+    </div>
+    <div class="gridListContent">
+        @await Html.PartialAsync("Partials/NoticeForm")
+    </div>
 </div>
+<a class="btn btn-check" asp-controller="Home" asp-action="Dashboard">Auftrag anlegen (FAKE)</a>

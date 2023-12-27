@@ -40,14 +40,8 @@
     <span></span>
 </div>
 <div>
-    <input type="checkbox" disabled
-           @if (Model.IstWerkstatt == 0) { @: unchecked
-           } else { @: checked
-           } />Werkstatt
+    @Html.DisplayFor(modelItem => (@Model.IstWerkstatt), "IntTobooleanCheckbox") Werkstatt
 </div>
 <div>
-    <input type="checkbox" disabled
-           @if (Model.IstHandel == 0) { @: unchecked
-           } else { @: checked
-           } />Handel
+    @Html.DisplayFor(modelItem => (@Model.IstHandel), "IntTobooleanCheckbox") Handel
 </div>
