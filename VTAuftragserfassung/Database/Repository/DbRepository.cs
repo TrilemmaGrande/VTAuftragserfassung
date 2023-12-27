@@ -28,7 +28,7 @@ namespace VTAuftragserfassung.Database.Repository
         public List<Auftrag> GetAssignmentsByUserId(string userId) => _dataAccess.GetAllByCondition(new Auftrag(), "*",
             $"INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) WHERE MitarbeiterId = '{userId}'");
 
-        public List<AssignmentViewModel> GetAssignmentVMsWithoutPositionsByUserId(string userId) 
+        public List<AssignmentViewModel> GetAssignmentVMsWithoutPositionsByUserId(string userId)
             => _dataAccess.GetAllByCondition(new AssignmentViewModel(), "vta_Auftrag.*, vta_Kunde.*, vta_Gesellschafter.*, vta_Vertriebsmitarbeiter.MitarbeiterId",
             $"INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter)" +
             $"INNER JOIN vta_Kunde ON ( vta_Auftrag.FK_Kunde = vta_Kunde.PK_Kunde) " +

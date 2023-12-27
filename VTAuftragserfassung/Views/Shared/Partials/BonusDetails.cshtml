@@ -1,8 +1,6 @@
-﻿@model bool
+﻿@model int
 
 <div>
-    <input type="checkbox" disabled
-           @if (Model) { @: unchecked
-           } else { @: checked
-           } />Zugabe erhalten?
-</div> 
+    <label>Zugabe erhalten?</label>
+    @Html.DisplayFor(modelItem => (@Model), "IntTobooleanCheckbox")
+</div>

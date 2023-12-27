@@ -3,7 +3,7 @@
 <div class="assignmentDetailsWrapper">
     <div class="gridListContent">
         <div>
-            @await Html.PartialAsync("Partials/CustomerDetails", @Model!.Kunde) 
+            @await Html.PartialAsync("Partials/CustomerDetails", @Model!.Kunde)
         </div>
         <div>
             @await Html.PartialAsync("Partials/ShareholderDetails", @Model!.Gesellschafter)
@@ -13,9 +13,9 @@
         @await Html.PartialAsync("Partials/PositionList", @Model!.PositionenVM)
     </div>
     <div class="gridListContent">
-        Zugabe Unten
+        @await Html.PartialAsync("Partials/BonusDetails", @Model!.Auftrag?.HatZugabe)
     </div>
     <div class="gridListContent">
-        Hinweis Ganz Unten
+        @await Html.PartialAsync("Partials/NoticeDetails", @Model!.Auftrag?.Hinweis)
     </div>
 </div>

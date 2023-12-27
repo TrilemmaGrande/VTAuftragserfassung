@@ -9,14 +9,7 @@
         <div>@Model.Kunde?.Firma</div>
         <div>@Model.Gesellschafter?.Firmenname</div>
         <div>@Html.DisplayFor(modelItem => (@Model.Auftrag!.SummeAuftrag), "FormatCurrency")</div>
-        @if (@Model.Auftrag?.HatZugabe != 0)
-        {
-            <div><input type="checkbox" checked disabled /></div>
-        }
-        else
-        {
-            <div><input type="checkbox" disabled /></div>
-        }
+        <div>@Html.DisplayFor(modelItem => (@Model.Auftrag!.HatZugabe), "IntTobooleanCheckbox")</div>
         <div>@Model.Auftrag?.ErstelltAm</div>
         <div>@Model.Auftrag?.LetzteStatusAenderung</div>
         <div>@Html.DisplayFor(modelItem => (@Model.Auftrag!.Auftragsstatus), "AssignmentStatus")</div>
