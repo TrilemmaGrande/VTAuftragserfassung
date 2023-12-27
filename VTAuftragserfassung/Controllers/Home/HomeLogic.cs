@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using VTAuftragserfassung.Database.Repository;
-using VTAuftragserfassung.Models;
 using VTAuftragserfassung.Models.ViewModels;
 
 namespace VTAuftragserfassung.Controllers.Home
@@ -23,7 +22,6 @@ namespace VTAuftragserfassung.Controllers.Home
             _repo = repo;
             _httpContextAccessor = httpContextAccessor;
             _userId = _httpContextAccessor.HttpContext?.User.Identity?.Name ?? string.Empty;
-
         }
 
         #endregion Public Constructors
