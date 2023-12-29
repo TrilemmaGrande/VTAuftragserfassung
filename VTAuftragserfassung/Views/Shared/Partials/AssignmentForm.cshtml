@@ -1,20 +1,26 @@
-﻿ <div class="assignmentDetailsWrapper">
+﻿@model AssignmentFormViewModel
+
+
+<div class="assignmentDetailsWrapper">
     <div class="gridListContent">
         <div>
-            @await Html.PartialAsync("Partials/CustomerForm")
+            @await Html.PartialAsync("Partials/CustomerForm", Model.Kunden)
         </div>
         <div>
-            @await Html.PartialAsync("Partials/ShareholderForm")
+            @await Html.PartialAsync("Partials/ShareholderForm", Model.Gesellschafter)
         </div>
     </div>
     <div>
-        @await Html.PartialAsync("Partials/PositionListForm")
+        @await Html.PartialAsync("Partials/PositionListForm", Model.Artikel)
     </div>
     <div class="gridListContent">
-        @await Html.PartialAsync("Partials/BonusForm", 1)
+        @await Html.PartialAsync("Partials/BonusForm", Model.Bonus)
     </div>
     <div class="gridListContent">
-        @await Html.PartialAsync("Partials/NoticeForm")
+        @await Html.PartialAsync("Partials/NoticeForm", Model.Notice)
+    </div>
+    <div>
+        @Html.DisplayFor(modelItem => Model.Vertriebsmitarbeiter, "SalesStaffInformation") 
     </div>
 </div>
 <a class="btn btn-check" asp-controller="Home" asp-action="Dashboard">Auftrag anlegen (FAKE)</a>

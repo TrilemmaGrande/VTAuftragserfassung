@@ -35,7 +35,11 @@ namespace VTAuftragserfassung.Controllers.Home
         }
 
         [HttpGet("/Home/NewAssignment")]
-        public PartialViewResult NewAssignment() => PartialView("Partials/AssignmentForm");
+        public PartialViewResult NewAssignment()
+        {
+            AssignmentFormViewModel afvm = _logic.GetAssignmentFormViewModel();
+            return PartialView("Partials/AssignmentForm", afvm);
+        }
 
         #endregion Public Methods
     }

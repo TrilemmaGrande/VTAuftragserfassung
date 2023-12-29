@@ -8,6 +8,7 @@ namespace VTAuftragserfassung.Controllers.Home
         #region Public Methods
 
         public List<AssignmentViewModel> GetAssignmentViewModels();
+        public AssignmentFormViewModel GetAssignmentFormViewModel();
 
         public void Logout();
 

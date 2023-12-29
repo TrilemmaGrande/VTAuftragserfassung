@@ -1,4 +1,11 @@
-﻿<div>
+﻿@model List<Artikel>
+
+<div>
+    <div style="margin:1rem; padding:1rem;">
+        <label id="searchbarLabel">Search:</label><br />
+        <input id="searchbar" oninput="search(this.value, @Model)" />
+        <div id="searchResult"></div>
+    </div>
     <div class="headerListWrapper">
         <div class="gridListContent">
             <div>Art. Nr.</div>

@@ -33,6 +33,11 @@ namespace VTAuftragserfassung.Controllers.Home
             return !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentVMsByUserId(_userId) : [];
         }
 
+        public AssignmentFormViewModel GetAssignmentFormViewModel()
+        {
+            return !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentFormVMByUserId(_userId) : new();
+        }
+
         public void Logout()
         {
             _httpContextAccessor.HttpContext?.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
