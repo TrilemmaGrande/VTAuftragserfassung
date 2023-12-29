@@ -8,7 +8,7 @@ function toggleAssignmentDetails(ele) {
 
 function newAssignment() {
     let modalDiv = document.createElement('div');
-    modalDiv.ClassName = 'assignmentModal';
+    modalDiv.classList.add('assignmentModalContainer');
     modalDiv.innerHTML = backendRequest("GET", "/Home/NewAssignment");
     let main = document.querySelector('main');
     if (main) {
@@ -16,40 +16,42 @@ function newAssignment() {
     }
 }
 
-function search(searchterm, model) {
-
-    let modelList = Html.Raw(System.Text.Json.JsonSerializer.Serialize(model));
+function search(searchTerm, model) {
+    let modelList = model;
     let propertyArray = [];
     let resultList = [];
-    //for each object in index
+
     for (const element of modelList) {
-
-        //does any of the objects property values.tostring contains searchterm?
-        //make array of propertyvalues
-        //add object to resultlist
-
         propertyArray.push(Object.values(element));
-        if (JSON.stringify(propertyarray).toLowerCase().includes(searchterm.trim().toLowerCase()) && searchterm.length > 0) {
-            resultList.push(element)
+
+        if (JSON.stringify(propertyArray).toLowerCase().includes(searchTerm.trim().toLowerCase()) && searchTerm.length > 0) {
+            resultList.push(element);
         }
+
         propertyArray = [];
     }
-    //if resultlist any
-    //show resultlist
-    //emptyresultlist
+
     if (resultList.length > 0) {
-        document.getElementById("searchresult").innerHTML = '<table id="searchTable" class="table table-striped table-bordered zero-configuration dataTable" role="grid">'
-            + '<thead><tr><th>Result</th></tr></thead>'
-            + '<tbody id="resulttblbody"></tbody>'
-            + '</table>';
-        for (const element of resultList) {
-            document.getElementById("resulttblbody").innerHTML += `<tr><td><a name="${Object.values(element)[0]}" class="btn btn-outline-secondary"
+        document.getElementById("searchResult").innerHTML = '<div id="searchTable">'
+            + '<div class="gridContainer" id="resultTblBody"></div>'
+            + '</div>';
+
+        for (const article of resultList) {
+            document.getElementById("resultTblBody").innerHTML +=
+                `<div><a href="javascript:void(0);" data-name="${Object.values(article)[0]}" class="resultTblRow"
                                     onMouseOut="this.style.color='#000'"
-                                    onMouseOver="this.style.color='#F0F'"
-                                    onclick="searchResultSelected(this.name)">${Object.values(element)[0]} ${Object.values(element)[1]} ${Object.values(element)[2]}</a></td></tr>`
+                                    onMouseOver="this.style.color='#165b9e'"
+                                    onclick="searchResultSelected(this.getAttribute('data-name'))">
+                                     ${Object.values(article)[1]} ${Object.values(article)[2]}
+                                     ${Object.values(article)[3]}  ${Object.values(article)[4]}  ${Object.values(article)[5]}
+                                    </a></div>`;
         }
+    } else {
+        document.getElementById("searchResult").innerHTML = '';
     }
-    else {
-        document.getElementById("searchresult").innerHTML = '';
-    }
+}
+function searchResultSelected(articlePK) {
+    document.getElementById("selectedItem").innerHTML += backendRequest("GET", "/Home/AddPositionListRowFormPartial/" + articlePK);
+    document.getElementById("searchTable").remove();
+    document.getElementById("searchBar").value = '';
 }

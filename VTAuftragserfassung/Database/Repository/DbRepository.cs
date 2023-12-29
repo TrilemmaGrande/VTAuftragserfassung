@@ -74,6 +74,23 @@ namespace VTAuftragserfassung.Database.Repository
             return afvm;
         }
 
+        public PositionViewModel GetPositionVMByArticlePK(int articlePK)
+        {
+            List<Artikel> articles = GetAllArticlesCached();
+            Artikel article = articles.Find(i => i.PK_Artikel == articlePK);
+            PositionViewModel pvm = new();
+            pvm.Artikel = article;
+            pvm.Position = new()
+            {
+                FK_Artikel = articlePK,
+                Menge = 1,
+                SummePosition = article.Preis,
+                TableName = "vta_Position"
+            };
+
+            return pvm;
+        }
+
         public Auth? GetAuthByUserPk(int pk_vertriebsmitarbeiter) => _dataAccess.GetByCondition(new Auth(), "*", $"WHERE FK_Vertriebsmitarbeiter = {pk_vertriebsmitarbeiter}");
 
         public T1? GetObjectByForeignKey<T1, T2>(T1 model, T2 foreignModel, int fk)

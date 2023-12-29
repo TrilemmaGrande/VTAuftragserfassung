@@ -1,5 +1,4 @@
-﻿using VTAuftragserfassung.Database.DataAccess;
-using VTAuftragserfassung.Models.ViewModels;
+﻿using VTAuftragserfassung.Models.ViewModels;
 
 namespace VTAuftragserfassung.Controllers.Home
 {
@@ -8,7 +7,10 @@ namespace VTAuftragserfassung.Controllers.Home
         #region Public Methods
 
         public List<AssignmentViewModel> GetAssignmentViewModels();
+
         public AssignmentFormViewModel GetAssignmentFormViewModel();
+
+        public PositionViewModel GetPositionViewModel(int articlePK);
 
         public void Logout();
 

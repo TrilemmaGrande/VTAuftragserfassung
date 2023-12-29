@@ -1,12 +1,15 @@
-﻿@model List<Artikel>
+﻿@{ 
+    var jsonModel = System.Text.Json.JsonSerializer.Serialize(Model);
+}
+@model List<Artikel>
 
-<div>
-    <div style="margin:1rem; padding:1rem;">
-        <label id="searchbarLabel">Search:</label><br />
-        <input id="searchbar" oninput="search(this.value, @Model)" />
-        <div id="searchResult"></div>
-    </div>
+<div> 
     <div class="headerListWrapper">
+        <div style="margin:1rem; padding:1rem;">
+            <label id="searchBarLabel">Search:</label><br />
+            <input id="searchBar" oninput="search(this.value, @jsonModel)" />
+            <div id="searchResult"></div>
+        </div>
         <div class="gridListContent">
             <div>Art. Nr.</div>
             <div>Bezeichnung</div>
@@ -16,5 +19,6 @@
             <div>Menge</div>
             <div>Pos. Gesamtpreis Netto</div>
         </div>
+        <div id="selectedItem"></div>
     </div>
 </div>

@@ -38,6 +38,11 @@ namespace VTAuftragserfassung.Controllers.Home
             return !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentFormVMByUserId(_userId) : new();
         }
 
+        public PositionViewModel GetPositionViewModel(int articlePK)
+        {           
+            return _repo.GetPositionVMByArticlePK(articlePK);
+        }
+
         public void Logout()
         {
             _httpContextAccessor.HttpContext?.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

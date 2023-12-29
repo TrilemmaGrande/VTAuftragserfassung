@@ -1,7 +1,7 @@
 ﻿@model AssignmentFormViewModel
 
 
-<div class="assignmentDetailsWrapper">
+<div class="assignmentModal">
     <div class="gridListContent">
         <div>
             @await Html.PartialAsync("Partials/CustomerForm", Model.Kunden)
@@ -16,11 +16,13 @@
     <div class="gridListContent">
         @await Html.PartialAsync("Partials/BonusForm", Model.Bonus)
     </div>
-    <div class="gridListContent">
+    <div>
         @await Html.PartialAsync("Partials/NoticeForm", Model.Notice)
     </div>
+    <div class="gridListContent">
+        <a class="btn btn-outline-danger" asp-controller="Home" asp-action="Dashboard">Auftrag anlegen (FAKE)</a>
+    </div>
     <div>
-        @Html.DisplayFor(modelItem => Model.Vertriebsmitarbeiter, "SalesStaffInformation") 
+        @Html.DisplayFor(modelItem => Model.Vertriebsmitarbeiter, "SalesStaffInformation")
     </div>
 </div>
-<a class="btn btn-check" asp-controller="Home" asp-action="Dashboard">Auftrag anlegen (FAKE)</a>

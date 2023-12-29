@@ -41,6 +41,13 @@ namespace VTAuftragserfassung.Controllers.Home
             return PartialView("Partials/AssignmentForm", afvm);
         }
 
+
+        [HttpGet("/Home/AddPositionListRowFormPartial/{articlePK}")]
+        public PartialViewResult AddPositionListRowFormPartial(int articlePK)
+        {
+            PositionViewModel pvm = _logic.GetPositionViewModel(articlePK);
+            return PartialView("Partials/PositionListRowForm", pvm);
+        }
         #endregion Public Methods
     }
 }
