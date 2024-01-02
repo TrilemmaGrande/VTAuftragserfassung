@@ -1,4 +1,5 @@
-﻿using VTAuftragserfassung.Models.ViewModels;
+﻿using VTAuftragserfassung.Models;
+using VTAuftragserfassung.Models.ViewModels;
 
 namespace VTAuftragserfassung.Controllers.Home
 {
@@ -10,7 +11,13 @@ namespace VTAuftragserfassung.Controllers.Home
 
         public AssignmentFormViewModel GetAssignmentFormViewModel();
 
+        public Artikel GetArticleByPK(int articlePK);
+
+        public Kunde GetCustomerByPK(int customerPK);
+
         public PositionViewModel GetPositionViewModel(int articlePK);
+
+        public void CreateAssignment(AssignmentViewModel avm);
 
         public void Logout();
 

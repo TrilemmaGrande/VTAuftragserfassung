@@ -60,6 +60,16 @@ body {
     border-radius: 12px;
 }
 
+/* Search Table */
+
+#searchTable {
+    max-height: 25rem;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 #searchResult {
     position: absolute;
     z-index: 100;
@@ -69,41 +79,78 @@ body {
     display: block;
     padding: 5px;
     text-decoration: none;
-    color: #000;
-    border: solid 1px #000;
+    color: #333;
+    border-bottom: 1px solid #ddd;
     background-color: #fff;
-    transition: background-color 0.3s, color 0.3s; 
+    transition: background-color 0.3s, color 0.3s;
 }
 
     .resultTblRow:hover {
-        background-color: #e0e0e0; 
+        background-color: #e0e0e0;
         color: #165b9e;
     }
 
 
 /* Grid Styles */
 .gridContainer {
-    border: solid 1px;
+    border: 1px solid #ddd;
 }
 
 .headerListWrapper {
     position: sticky;
     top: 0;
-    border: solid 1px;
+    border: 1px solid #ddd;
 }
 
 .gridListContent {
     display: grid;
-    grid-template-columns: repeat(8, minmax(100px, 1fr));
-    background-color: #f2f2f2;
+    background-color: #f9f9f9;
     padding: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
+.gridListContent2 {
+    grid-template-columns: repeat(2, minmax(100px, 1fr));
+}
+
+.gridListContent5 {
+    grid-template-columns: repeat(5, minmax(100px, 1fr));
+}
+
+.gridListContent7 {
+    grid-template-columns: repeat(7, minmax(100px, 1fr));
+}
+
+.gridListContentSearchResult {
+    grid-template-columns: repeat(5, minmax(100px, 1fr));
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: left;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+}
+    .gridListContentSearchResult:hover {
+        background-color: #f0f0f0;
+        color: #165b9e;
+    }
+    .gridListContentSearchResult:active {
+        background-color: #dcdcdc;
+    }
+    .gridListContentSearchResult > div {
+        margin-bottom: 8px;
+        margin-left: 10px;
+        margin-right: 10px;
+        width:100%;
+        font-size: 14px;
+    }
 /*Assignment List*/
 .assignmentListRowWrapper {
-    background-color: #f2f2f2;
+    background-color: #f9f9f9;
     border-top: dotted 1px #165b9e6b;
     border-bottom: dotted 1px #165b9e6b;
     cursor: pointer;
@@ -112,13 +159,14 @@ body {
 .assignmentListRowContent {
     display: grid;
     grid-template-columns: repeat(8, minmax(100px, 1fr));
-    background-color: #f2f2f2;
+    background-color: #f9f9f9;
     border-top: dotted 1px #165b9e6b;
     border-bottom: dotted 1px #165b9e6b;
     padding: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
+
     .assignmentListRowContent:hover {
         background-color: #165b9eD7;
         color: #f2f2f2;
@@ -138,6 +186,7 @@ body {
     grid-template-rows: 1fr;
     opacity: 1;
 }
+
 .assignmentListRowWrapper .assignmentDetailsPartial > .assignmentDetailsWrapper {
     overflow: hidden;
 }
@@ -160,7 +209,7 @@ body {
 
 .positionListRowContent {
     display: grid;
-    grid-template-columns: repeat(8, minmax(100px, 1fr));
+    grid-template-columns: repeat(7, minmax(100px, 1fr));
     background-color: #f2f2f2;
     border-top: dotted 1px #165b9e6b;
     border-bottom: dotted 1px #165b9e6b;
@@ -180,14 +229,15 @@ body {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    border-radius: 10px; 
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); 
-    background: #fff; 
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    background: #fff;
 }
+
 .assignmentModal {
     background: #f2f2f2;
-    border-radius: 8px; 
-    padding: 1rem; 
+    border-radius: 8px;
+    padding: 1rem;
 }
 
 .noticeInput {

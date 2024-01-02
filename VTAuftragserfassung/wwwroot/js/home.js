@@ -6,6 +6,12 @@ function toggleAssignmentDetails(ele) {
     if (ele != openEle) { ele.classList.add('show'); }
 }
 
+function openCustomerForm() {
+    let targetElement = document.getElementById('selectedCustomer');
+    let customerForm = backendRequest("GET", "/Home/AddCustomerForm/")
+    targetElement.innerHTML = customerForm;
+}
+
 function newAssignment() {
     let modalDiv = document.createElement('div');
     modalDiv.classList.add('assignmentModalContainer');
@@ -16,11 +22,22 @@ function newAssignment() {
     }
 }
 
-function search(searchTerm, model) {
+function addNewAssignment() {
+}
+
+function closeNewAssignment() {
+    let modalDiv = document.getElementsByClassName('assignmentModalContainer');
+    modalDiv[0].remove();
+}
+
+function search(ele, searchTerm, model, backendMethod) {
     let modelList = model;
     let propertyArray = [];
     let resultList = [];
-
+    let searchResultDiv = document.getElementsByClassName('searchResult');
+    if (searchResultDiv.length > 0) {
+        searchResultDiv[0].remove();
+    };
     for (const element of modelList) {
         propertyArray.push(Object.values(element));
 
@@ -31,27 +48,30 @@ function search(searchTerm, model) {
         propertyArray = [];
     }
 
+    searchResultDiv = document.createElement('div');
+    searchResultDiv.classList.add('searchResult');
+    ele.after(searchResultDiv);
     if (resultList.length > 0) {
-        document.getElementById("searchResult").innerHTML = '<div id="searchTable">'
-            + '<div class="gridContainer" id="resultTblBody"></div>'
-            + '</div>';
-
-        for (const article of resultList) {
-            document.getElementById("resultTblBody").innerHTML +=
-                `<div><a href="javascript:void(0);" data-name="${Object.values(article)[0]}" class="resultTblRow"
-                                    onMouseOut="this.style.color='#000'"
-                                    onMouseOver="this.style.color='#165b9e'"
-                                    onclick="searchResultSelected(this.getAttribute('data-name'))">
-                                     ${Object.values(article)[1]} ${Object.values(article)[2]}
-                                     ${Object.values(article)[3]}  ${Object.values(article)[4]}  ${Object.values(article)[5]}
-                                    </a></div>`;
-        }
+        searchResultDiv.innerHTML = backendRequest("POST", backendMethod, resultList);
     } else {
-        document.getElementById("searchResult").innerHTML = '';
+        searchResultDiv.innerHTML = '';
     }
 }
-function searchResultSelected(articlePK) {
-    document.getElementById("selectedItem").innerHTML += backendRequest("GET", "/Home/AddPositionListRowFormPartial/" + articlePK);
+
+function searchResultSelected(modelPK, targetElementId) {
+    let targetPartial;
+    if (targetElementId == "selectedArticle") {
+        targetPartial = backendRequest("GET", "/Home/AddPositionListRowFormPartial/" + modelPK);
+        document.getElementById(targetElementId).innerHTML += targetPartial;
+    }
+    else if (targetElementId == "selectedCustomer") {
+        targetPartial = backendRequest("GET", "/Home/AddCustomerDetailsPartial/" + modelPK)
+        document.getElementById(targetElementId).innerHTML = targetPartial;
+    }
     document.getElementById("searchTable").remove();
-    document.getElementById("searchBar").value = '';
+    document.getElementsByClassName("searchResult")[0].remove();
+    let searchBarElement = document.getElementsByClassName("searchBar");
+    for (const element of searchBarElement) {
+        element.value = '';
+    }
 }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using VTAuftragserfassung.Models;
 using VTAuftragserfassung.Models.ViewModels;
 
 namespace VTAuftragserfassung.Controllers.Home
@@ -42,12 +43,45 @@ namespace VTAuftragserfassung.Controllers.Home
         }
 
 
+        [HttpPost("/Home/SearchResultPartialArticle/")]
+        public PartialViewResult SearchResultPartialArticle([FromBody] List<Artikel> modelList)
+        {
+            return PartialView("Partials/SearchResultArticle", modelList);
+        }
+
+        [HttpPost("/Home/SearchResultPartialCustomer/")]
+        public PartialViewResult SearchResultPartialCustomer([FromBody] List<Kunde> modelList)
+        {
+            return PartialView("Partials/SearchResultCustomer", modelList);
+        }
+
+        [HttpGet("/Home/AddCustomerForm/")]
+        public PartialViewResult AddCustomerForm()
+        {
+            return PartialView("Partials/CustomerForm");
+        }
+
+
+        [HttpGet("/Home/AddCustomerDetailsPartial/{customerPK}")]
+        public PartialViewResult AddCustomerDetailsPartial(int customerPK)
+        {
+            Kunde customer = _logic.GetCustomerByPK(customerPK);
+            return PartialView("Partials/CustomerDetails", customer);
+        }
+
         [HttpGet("/Home/AddPositionListRowFormPartial/{articlePK}")]
         public PartialViewResult AddPositionListRowFormPartial(int articlePK)
         {
             PositionViewModel pvm = _logic.GetPositionViewModel(articlePK);
             return PartialView("Partials/PositionListRowForm", pvm);
         }
+
+        [HttpPost("/Home/CrateNewAssignment/")]
+        public void CreateNewAssignment(AssignmentViewModel avm)
+        {
+            _logic.CreateAssignment(avm);
+        }
+
         #endregion Public Methods
     }
 }

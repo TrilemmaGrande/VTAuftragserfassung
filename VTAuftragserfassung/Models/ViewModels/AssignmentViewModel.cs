@@ -11,6 +11,5 @@ namespace VTAuftragserfassung.Models.ViewModels
         public Auftrag? Auftrag { get; set; }
         public Kunde? Kunde { get; set; }
         public Gesellschafter? Gesellschafter { get; set; }
-
     }
 }

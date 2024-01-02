@@ -1,25 +1,38 @@
-﻿@model AssignmentFormViewModel
-
+﻿
+@{
+    var jsonModel = System.Text.Json.JsonSerializer.Serialize(Model.Kunden);
+}
+@model AssignmentFormViewModel
 
 <div class="assignmentModal">
-    <div class="gridListContent">
+    <div>
+        <a class="btn btn-outline-danger" onclick="closeNewAssignment()">Close</a>
+    </div>
+    <div class="gridListContent gridListContent2">
         <div>
-            @await Html.PartialAsync("Partials/CustomerForm", Model.Kunden)
+
+            <div id="customerSelection">
+                <label id="searchBarLabel">Suche:</label><br />
+                <input class="searchBar" oninput="search(this, this.value, @jsonModel, '/Home/SearchResultPartialCustomer/')" />
+                <a class="btn btn-dark" onclick="openCustomerForm()">Kunde anlegen</a>
+                <div id="selectedCustomer">
+                </div>
+            </div>
         </div>
-        <div>
-            @await Html.PartialAsync("Partials/ShareholderForm", Model.Gesellschafter)
-        </div>
+            <div>
+                @await Html.PartialAsync("Partials/ShareholderForm", Model.Gesellschafter)
+            </div>
     </div>
     <div>
         @await Html.PartialAsync("Partials/PositionListForm", Model.Artikel)
     </div>
-    <div class="gridListContent">
+    <div class="gridListContent gridListContent2">
         @await Html.PartialAsync("Partials/BonusForm", Model.Bonus)
     </div>
     <div>
         @await Html.PartialAsync("Partials/NoticeForm", Model.Notice)
     </div>
-    <div class="gridListContent">
+    <div>
         <a class="btn btn-outline-danger" asp-controller="Home" asp-action="Dashboard">Auftrag anlegen (FAKE)</a>
     </div>
     <div>

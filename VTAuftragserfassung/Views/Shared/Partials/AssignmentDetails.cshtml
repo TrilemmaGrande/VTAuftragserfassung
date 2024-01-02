@@ -1,7 +1,7 @@
 ﻿@model AssignmentViewModel
 
 <div class="assignmentDetailsWrapper">
-    <div class="gridListContent">
+    <div class="gridListContent gridListContent2">
         <div>
             @await Html.PartialAsync("Partials/CustomerDetails", @Model!.Kunde)
         </div>
@@ -12,10 +12,10 @@
     <div>
         @await Html.PartialAsync("Partials/PositionListDetails", @Model!.PositionenVM)
     </div>
-    <div class="gridListContent">
+    <div class="gridListContent gridListContent2">
         @await Html.PartialAsync("Partials/BonusDetails", @Model!.Auftrag?.HatZugabe)
     </div>
-    <div class="gridListContent">
+    <div class="gridListContent gridListContent2">
         @await Html.PartialAsync("Partials/NoticeDetails", @Model!.Auftrag?.Hinweis)
     </div>
 </div>

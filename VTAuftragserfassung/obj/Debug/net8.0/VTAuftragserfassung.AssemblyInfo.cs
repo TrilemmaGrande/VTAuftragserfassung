@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VTAuftragserfassung")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+140e6e43a9f27c6bc7e2abf2c5aea852439e0f2a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1da485a379bfb29aab639d244b4e3b1b62b110d4")]
 [assembly: System.Reflection.AssemblyProductAttribute("VTAuftragserfassung")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VTAuftragserfassung")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
