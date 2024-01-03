@@ -26,7 +26,7 @@ namespace VTAuftragserfassung.Database.Repository
 
         public List<PositionViewModel> GetPositionVMsByUserId(string userId);
 
-        public PositionViewModel GetPositionVMByArticlePK(int articlePK);
+        public PositionViewModel GetNewPositionVMByArticlePK(int articlePK);
 
         public T? GetObjectByPrimaryKey<T>(T model, int pk) where T : IDatabaseObject;
 

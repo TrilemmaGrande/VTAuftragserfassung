@@ -20,6 +20,8 @@ namespace VTAuftragserfassung.Controllers.Home
         public void CreateAssignment(AssignmentViewModel avm);
 
         public void Logout();
+        Gesellschafter GetShareholderByPK(int shareholderPK);
+        List<Gesellschafter> GetAllShareholders();
 
         #endregion Public Methods
     }

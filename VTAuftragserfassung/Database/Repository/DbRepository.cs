@@ -52,11 +52,11 @@ namespace VTAuftragserfassung.Database.Repository
             {
                 avm.PositionenVM!.AddRange(pvms.Where(i => i.Position?.FK_Auftrag == avm.Auftrag?.PK_Auftrag));
                 avm.PositionenVM!.ForEach(item => item.Artikel = articles.Find(i => i.PK_Artikel == item.Position?.FK_Artikel));
-                avm.Gesellschafter = shareholders.Find(i => i.PK_Gesellschafter == avm.Kunde?.FK_Gesellschafter);
                 avm.Kunde = customers.Find(i => i.PK_Kunde == avm.Auftrag?.FK_Kunde);
+                avm.Gesellschafter = shareholders.Find(i => i.PK_Gesellschafter == avm.Kunde?.FK_Gesellschafter);
             }
             return avms;
-        }
+        }    
 
         public AssignmentFormViewModel GetAssignmentFormVMByUserId(string userId)
         {
@@ -74,10 +74,10 @@ namespace VTAuftragserfassung.Database.Repository
             return afvm;
         }
 
-        public PositionViewModel GetPositionVMByArticlePK(int articlePK)
+        public PositionViewModel GetNewPositionVMByArticlePK(int articlePK)
         {
             List<Artikel> articles = GetAllArticlesCached();
-            Artikel article = articles.Find(i => i.PK_Artikel == articlePK);
+            Artikel article = articles?.Find(i => i.PK_Artikel == articlePK)!;
             PositionViewModel pvm = new();
             pvm.Artikel = article;
             pvm.Position = new()
@@ -118,12 +118,12 @@ namespace VTAuftragserfassung.Database.Repository
 
         private List<T> GetCachedModel<T>(T model) where T : IDatabaseObject
         {
-            if (_memoryCache.TryGetValue(model?.GetType().Name!, out List<T> cachedModel))
+            if (_memoryCache.TryGetValue(model?.GetType().Name!, out List<T>? cachedModel))
             {
                 return cachedModel ?? [];
             }
-            List<T> modelData = _dataAccess.GetAll(model);
-            _memoryCache.Set(model.GetType().Name, modelData);
+            List<T> modelData = _dataAccess.GetAll(model!);
+            _memoryCache.Set(model!.GetType().Name, modelData);
             return modelData;
         }
 

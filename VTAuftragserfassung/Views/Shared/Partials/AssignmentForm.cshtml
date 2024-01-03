@@ -10,27 +10,29 @@
     </div>
     <div class="gridListContent gridListContent2">
         <div>
-
             <div id="customerSelection">
-                <label id="searchBarLabel">Suche:</label><br />
-                <input class="searchBar" oninput="search(this, this.value, @jsonModel, '/Home/SearchResultPartialCustomer/')" />
-                <a class="btn btn-dark" onclick="openCustomerForm()">Kunde anlegen</a>
+                <div>
+                    <a id="btnAddCustomer" class="btn btn-dark" onclick='openCustomerForm(this)'>Kunde anlegen</a>
+                </div>
+                <div id="customerSearch">
+                    <label id="searchBarLabel">Suche:</label><br />
+                    <input class="searchBar" oninput="search(this, this.value, @jsonModel, '/Home/SearchResultPartialCustomer/')" />
+                </div>
                 <div id="selectedCustomer">
                 </div>
             </div>
         </div>
-            <div>
-                @await Html.PartialAsync("Partials/ShareholderForm", Model.Gesellschafter)
-            </div>
+        <div id="selectedShareholder">
+        </div>
     </div>
     <div>
         @await Html.PartialAsync("Partials/PositionListForm", Model.Artikel)
     </div>
     <div class="gridListContent gridListContent2">
-        @await Html.PartialAsync("Partials/BonusForm", Model.Bonus)
+        @await Html.PartialAsync("Partials/BonusForm", Model.Bonus) @* change Bonus later *@
     </div>
     <div>
-        @await Html.PartialAsync("Partials/NoticeForm", Model.Notice)
+        @await Html.PartialAsync("Partials/NoticeForm")
     </div>
     <div>
         <a class="btn btn-outline-danger" asp-controller="Home" asp-action="Dashboard">Auftrag anlegen (FAKE)</a>

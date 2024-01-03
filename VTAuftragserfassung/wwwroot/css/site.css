@@ -242,7 +242,13 @@ body {
 
 .noticeInput {
     width: 100%;
-    height: 100px;
+    height: 150px;
+    padding: 5px 5px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
 }
 
 /* Optional: Stil für den Schließen-Button im Modal */

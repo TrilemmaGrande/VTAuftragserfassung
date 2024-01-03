@@ -6,8 +6,8 @@
         <div>@Model.Artikel.Bezeichnung1</div>
         <div>@Model.Artikel.Bezeichnung2</div>
         <div>@Html.DisplayFor(modelItem => (@Model.Artikel.Preis), "FormatCurrency")</div>
-        <div>@Model.Artikel.Verpackungseinheit</div>
         <div>@Model.Position!.Menge</div>
+        <div>@Model.Artikel.Verpackungseinheit</div>
         <div>@Html.DisplayFor(modelItem => (@Model.Position.SummePosition), "FormatCurrency")</div>
     </div>
 </div>

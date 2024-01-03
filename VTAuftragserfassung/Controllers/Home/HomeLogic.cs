@@ -49,9 +49,19 @@ namespace VTAuftragserfassung.Controllers.Home
             return !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentFormVMByUserId(_userId) : new();
         }
 
+        public List<Gesellschafter> GetAllShareholders()
+        {
+            return _repo.GetAllShareholdersCached();
+        }
+
+        public Gesellschafter GetShareholderByPK(int shareholderPK)
+        {
+            return _repo.GetAllShareholdersCached().Find(i => i.PK_Gesellschafter == shareholderPK)!;
+        }
+
         public PositionViewModel GetPositionViewModel(int articlePK)
         {           
-            return _repo.GetPositionVMByArticlePK(articlePK);
+            return _repo.GetNewPositionVMByArticlePK(articlePK);
         }
 
         public void CreateAssignment(AssignmentViewModel avm)
