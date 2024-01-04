@@ -59,7 +59,7 @@ namespace VTAuftragserfassung.Database.Repository
             return avms;
         }
 
-        public void SaveAssignmentVM(AssignmentViewModel avm)
+        public int SaveAssignmentVM(AssignmentViewModel avm)
         {
             int pkAssignment = _dataAccess.Create(avm.Auftrag);
             List<Position> positions = [];
@@ -69,11 +69,12 @@ namespace VTAuftragserfassung.Database.Repository
                 positions.Add(i.Position);
             });
             _dataAccess.CreateAll(positions);
+            return pkAssignment;
         }
 
-        public void SaveCustomer(Kunde customer)
+        public int SaveCustomer(Kunde customer)
         {
-            _dataAccess.Create(customer);
+            return _dataAccess.Create(customer);
         }
 
         public AssignmentFormViewModel GetAssignmentFormVMByUserId(string userId)

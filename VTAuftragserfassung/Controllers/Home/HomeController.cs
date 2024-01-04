@@ -91,9 +91,15 @@ namespace VTAuftragserfassung.Controllers.Home
         }
 
         [HttpPost("/Home/CreateNewAssignment/")]
-        public void CreateNewAssignment([FromBody] AssignmentViewModel avm)
+        public int CreateNewAssignment([FromBody] AssignmentViewModel avm)
         {
-            _logic.CreateAssignment(avm);
+            return _logic.CreateAssignment(avm);
+        }
+
+        [HttpPost("/Home/CreateNewCustomer/")]
+        public int CreateNewCustomer([FromBody] Kunde customer)
+        {
+            return _logic.CreateCustomer(customer);
         }
 
         #endregion Public Methods

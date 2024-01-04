@@ -64,15 +64,15 @@ namespace VTAuftragserfassung.Controllers.Home
             return _repo.GetNewPositionVMByArticlePK(articlePK);
         }
 
-        public void CreateAssignment(AssignmentViewModel avm)
+        public int CreateAssignment(AssignmentViewModel avm)
         {
             avm.Auftrag.FK_Vertriebsmitarbeiter = _repo.GetUserByUserId(_userId).PK_Vertriebsmitarbeiter;
-            _repo.SaveAssignmentVM(avm);
+           return _repo.SaveAssignmentVM(avm);
         }
 
-        public void CreateCustomer(Kunde customer)
+        public int CreateCustomer(Kunde customer)
         {
-            _repo.SaveCustomer(customer);
+            return _repo.SaveCustomer(customer);
         }
 
         public void Logout()

@@ -14,11 +14,11 @@ function backendRequest(requestMethod, requestURL, data = null) {
 }
 
 function backendRequestGET(requestURL) {
-    backendRequest("GET", requestURL);
+    return backendRequest("GET", requestURL);
 }
 
 function backendRequestPOST(requestURL, data) {
-    backendRequest("POST", requestURL, data);
+    return backendRequest("POST", requestURL, data);
 }
 
 function onEnterPressButton(buttonId, e) {

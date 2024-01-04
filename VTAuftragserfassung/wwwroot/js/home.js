@@ -3,42 +3,28 @@
 // Global Variables
 let positionNr = 0;
 
-// Assignments
+// Format
+function formatCurrency(value) {
+    return (value.toFixed(2) + '€').replace('.', ',');
+}
+
+function checkboxValueToInt(value) {
+    value == "on" ? value = "1" : value = "0";
+    return value;
+}
+
+// Assignment List
+
 function toggleAssignmentDetails(ele) {
     let openEle = ele.parentElement.querySelector('.assignmentListRowWrapper.show');
     if (openEle) { openEle.classList.remove('show'); }
     if (ele != openEle) { ele.classList.add('show'); }
 }
 
-function openCustomerForm(btn) {
-    btn.text = "Abbrechen";
-    btn.setAttribute("onclick", "closeCustomerForm(this);");
-    document.getElementById("customerSearch").style.display = "none";
-    let targetElement = document.getElementById('selectedCustomer');
-    let customerForm = backendRequest("GET", "/Home/AddCustomerForm/")
-    let shareholderPartial = backendRequest("GET", "/Home/ShareholderFormPartial/");
-    targetElement.innerHTML = customerForm;
-    document.getElementById("selectedShareholder").innerHTML = shareholderPartial;
-}
 
+// Assignment Form
 
-function closeCustomerForm(btn) {
-    btn.text = "Kunden anlegen";
-    btn.setAttribute("onclick", "openCustomerForm(this)");
-    document.getElementById("customerSearch").style.display = "block";
-    document.getElementById('selectedCustomer').innerHTML = '';
-    document.getElementById('selectedShareholder').innerHTML = '';
-}
-
-function saveCustomer() {
-    // saveCustomer!!
-    document.querySelectorAll('customerData')
-    // select Customer:
-    /* selectedCustomer(   HIER MUSS NOCH DIE PK   ,"selectedCustomer") */
-    closeCustomerForm(document.getElementById("btnAddCustomer"));
-}
-
-function newAssignment() {
+function openAssignmentForm() {
     let oldAssignment = document.getElementsByClassName('assignmentModalContainer');
     if (oldAssignment.length > 0) {
         oldAssignment[0].remove();
@@ -54,7 +40,6 @@ function newAssignment() {
 }
 
 function saveNewAssignment() {
-
     let pk_customer = document.querySelector(`[data-name="customerPK"]`).dataset.pk_customer;
     let assignmentData = document.querySelectorAll('[property-name="assignmentData"]')
     let positionsListData = document.querySelectorAll('[property-name="positionsListData"]')
@@ -86,18 +71,21 @@ function saveNewAssignment() {
     });
 
     assignmentViewObj.Auftrag.SummeAuftrag = assignmentViewObj.PositionenVM.reduce((sum, position) => sum + parseFloat(position.Position.Menge * position.Artikel.Preis), 0);
-    assignmentViewObj.Auftrag.HatZugabe == "on" ? assignmentViewObj.Auftrag.HatZugabe = "1" : assignmentViewObj.Auftrag.HatZugabe = "0";
+    assignmentViewObj.Auftrag.HatZugabe = checkboxValueToInt(assignmentViewObj.Auftrag.HatZugabe);
 
     backendRequestPOST("/Home/CreateNewAssignment/", assignmentViewObj);
   
     closeNewAssignment();
 }
 
+
 function closeNewAssignment() {
     let modalDiv = document.getElementsByClassName('assignmentModalContainer');
     modalDiv[0].remove();
     positionNr = 0;
 }
+
+// Assignment PositionRow
 
 function changePositionAmount(amountField, articlePrice, positionNumber) {
     let amount = parseInt(amountField.value);
@@ -111,9 +99,44 @@ function changePositionAmount(amountField, articlePrice, positionNumber) {
     amountField.setAttribute('value', amount);
 }
 
-function formatCurrency(value) {
-    return (value.toFixed(2) + '€').replace('.', ',');
+
+// Customer Form
+
+function openCustomerForm(btn) {
+    btn.text = "Abbrechen";
+    btn.setAttribute("onclick", "closeCustomerForm(this);");
+    document.getElementById("customerSearch").style.display = "none";
+    let targetElement = document.getElementById('selectedCustomer');
+    let customerForm = backendRequest("GET", "/Home/AddCustomerForm/")
+    let shareholderPartial = backendRequest("GET", "/Home/ShareholderFormPartial/");
+    targetElement.innerHTML = customerForm;
+    document.getElementById("selectedShareholder").innerHTML = shareholderPartial;
 }
+
+
+function closeCustomerForm(btn) {
+    btn.text = "Kunden anlegen";
+    btn.setAttribute("onclick", "openCustomerForm(this)");
+    document.getElementById("customerSearch").style.display = "block";
+    document.getElementById('selectedCustomer').innerHTML = '';
+    document.getElementById('selectedShareholder').innerHTML = '';
+}
+
+function saveNewCustomer() {
+    let customerData = document.querySelectorAll('[property-name="customerData"]')
+    let customer = {};
+    customerData.forEach((obj, idx) => {
+        customer[obj.getAttribute('name')] = obj.value;
+    });
+    customer.IstWerkstatt = checkboxValueToInt(customer.IstWerkstatt);
+    customer.IstHandel = checkboxValueToInt(customer.IstHandel);
+    let customerPK = parseInt(backendRequestPOST("/Home/CreateNewCustomer/", customer));
+    closeCustomerForm(document.getElementById("btnAddCustomer"));
+    selectedCustomer(customerPK, "selectedCustomer");
+}
+
+
+// Search
 
 function search(ele, searchTerm, model, backendMethod) {
     let modelList = model;

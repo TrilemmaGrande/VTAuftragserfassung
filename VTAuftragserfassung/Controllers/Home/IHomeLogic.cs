@@ -17,12 +17,15 @@ namespace VTAuftragserfassung.Controllers.Home
 
         public PositionViewModel GetPositionViewModel(int articlePK);
 
-        public void CreateAssignment(AssignmentViewModel avm);
+        public int CreateAssignment(AssignmentViewModel avm);
+
+        int CreateCustomer(Kunde customer);
 
         public void Logout();
+
         Gesellschafter GetShareholderByPK(int shareholderPK);
+
         List<Gesellschafter> GetAllShareholders();
-        void CreateCustomer(Kunde customer);
 
         #endregion Public Methods
     }
