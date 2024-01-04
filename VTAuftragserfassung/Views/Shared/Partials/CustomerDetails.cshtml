@@ -1,6 +1,7 @@
 ﻿@model Kunde
 
-<span data-name="shareholderFK" data-fk_shareholder="@Model.FK_Gesellschafter" data-pkCustomer="@Model.PK_Kunde"></span>
+<span data-name="shareholderFK" data-fk_shareholder="@Model.FK_Gesellschafter" ></span>
+<span data-name="customerPK" data-pk_customer="@Model.PK_Kunde"></span>
 <div>
     <label>Kd.-Nr.</label>
     <span>@Model.Kundennummer</span>

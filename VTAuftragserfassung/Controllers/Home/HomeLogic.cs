@@ -60,21 +60,14 @@ namespace VTAuftragserfassung.Controllers.Home
         }
 
         public PositionViewModel GetPositionViewModel(int articlePK)
-        {           
+        {
             return _repo.GetNewPositionVMByArticlePK(articlePK);
         }
 
         public void CreateAssignment(AssignmentViewModel avm)
         {
-            if (avm.Kunde?.PK_Kunde == 0)
-            {
-                //CustomerIsNew
-                // Save Customer with FK Shareholder
-            }
-            // Save Assignment with FK Customer, FK SalesStaff, Status "Created"
-            // Save Positions with FK Article, FK Assignment
-            // Reload AssignmentListView
-
+            avm.Auftrag.FK_Vertriebsmitarbeiter = _repo.GetUserByUserId(_userId).PK_Vertriebsmitarbeiter;
+            _repo.SaveAssignmentVM(avm);
         }
 
         public void Logout()

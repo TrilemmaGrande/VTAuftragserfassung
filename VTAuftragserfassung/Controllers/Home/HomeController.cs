@@ -29,6 +29,7 @@ namespace VTAuftragserfassung.Controllers.Home
         }
 
         public IActionResult Dashboard() => View();
+
         public IActionResult Logout()
         {
             _logic.Logout();
@@ -42,7 +43,6 @@ namespace VTAuftragserfassung.Controllers.Home
             return PartialView("Partials/AssignmentForm", afvm);
         }
 
-
         [HttpPost("/Home/SearchResultPartialArticle/")]
         public PartialViewResult SearchResultPartialArticle([FromBody] List<Artikel> modelList)
         {
@@ -54,7 +54,6 @@ namespace VTAuftragserfassung.Controllers.Home
         {
             return PartialView("Partials/SearchResultCustomer", modelList);
         }
-
 
         [HttpGet("/Home/AddCustomerForm/")]
         public PartialViewResult AddCustomerForm()
@@ -83,7 +82,7 @@ namespace VTAuftragserfassung.Controllers.Home
             return PartialView("Partials/CustomerDetails", customer);
         }
 
-        [HttpPost("/Home/AddPositionListRowFormPartial/{articlePK}")]
+        [HttpGet("/Home/AddPositionListRowFormPartial/{articlePK}")]
         public PartialViewResult AddPositionListRowFormPartial(int articlePK, int positionNr)
         {
             PositionViewModel pvm = _logic.GetPositionViewModel(articlePK);
@@ -91,8 +90,8 @@ namespace VTAuftragserfassung.Controllers.Home
             return PartialView("Partials/PositionListRowForm", pvm);
         }
 
-        [HttpPost("/Home/CrateNewAssignment/")]
-        public void CreateNewAssignment(AssignmentViewModel avm)
+        [HttpPost("/Home/CreateNewAssignment/")]
+        public void CreateNewAssignment([FromBody] AssignmentViewModel avm)
         {
             _logic.CreateAssignment(avm);
         }

@@ -1,12 +1,15 @@
 ﻿@model PositionViewModel
 
 <div class="positionListRowWrapper">
-    <div class="positionListRowContent">
+    <div class="positionListRowContent" property-name="positionsListData">
+        <input property-name="positionData" name="FK_Artikel" value="@Model?.Artikel!.PK_Artikel" type="hidden"/>
+        <input property-name="positionData" name="SummePosition" value="@Model?.Position!.SummePosition" type="hidden"/>
         <div>@Model.Artikel!.Artikelnummer</div>
         <div>@Model.Artikel.Bezeichnung1</div>
         <div>@Model.Artikel.Bezeichnung2 </div>
         <div>@Html.DisplayFor(modelItem => (@Model.Artikel.Preis), "FormatCurrency")</div>
-        <div><input property-name="positionData" name="Menge" data-articlePK="@Model.Artikel.PK_Artikel" type="number" value="@Model.Position!.Menge" oninput="changePositionAmount(this, @Model.Artikel.Preis.ToString().Replace(',','.'), @Model.Position.PositionsNummer)"/></div>
+        <div><input property-name="positionData" name="Menge" type="number" value="1"
+                    oninput="changePositionAmount(this, @Model.Artikel.Preis.ToString().Replace(',','.'), @Model.Position.PositionsNummer)"/></div>
         <div>@Model.Artikel.Verpackungseinheit</div>
         <div data-row-id="@Model.Position.PositionsNummer">@Html.DisplayFor(modelItem => (@Model.Position.SummePosition), "FormatCurrency")</div>
     </div>

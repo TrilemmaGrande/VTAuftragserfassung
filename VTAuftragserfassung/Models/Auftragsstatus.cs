@@ -4,13 +4,15 @@ namespace VTAuftragserfassung.Models
 {
     public enum Auftragsstatus
     {
+        [EnumMember(Value = "Default")]
+        Default = 0,
         [EnumMember(Value = "Erfasst")]
-        Erfasst = 0,
+        Erfasst = 1,
         [EnumMember(Value = "Geprüft")]
-        Geprueft = 1,
+        Geprueft = 2,
         [EnumMember(Value = "Erledigt")]
-        Erledigt = 2,
+        Erledigt = 3,
         [EnumMember(Value = "Storniert")]
-        Storniert = 4
+        Storniert = 5
     }
 }

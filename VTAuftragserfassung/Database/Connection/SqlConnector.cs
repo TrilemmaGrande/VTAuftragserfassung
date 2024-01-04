@@ -55,6 +55,24 @@ namespace VTAuftragserfassung.Database.Connection
 
         }
 
+        public int ConnectionWriteGetPrimaryKey(string command)
+        {
+            int dataSetPrimaryKey;
+            using (SqlConnection sqlConn = new SqlConnection(_connectionString))
+            {
+                sqlConn.Open();
+                using (SqlCommand cmd = new SqlCommand(command, sqlConn))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                using (SqlCommand identityCmd = new SqlCommand("SELECT SCOPE_IDENTITY()", sqlConn))
+                {
+                    dataSetPrimaryKey = Convert.ToInt32(identityCmd.ExecuteScalar());
+                }
+                sqlConn.Close();
+            }
+            return dataSetPrimaryKey;
+        }
         public void ConnectionWrite(string command)
         {
             using (SqlConnection sqlConn = new SqlConnection(_connectionString))

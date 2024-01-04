@@ -3,16 +3,22 @@
 
 // Write your JavaScript code.
 
-function backendRequest(requestMethod, requestURL, data) {
+function backendRequest(requestMethod, requestURL, data = null) {
     let xhr = new XMLHttpRequest();
     xhr.open(requestMethod, requestURL, false);
     xhr.setRequestHeader("Accept", "application/json");
     xhr.setRequestHeader("Content-type", "application/json");
-    xhr.send(JSON.stringify(data));
+    xhr.send(data ? JSON.stringify(data) : null)
 
-    if (xhr.status == 200) {
-        return xhr.responseText;
-    }
+    return xhr.responseText;
+}
+
+function backendRequestGET(requestURL) {
+    backendRequest("GET", requestURL);
+}
+
+function backendRequestPOST(requestURL, data) {
+    backendRequest("POST", requestURL, data);
 }
 
 function onEnterPressButton(buttonId, e) {

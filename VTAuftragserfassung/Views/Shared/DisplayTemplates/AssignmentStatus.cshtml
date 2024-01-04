@@ -1,19 +1,19 @@
-﻿@model int
+﻿@model Auftragsstatus
 @{
     var statusString = string.Empty;
 
     switch (Model)
     {
-        case (int)Auftragsstatus.Erfasst:
+        case Auftragsstatus.Erfasst:
             statusString = "Erfasst";
             break;
-        case (int)Auftragsstatus.Geprueft:
+        case Auftragsstatus.Geprueft:
             statusString = "Geprüft";
             break;
-        case (int)Auftragsstatus.Erledigt:
+        case Auftragsstatus.Erledigt:
             statusString = "Erledigt";
             break;
-        case (int)Auftragsstatus.Storniert:
+        case Auftragsstatus.Storniert:
             statusString = "Storniert";
             break;
         default:

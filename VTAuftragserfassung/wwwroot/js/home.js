@@ -34,7 +34,7 @@ function saveCustomer() {
     // saveCustomer!!
     document.querySelectorAll('customerData')
     // select Customer:
-    /* selectedCustomer(   HIER MUSS NOCH DIE PK   ,"selectedCustomer")*/
+    /* selectedCustomer(   HIER MUSS NOCH DIE PK   ,"selectedCustomer") */
     closeCustomerForm(document.getElementById("btnAddCustomer"));
 }
 
@@ -54,14 +54,37 @@ function newAssignment() {
 }
 
 function saveNewAssignment() {
-    // get customer PK
-    // get position data < article FK
-    // get bonus checkbox data
-    // get notice textarea data
-    // make object
-    // send to backend
+
+    let pk_customer = document.querySelector(`[data-name="customerPK"]`).dataset.pk_customer;
+    let assignmentData = document.querySelectorAll('[property-name="assignmentData"]')
+    let positionsListData = document.querySelectorAll('[property-name="positionsListData"]')
+
+    let positionList = [];
+    let assignmentViewObj = {
+        Kunde: { PK_Kunde: pk_customer }, PositionenVM: positionList, Auftrag: {SummeAuftrag: 0}
+    };
+
+    positionsListData.forEach((obj, idx) => {
+        let model = {
+            Position: {}
+        };
+        let posDataSet = obj.querySelectorAll('[property-name="positionData"]');
+        posDataSet.forEach((obj2, idx2) => {
+            model.Position[obj2.getAttribute('name')] = obj2.value;
+        });
+        positionList.push(model);
+    });   
+
+    assignmentData.forEach((obj, idx) => {
+        assignmentViewObj.Auftrag[obj.getAttribute('name')] = obj.value;
+    });
+
+    assignmentViewObj.Auftrag.SummeAuftrag = assignmentViewObj.PositionenVM.Sum(i => i.Position.SummePosition)
+    assignmentViewObj.Auftrag.HatZugabe == "on" ? assignmentViewObj.Auftrag.HatZugabe = "1" : assignmentViewObj.Auftrag.HatZugabe = "0";
+
+    backendRequestPOST("/Home/CreateNewAssignment/", assignmentViewObj);
+  
     closeNewAssignment();
-    // refresh assignment list
 }
 
 function closeNewAssignment() {
@@ -71,7 +94,7 @@ function closeNewAssignment() {
 }
 
 function changePositionAmount(amountField, articlePrice, positionNumber) {
-    let amount = amountField.value;
+    let amount = parseInt(amountField.value);
     if (isNaN(amount) || amount <= 0) {
         amount = 1;
         amountField.value = 1;
@@ -79,10 +102,11 @@ function changePositionAmount(amountField, articlePrice, positionNumber) {
     let positionSumElement = document.querySelector(`[data-row-id="${positionNumber}"]`);
     let calculatedSum = amount * articlePrice;
     positionSumElement.innerHTML = formatCurrency(calculatedSum);
+    amountField.setAttribute('value', amount);
 }
 
 function formatCurrency(value) {
-    return (value.toFixed(2) + '€').replace('.',',');
+    return (value.toFixed(2) + '€').replace('.', ',');
 }
 
 function search(ele, searchTerm, model, backendMethod) {
@@ -116,10 +140,10 @@ function search(ele, searchTerm, model, backendMethod) {
 
 function searchResultSelected(modelPK, targetElementId) {
     if (targetElementId == "selectedArticle") {
-        selectedArticle(modelPK) 
+        selectedArticle(modelPK, targetElementId)
     }
     else if (targetElementId == "selectedCustomer") {
-        selectedCustomer(modelPK, targetElementId) 
+        selectedCustomer(modelPK, targetElementId)
     }
     document.getElementById("searchTable").remove();
     document.getElementsByClassName("searchResult")[0].remove();
@@ -131,9 +155,9 @@ function searchResultSelected(modelPK, targetElementId) {
 
 function selectedArticle(modelPK, targetElementId) {
     positionNr++;
-    let targetPartial = backendRequest("POST", "/Home/AddPositionListRowFormPartial/" + modelPK + "?positionNr=" + positionNr);
+    let targetPartial = backendRequest("GET", "/Home/AddPositionListRowFormPartial/" + modelPK + "?positionNr=" + positionNr);
     let targetElement = document.getElementById(targetElementId)
-    targetElement.innerHTML += targetPartial;
+    targetElement.innerHTML = targetElement.innerHTML + targetPartial;
 }
 
 function selectedCustomer(modelPK, targetElementId) {

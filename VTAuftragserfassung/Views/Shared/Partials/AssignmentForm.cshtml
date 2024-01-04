@@ -35,7 +35,7 @@
         @await Html.PartialAsync("Partials/NoticeForm")
     </div>
     <div>
-        <a class="btn btn-outline-danger" asp-controller="Home" asp-action="Dashboard">Auftrag anlegen (FAKE)</a>
+        <a class="btn btn-outline-danger" onclick="saveNewAssignment()">Auftrag anlegen</a>
     </div>
     <div>
         @Html.DisplayFor(modelItem => Model.Vertriebsmitarbeiter, "SalesStaffInformation")

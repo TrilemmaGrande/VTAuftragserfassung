@@ -9,5 +9,7 @@
         public T? GetByCondition<T>(T dbModel, string getterColumn, string condition) where T : IDatabaseObject;
 
         public int CountDataSets(string table, string column, string condition);
+        int Create<T>(T dbModel) where T : DataAccess.IDatabaseObject;
+        void CreateAll<T>(List<T> dbModels) where T : DataAccess.IDatabaseObject;
     }
 }

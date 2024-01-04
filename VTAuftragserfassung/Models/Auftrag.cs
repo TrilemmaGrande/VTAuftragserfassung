@@ -12,10 +12,10 @@ namespace VTAuftragserfassung.Models
         public int FK_Vertriebsmitarbeiter { get; set; }
         public double SummeAuftrag { get; set; }
         public double SummeAuftragZugabe { get; set; }
-        public int Auftragsstatus { get; set; }
+        public Auftragsstatus Auftragsstatus { get; set; } = Auftragsstatus.Erfasst;
         public int HatZugabe { get; set; }
         public string Hinweis { get; set; } = string.Empty;
-        public DateTime ErstelltAm { get; set; }
-        public DateTime LetzteStatusAenderung { get; set; }
+        public DateTime ErstelltAm { get; set; } = DateTime.Now;
+        public DateTime LetzteStatusAenderung { get; set; } = DateTime.Now;
     }
 }
