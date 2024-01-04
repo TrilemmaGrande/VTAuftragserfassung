@@ -1,5 +1,4 @@
-﻿using VTAuftragserfassung.Database.DataAccess;
-using VTAuftragserfassung.Models;
+﻿using VTAuftragserfassung.Models;
 using VTAuftragserfassung.Models.ViewModels;
 
 namespace VTAuftragserfassung.Database.Repository
@@ -16,7 +15,7 @@ namespace VTAuftragserfassung.Database.Repository
 
         public Vertriebsmitarbeiter? GetUserByUserId(string userId);
 
-        public Auth? GetAuthByUserPk(int pk_vertriebsmitarbeiter);
+        public Auth? GetAuthByUserPk(int userPk);
 
         public List<Auftrag>? GetAssignmentsByUserId(string userId);
 
@@ -24,16 +23,10 @@ namespace VTAuftragserfassung.Database.Repository
 
         public AssignmentFormViewModel GetAssignmentFormVMByUserId(string userId);
 
-        public List<PositionViewModel> GetPositionVMsByUserId(string userId);
-
         public PositionViewModel GetNewPositionVMByArticlePK(int articlePK);
 
-        public T? GetObjectByPrimaryKey<T>(T model, int pk) where T : IDatabaseObject;
-
-        public T1? GetObjectByForeignKey<T1, T2>(T1 model, T2 foreignModel, int fk) where T1 : IDatabaseObject where T2 : IDatabaseObject;
-
-        public List<T1>? GetObjectListByForeignKey<T1, T2>(T1 model, T2 foreignModel, int fk) where T1 : IDatabaseObject where T2 : IDatabaseObject;
         int SaveAssignmentVM(AssignmentViewModel avm);
+
         int SaveCustomer(Kunde customer);
     }
 }

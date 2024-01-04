@@ -1,15 +1,22 @@
-﻿namespace VTAuftragserfassung.Database.DataAccess
+﻿using VTAuftragserfassung.Models;
+using VTAuftragserfassung.Models.ViewModels;
+
+namespace VTAuftragserfassung.Database.DataAccess
 {
     public interface IDataAccess<IDatabaseObject>
     {
-        public List<T> GetAll<T>(T dbModel) where T : IDatabaseObject;
+        public List<T> ReadAll<T>(T dbModel) where T : IDatabaseObject;
 
-        public List<T> GetAllByCondition<T>(T dbModel, string getterColumn, string condition) where T : IDatabaseObject;
-
-        public T? GetByCondition<T>(T dbModel, string getterColumn, string condition) where T : IDatabaseObject;
-
-        public int CountDataSets(string table, string column, string condition);
         int Create<T>(T dbModel) where T : DataAccess.IDatabaseObject;
+
         void CreateAll<T>(List<T> dbModels) where T : DataAccess.IDatabaseObject;
+        List<Auftrag> ReadAssignmentsByUserId(string userId);
+        List<AssignmentViewModel> ReadAssignmentsWithSalesStaffByUserId(string userId);
+        Auth ReadAuthByUserPk(int userPk);
+        List<PositionViewModel> ReadPositionVMsByUserId(string userId);
+        Vertriebsmitarbeiter? ReadUserByUserId(string userId);
+        T1? ReadObjectByForeignKey<T1, T2>(T1 model, T2 foreignModel, int fk)
+            where T1 : DataAccess.IDatabaseObject
+            where T2 : DataAccess.IDatabaseObject;
     }
 }

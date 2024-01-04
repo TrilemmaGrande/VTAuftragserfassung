@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text;
 using VTAuftragserfassung.Database.Connection;
 using VTAuftragserfassung.Models;
+using VTAuftragserfassung.Models.ViewModels;
 
 namespace VTAuftragserfassung.Database.DataAccess
 {
@@ -26,12 +27,6 @@ namespace VTAuftragserfassung.Database.DataAccess
 
         #region Public Methods
 
-        public int CountDataSets(string table, string column, string condition)
-        {
-            string cmd = $"SELECT COUNT{column} FROM {table} {condition}";
-            return Convert.ToInt32(_conn.ConnectionReadScalar(cmd));
-        }
-
         public int Create<T>(T dbModel) where T : IDatabaseObject
         {
             string cmd = CreateInsertString(dbModel);
@@ -48,13 +43,38 @@ namespace VTAuftragserfassung.Database.DataAccess
             _conn.ConnectionWrite(cmd.ToString());
         }
 
-        public List<T> GetAll<T>(T dbModel) where T : IDatabaseObject => GetAll<T>($"SELECT * FROM {dbModel.TableName}");
+        public Auth ReadAuthByUserPk(int userPk) => ReadByCondition(new Auth(), "*", $"WHERE FK_Vertriebsmitarbeiter = {userPk}")!;
 
-        public List<T> GetAllByCondition<T>(T dbModel, string getterColumn, string condition) where T : IDatabaseObject
-            => GetAll<T>($"SELECT {getterColumn} FROM {dbModel.TableName} {condition}");
+        public List<T> ReadAll<T>(T dbModel) where T : IDatabaseObject => ReadAll<T>($"SELECT * FROM {dbModel.TableName}");
 
-        public T? GetByCondition<T>(T dbModel, string getterColumn, string condition) where T : IDatabaseObject
-          => Get(dbModel, $"SELECT TOP 1 {getterColumn} FROM {dbModel.TableName} {condition}");
+        public List<Auftrag> ReadAssignmentsByUserId(string userId)
+            => ReadAllByCondition(new Auftrag(), "*",
+                    $"INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) " +
+                    $"WHERE MitarbeiterId = '{userId}'");
+
+        public List<AssignmentViewModel> ReadAssignmentsWithSalesStaffByUserId(string userId)
+            => ReadAllByCondition(new AssignmentViewModel(), "vta_Auftrag.*, vta_Vertriebsmitarbeiter.MitarbeiterId",
+                    $"INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter)" +
+                    $"WHERE MitarbeiterId = '{userId}'" +
+                    $"ORDER BY vta_Auftrag.ErstelltAm");
+        public T1? ReadObjectByForeignKey<T1, T2>(T1 model, T2 foreignModel, int fk)
+            where T1 : IDatabaseObject
+            where T2 : IDatabaseObject
+            => ReadByCondition(model, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}");
+
+        public T? ReadObjectByPrimaryKey<T>(T model, int pk) where T : IDatabaseObject => ReadByCondition(model, "*", $"WHERE PK_{model.GetType().Name} = {pk}");
+
+        public List<T1>? ReadObjectListByForeignKey<T1, T2>(T1 model, T2 foreignModel, int fk)
+            where T1 : IDatabaseObject
+            where T2 : IDatabaseObject
+            => ReadAllByCondition(model, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}");
+
+        public List<PositionViewModel> ReadPositionVMsByUserId(string userId) => ReadAllByCondition(new PositionViewModel(), "*",
+                                    $"INNER JOIN vta_Auftrag ON ( vta_Position.FK_Auftrag = vta_Auftrag.PK_Auftrag)" +
+            $"INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter)" +
+            $"WHERE MitarbeiterId = '{userId}'");
+
+        public Vertriebsmitarbeiter? ReadUserByUserId(string userId) => ReadByCondition(new Vertriebsmitarbeiter(), "*", $"WHERE MitarbeiterId = '{userId}'");
 
         #endregion Public Methods
 
@@ -92,11 +112,10 @@ namespace VTAuftragserfassung.Database.DataAccess
             else
             {
                 return value.ToString();
-            }            
+            }
         }
 
-
-        private T? Get<T>(T dbModel, string cmd) where T : IDatabaseObject
+        private T? Read<T>(T dbModel, string cmd) where T : IDatabaseObject
         {
             DataTable dt = _conn.ConnectionRead(cmd);
             if (dt != null && dt.Rows.Count > 0)
@@ -120,7 +139,7 @@ namespace VTAuftragserfassung.Database.DataAccess
             return default;
         }
 
-        private List<T> GetAll<T>(string cmd) where T : IDatabaseObject
+        private List<T> ReadAll<T>(string cmd) where T : IDatabaseObject
         {
             List<T> listOfT = new();
             DataTable dt = _conn.ConnectionRead(cmd);
@@ -134,6 +153,12 @@ namespace VTAuftragserfassung.Database.DataAccess
             }
             return listOfT;
         }
+
+        private List<T> ReadAllByCondition<T>(T dbModel, string getterColumn, string condition) where T : IDatabaseObject
+        => ReadAll<T>($"SELECT {getterColumn} FROM {dbModel.TableName} {condition}");
+
+        private T? ReadByCondition<T>(T dbModel, string getterColumn, string condition) where T : IDatabaseObject
+          => Read(dbModel, $"SELECT TOP 1 {getterColumn} FROM {dbModel.TableName} {condition}");
 
         private T SetProperties<T>(DataRow dr, T obj)
         {
