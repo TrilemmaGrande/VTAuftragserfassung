@@ -11,7 +11,6 @@ namespace VTAuftragserfassung.Models
         public int FK_Kunde { get; set; }
         public int FK_Vertriebsmitarbeiter { get; set; }
         public double SummeAuftrag { get; set; }
-        public double SummeAuftragZugabe { get; set; }
         public Auftragsstatus Auftragsstatus { get; set; } = Auftragsstatus.Erfasst;
         public int HatZugabe { get; set; }
         public string Hinweis { get; set; } = string.Empty;

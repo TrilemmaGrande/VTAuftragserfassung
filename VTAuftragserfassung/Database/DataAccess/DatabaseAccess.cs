@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Text;
 using VTAuftragserfassung.Database.Connection;
+using VTAuftragserfassung.Models;
 
 namespace VTAuftragserfassung.Database.DataAccess
 {
@@ -64,11 +65,36 @@ namespace VTAuftragserfassung.Database.DataAccess
             IEnumerable<PropertyInfo> properties = typeof(T).GetProperties()
            .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "PK_" + typeof(T).Name);
 
-            var columns = string.Join(", ", properties.Select(prop => prop.Name));
-            var values = string.Join(", ", properties.Select(prop => $"@{prop.Name}"));
+            var columns = string.Join(", ", properties.Select(prop => prop.Name).Skip(1));
+            var values = string.Join(", ", properties.Select(prop => FormatValueForDatabase(prop.GetValue(dbModel))).Skip(1));
 
             return $"INSERT INTO {dbModel.TableName} ({columns}) VALUES ({values});";
         }
+
+        private string FormatValueForDatabase(object value)
+        {
+            if (value is string)
+            {
+                return $"'{value}'";
+            }
+            else if (value is Auftragsstatus)
+            {
+                return ((int)value).ToString();
+            }
+            else if (value is DateTime)
+            {
+                return $"'{((DateTime)value).ToString("yyyy-MM-dd HH:mm:ss")}'";
+            }
+            else if (value is bool)
+            {
+                return ((bool)value) ? "1" : "0";
+            }
+            else
+            {
+                return value.ToString();
+            }            
+        }
+
 
         private T? Get<T>(T dbModel, string cmd) where T : IDatabaseObject
         {

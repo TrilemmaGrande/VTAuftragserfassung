@@ -22,6 +22,7 @@ namespace VTAuftragserfassung.Controllers.Home
         public void Logout();
         Gesellschafter GetShareholderByPK(int shareholderPK);
         List<Gesellschafter> GetAllShareholders();
+        void CreateCustomer(Kunde customer);
 
         #endregion Public Methods
     }

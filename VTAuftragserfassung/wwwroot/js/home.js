@@ -61,25 +61,31 @@ function saveNewAssignment() {
 
     let positionList = [];
     let assignmentViewObj = {
-        Kunde: { PK_Kunde: pk_customer }, PositionenVM: positionList, Auftrag: {SummeAuftrag: 0}
+        PositionenVM: positionList, Auftrag: { FK_Kunde: pk_customer, SummeAuftrag: 0 }
     };
 
     positionsListData.forEach((obj, idx) => {
         let model = {
-            Position: {}
+            Position: {},
+            Artikel: {}
         };
         let posDataSet = obj.querySelectorAll('[property-name="positionData"]');
+        let artDataSet = obj.querySelectorAll('[property-name="articleData"]');
         posDataSet.forEach((obj2, idx2) => {
-            model.Position[obj2.getAttribute('name')] = obj2.value;
+            model.Position[obj2.getAttribute('name')] = obj2.value;            
+        });
+        artDataSet.forEach((obj3, idx3) => {
+            model.Artikel[obj3.getAttribute('name')] = obj3.value;
         });
         positionList.push(model);
+        assignmentViewObj.Auftrag.SummeAuftrag += parseFloat(model.Position.Menge * model.Artikel.Preis)
     });   
 
     assignmentData.forEach((obj, idx) => {
         assignmentViewObj.Auftrag[obj.getAttribute('name')] = obj.value;
     });
 
-    assignmentViewObj.Auftrag.SummeAuftrag = assignmentViewObj.PositionenVM.Sum(i => i.Position.SummePosition)
+    assignmentViewObj.Auftrag.SummeAuftrag = assignmentViewObj.PositionenVM.reduce((sum, position) => sum + parseFloat(position.Position.Menge * position.Artikel.Preis), 0);
     assignmentViewObj.Auftrag.HatZugabe == "on" ? assignmentViewObj.Auftrag.HatZugabe = "1" : assignmentViewObj.Auftrag.HatZugabe = "0";
 
     backendRequestPOST("/Home/CreateNewAssignment/", assignmentViewObj);

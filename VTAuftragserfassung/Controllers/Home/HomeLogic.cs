@@ -70,6 +70,11 @@ namespace VTAuftragserfassung.Controllers.Home
             _repo.SaveAssignmentVM(avm);
         }
 
+        public void CreateCustomer(Kunde customer)
+        {
+            _repo.SaveCustomer(customer);
+        }
+
         public void Logout()
         {
             _httpContextAccessor.HttpContext?.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

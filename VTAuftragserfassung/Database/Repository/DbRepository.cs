@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using System.ComponentModel;
 using VTAuftragserfassung.Database.DataAccess;
 using VTAuftragserfassung.Models;
 using VTAuftragserfassung.Models.ViewModels;
@@ -61,10 +62,18 @@ namespace VTAuftragserfassung.Database.Repository
         public void SaveAssignmentVM(AssignmentViewModel avm)
         {
             int pkAssignment = _dataAccess.Create(avm.Auftrag);
-            foreach (var pvm in avm.PositionenVM)
+            List<Position> positions = [];
+            avm.PositionenVM.ForEach(i =>
             {
-                pvm.Position.FK_Auftrag = pkAssignment;
-            }
+                i.Position.FK_Auftrag = pkAssignment;
+                positions.Add(i.Position);
+            });
+            _dataAccess.CreateAll(positions);
+        }
+
+        public void SaveCustomer(Kunde customer)
+        {
+            _dataAccess.Create(customer);
         }
 
         public AssignmentFormViewModel GetAssignmentFormVMByUserId(string userId)

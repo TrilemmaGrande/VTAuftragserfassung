@@ -34,5 +34,6 @@ namespace VTAuftragserfassung.Database.Repository
 
         public List<T1>? GetObjectListByForeignKey<T1, T2>(T1 model, T2 foreignModel, int fk) where T1 : IDatabaseObject where T2 : IDatabaseObject;
         void SaveAssignmentVM(AssignmentViewModel avm);
+        void SaveCustomer(Kunde customer);
     }
 }

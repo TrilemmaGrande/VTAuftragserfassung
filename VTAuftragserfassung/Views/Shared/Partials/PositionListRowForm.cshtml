@@ -3,8 +3,8 @@
 <div class="positionListRowWrapper">
     <div class="positionListRowContent" property-name="positionsListData">
         <input property-name="positionData" name="FK_Artikel" value="@Model?.Artikel!.PK_Artikel" type="hidden"/>
-        <input property-name="positionData" name="SummePosition" value="@Model?.Position!.SummePosition" type="hidden"/>
-        <div>@Model.Artikel!.Artikelnummer</div>
+        <input property-name="articleData" name="Preis" value="@Model?.Artikel!.Preis" type="hidden"/>
+        <div>@Model.Artikel.Artikelnummer</div>
         <div>@Model.Artikel.Bezeichnung1</div>
         <div>@Model.Artikel.Bezeichnung2 </div>
         <div>@Html.DisplayFor(modelItem => (@Model.Artikel.Preis), "FormatCurrency")</div>
