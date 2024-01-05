@@ -4,12 +4,13 @@
 let positionNr = 0;
 
 // Format
-function formatCurrency(value) {
+function formatToCurrency(value) {
     return (value.toFixed(2) + '€').replace('.', ',');
 }
 
+
 function checkboxCheckedToInt(checked) {
-    return checked ? 1 : 0;
+    return checked ? "1" : "0";
 }
 
 // Assignment List
@@ -39,14 +40,14 @@ function openAssignmentForm() {
 }
 
 function saveNewAssignment() {
-    let pk_customer = document.querySelector(`[data-name="customerPK"]`).dataset.pk_customer;
+    let fk_customer = document.querySelector(`[data-name="assigmentCustomerFK"]`).value;
     let assignmentBonus = document.querySelector(`[data-name="hasBonusCheckbox"]`).checked
     let assignmentData = document.querySelectorAll('[property-name="assignmentData"]')
     let positionsListData = document.querySelectorAll('[property-name="positionsListData"]')
 
     let positionList = [];
     let assignmentViewObj = {
-        PositionenVM: positionList, Auftrag: { FK_Kunde: pk_customer, SummeAuftrag: 0 }
+        PositionenVM: positionList, Auftrag: { FK_Kunde: fk_customer, SummeAuftrag: 0 }
     };
 
     positionsListData.forEach((obj, idx) => {
@@ -63,7 +64,8 @@ function saveNewAssignment() {
             model.Artikel[obj3.getAttribute('name')] = obj3.value;
         });
         positionList.push(model);
-        assignmentViewObj.Auftrag.SummeAuftrag += parseFloat(model.Position.Menge * model.Artikel.Preis)
+        let sumPosition = parseFloat(model.Position.Menge) * parseFloat(model.Artikel.Preis.replace(',', '.'))
+        assignmentViewObj.Auftrag.SummeAuftrag += sumPosition;
     });
 
     assignmentData.forEach((obj4, idx4) => {
@@ -71,7 +73,7 @@ function saveNewAssignment() {
     });
 
     assignmentViewObj.Auftrag.HatZugabe = checkboxCheckedToInt(assignmentBonus);
-
+    assignmentViewObj.Auftrag.SummeAuftrag = assignmentViewObj.Auftrag.SummeAuftrag.toString();
     backendRequestPOST("/Home/CreateNewAssignment/", assignmentViewObj);
 
     closeNewAssignment();
@@ -95,7 +97,7 @@ function changePositionAmount(amountField, articlePrice, positionNumber) {
     let hiddenPositionSumElement = document.querySelector(`[data-row-id="hidden${positionNumber}"]`);
     let positionSumElement = document.querySelector(`[data-row-id="${positionNumber}"]`);
     let calculatedSum = amount * articlePrice;
-    positionSumElement.innerHTML = formatCurrency(calculatedSum);
+    positionSumElement.innerHTML = formatToCurrency(calculatedSum);
     hiddenPositionSumElement.setAttribute('value', calculatedSum);;
     amountField.setAttribute('value', amount);
 }
@@ -207,6 +209,8 @@ function selectedCustomer(modelPK, targetElementId) {
     let targetElement = document.getElementById(targetElementId)
     targetElement.innerHTML = targetPartial;
 
+    document.querySelector(`[data-name="assigmentCustomerFK"]`).value = modelPK;
+   
     let shareholderFK = targetElement.querySelector(`[data-name="shareholderFK"]`).dataset.fk_shareholder;
     let shareholderPartial = backendRequestGET("/Home/ShareholderDetailsPartial/" + shareholderFK);
     document.getElementById("selectedShareholder").innerHTML = shareholderPartial;

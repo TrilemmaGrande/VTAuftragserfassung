@@ -45,11 +45,6 @@ namespace VTAuftragserfassung.Database.DataAccess
         public List<T>? ReadAll<T>(T dbModel) where T : IDatabaseObject
             => ReadAll<T>($"SELECT * FROM {dbModel.TableName}");
 
-        public List<Auftrag>? ReadAssignmentsByUserId(string userId)
-            => ReadAllByCondition(new Auftrag(), "*",
-                    $"INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) " +
-                    $"WHERE MitarbeiterId = '{userId}'");
-
         public T1? ReadObjectByForeignKey<T1, T2>(T1 model, T2 foreignModel, int fk)
             where T1 : IDatabaseObject
             where T2 : IDatabaseObject
@@ -62,6 +57,11 @@ namespace VTAuftragserfassung.Database.DataAccess
             where T1 : IDatabaseObject
             where T2 : IDatabaseObject
             => ReadAllByCondition(model, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}");
+
+        public List<Auftrag>? ReadAssignmentsByUserId(string userId)
+            => ReadAllByCondition(new Auftrag(), "*",
+                    $"INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) " +
+                    $"WHERE MitarbeiterId = '{userId}'");
 
         public List<PositionViewModel>? ReadPositionVMsByUserId(string userId)
                                     => ReadAllByCondition(new PositionViewModel(), "*",
