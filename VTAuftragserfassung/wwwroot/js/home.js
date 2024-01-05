@@ -74,6 +74,7 @@ function saveNewAssignment() {
 
     assignmentViewObj.Auftrag.HatZugabe = checkboxCheckedToInt(assignmentBonus);
     assignmentViewObj.Auftrag.SummeAuftrag = assignmentViewObj.Auftrag.SummeAuftrag.toString();
+    assignmentViewObj.Auftrag.SummeAuftrag = assignmentViewObj.Auftrag.SummeAuftrag.replace('.', ',');
     backendRequestPOST("/Home/CreateNewAssignment/", assignmentViewObj);
 
     closeNewAssignment();
