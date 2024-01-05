@@ -1,6 +1,15 @@
 ﻿@model List<Artikel>
 
 <div id="searchTable">
+    <div class="headerListWrapper">
+        <div class="gridListContent gridListContent7">
+            <div>Art. Nr.</div>
+            <div>Bezeichnung</div>
+            <div>Zusatzbezeichnung</div>
+            <div>Einzelpreis Netto</div>
+            <div>Verpackungseinheit</div>
+        </div>
+    </div>
     <div class="gridContainer" id="resultTblBody">
         @foreach (var item in Model)
         {

@@ -8,9 +8,8 @@ function formatCurrency(value) {
     return (value.toFixed(2) + '€').replace('.', ',');
 }
 
-function checkboxValueToInt(value) {
-    value == "on" ? value = "1" : value = "0";
-    return value;
+function checkboxValueToInt(checked) {
+    return checked ? 1 : 0;
 }
 
 // Assignment List

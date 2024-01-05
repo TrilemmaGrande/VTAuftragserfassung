@@ -8,7 +8,7 @@
     <div class="alignContentEndContainer">
         <a class="btn btn-small btn-primary" onclick="closeNewAssignment()">X</a>
     </div>
-    <div class="gridListContent gridListContent2">
+    <div class="ModuleWrapper gridListContent2">
         <div>
             <div id="customerSelection">
                 <div id="customerSearch">
@@ -16,26 +16,32 @@
                     <input class="searchBar" placeholder="Suche ..." oninput="search(this, this.value, @jsonModel, '/Home/SearchResultPartialCustomer/')" />
                     <a id="btnAddCustomer" class="btn btn-secondary" onclick='openCustomerForm(this)'>Kunde anlegen</a>
                 </div>
-                <div id="selectedCustomer">
+                <div class="gridListContent gridListContent2">
+                    <div id="selectedCustomer">
+                    </div>
+                    <div id="selectedShareholder">
+                    </div>
                 </div>
-            </div>
-            <div id="selectedShareholder">
             </div>
         </div>
     </div>
-    <div class="gridListContent">
+    <div class="ModuleWrapper">
         @await Html.PartialAsync("Partials/PositionListForm", Model.Artikel)
     </div>
-    <div class="gridListContent gridListContent2">
-        @await Html.PartialAsync("Partials/BonusForm", Model.Bonus) @* change Bonus later *@
+    <div class="ModuleWrapper gridListContent2">
+        @await Html.PartialAsync("Partials/BonusForm", Model.Bonus)
     </div>
-    <div class="gridListContent">
+    <div class="ModuleWrapper">
         @await Html.PartialAsync("Partials/NoticeForm")
     </div>
-    <div class="alignContentEndContainer">
-        <a class="btn btn-primary" onclick="saveNewAssignment()">Auftrag anlegen</a>
-    </div>
-    <div>
-        @Html.DisplayFor(modelItem => Model.Vertriebsmitarbeiter, "SalesStaffInformation")
+    <div class="ModuleWrapper">
+        <div class="gridListContent gridListContent2 ">
+            <div>
+                @Html.DisplayFor(modelItem => Model.Vertriebsmitarbeiter, "SalesStaffInformation")
+            </div>
+            <div class="alignContentEndContainer">
+                <a class="btn btn-primary" onclick="saveNewAssignment()">Auftrag anlegen</a>
+            </div>
+        </div>
     </div>
 </div>
