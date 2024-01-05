@@ -66,11 +66,10 @@ function saveNewAssignment() {
         assignmentViewObj.Auftrag.SummeAuftrag += parseFloat(model.Position.Menge * model.Artikel.Preis)
     });
 
-    assignmentData.forEach((obj, idx) => {
+    assignmentData.forEach((obj4, idx4) => {
         assignmentViewObj.Auftrag[obj.getAttribute('name')] = obj.value;
     });
 
-    assignmentViewObj.Auftrag.SummeAuftrag = assignmentViewObj.PositionenVM.reduce((sum, position) => sum + parseFloat(position.Position.Menge * position.Artikel.Preis), 0);
     assignmentViewObj.Auftrag.HatZugabe = checkboxValueToInt(assignmentViewObj.Auftrag.HatZugabe);
 
     backendRequestPOST("/Home/CreateNewAssignment/", assignmentViewObj);

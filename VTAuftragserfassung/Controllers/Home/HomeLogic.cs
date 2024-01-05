@@ -66,7 +66,11 @@ namespace VTAuftragserfassung.Controllers.Home
 
         public int CreateAssignment(AssignmentViewModel avm)
         {
-            avm.Auftrag.FK_Vertriebsmitarbeiter = _repo.GetUserByUserId(_userId).PK_Vertriebsmitarbeiter;
+            if (avm == null)
+            {
+                return 0;
+            }
+           avm.Auftrag.FK_Vertriebsmitarbeiter = _repo.GetUserByUserId(_userId).PK_Vertriebsmitarbeiter;
            return _repo.SaveAssignmentVM(avm);
         }
 
