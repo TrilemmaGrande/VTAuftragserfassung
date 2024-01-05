@@ -237,7 +237,9 @@ label{
 .gridListContent8 {
     grid-template-columns: repeat(8, minmax(100px, 1fr));
 }
-
+.gridListContent9 {
+    grid-template-columns: repeat(9, minmax(100px, 1fr));
+}
 
 .gridListContentSearchResult {
     grid-template-columns: repeat(5, minmax(100px, 1fr));
@@ -279,7 +281,7 @@ label{
 
 .assignmentListRowContent {
     display: grid;
-    grid-template-columns: repeat(8, minmax(100px, 1fr));
+    grid-template-columns: repeat(9, minmax(100px, 1fr));
     background-color: #f9f9f9;
     border-top: dotted 1px #165b9e6b;
     border-bottom: dotted 1px #165b9e6b;

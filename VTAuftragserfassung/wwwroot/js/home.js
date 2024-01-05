@@ -8,7 +8,7 @@ function formatCurrency(value) {
     return (value.toFixed(2) + '€').replace('.', ',');
 }
 
-function checkboxValueToInt(checked) {
+function checkboxCheckedToInt(checked) {
     return checked ? 1 : 0;
 }
 
@@ -40,6 +40,7 @@ function openAssignmentForm() {
 
 function saveNewAssignment() {
     let pk_customer = document.querySelector(`[data-name="customerPK"]`).dataset.pk_customer;
+    let assignmentBonus = document.querySelector(`[data-name="hasBonusCheckbox"]`).checked
     let assignmentData = document.querySelectorAll('[property-name="assignmentData"]')
     let positionsListData = document.querySelectorAll('[property-name="positionsListData"]')
 
@@ -69,7 +70,7 @@ function saveNewAssignment() {
         assignmentViewObj.Auftrag[obj4.getAttribute('name')] = obj4.value;
     });
 
-    assignmentViewObj.Auftrag.HatZugabe = checkboxValueToInt(assignmentViewObj.Auftrag.HatZugabe);
+    assignmentViewObj.Auftrag.HatZugabe = checkboxCheckedToInt(assignmentBonus);
 
     backendRequestPOST("/Home/CreateNewAssignment/", assignmentViewObj);
 
@@ -135,12 +136,14 @@ function closeCustomerForm(btn) {
 
 function saveNewCustomer() {
     let customerData = document.querySelectorAll('[property-name="customerData"]')
+    let isWorkshopData = document.querySelector(`[data-name="isWorkshopCheckbox"]`).checked
+    let isSaleData = document.querySelector(`[data-name="isSaleCheckbox"]`).checked
     let customer = {};
     customerData.forEach((obj, idx) => {
         customer[obj.getAttribute('name')] = obj.value;
     });
-    customer.IstWerkstatt = checkboxValueToInt(customer.IstWerkstatt);
-    customer.IstHandel = checkboxValueToInt(customer.IstHandel);
+    customer.IstWerkstatt = checkboxCheckedToInt(isWorkshopData);
+    customer.IstHandel = checkboxCheckedToInt(isSaleData);
     let customerPK = parseInt(backendRequestPOST("/Home/CreateNewCustomer/", customer));
     closeCustomerForm(document.getElementById("btnAddCustomer"));
     selectedCustomer(customerPK, "selectedCustomer");

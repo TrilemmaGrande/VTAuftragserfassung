@@ -6,6 +6,7 @@
 <div class="assignmentListRowWrapper" onclick="toggleAssignmentDetails(this)">
     <div class="assignmentListRowContent">
         <div>@Model.Auftrag?.PK_Auftrag</div>
+        <div>@Model.Kunde?.Nachname</div>
         <div>@Model.Kunde?.Firma</div>
         <div>@Model.Gesellschafter?.Firmenname</div>
         <div>@Html.DisplayFor(modelItem => (@Model.Auftrag!.SummeAuftrag), "FormatCurrency")</div>
