@@ -1,13 +1,18 @@
 ﻿@{
     ViewData["Title"] = "Assignment Page";
+    IEnumerable<AssignmentViewModel> sortedModel = Model
+        .OrderByDescending(i => i.Auftrag.ErstelltAm)
+        .ThenByDescending(ii => ii.Auftrag.LetzteStatusAenderung);
+
 }
 @model List<AssignmentViewModel>
 
 <div class="gridContainer">
     <div class="headerListWrapper">
-        <div class="gridListContent gridListContent7">
+        <div class="gridListContent gridListContent8">
             <div>Auftrag ID</div>
             <div>Firma</div>
+            <div>Gesellschafter</div>
             <div>Summe Auftrag</div>
             <div>Hat Zugabe</div>
             <div>Erstellt Am</div>
@@ -17,9 +22,9 @@
     </div>
 
     <div>
-        @for (int i = 0; i < Model.Count; i++)
+        @foreach (var row in sortedModel)
         {
-            @await Html.PartialAsync("Partials/AssignmentListRow", Model[i])
+            @await Html.PartialAsync("Partials/AssignmentListRow", row)
         }
     </div>
 </div>

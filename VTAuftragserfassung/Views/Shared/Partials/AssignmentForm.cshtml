@@ -5,37 +5,35 @@
 @model AssignmentFormViewModel
 
 <div class="assignmentModal">
-    <div>
-        <a class="btn btn-outline-danger" onclick="closeNewAssignment()">Close</a>
+    <div class="alignContentEndContainer">
+        <a class="btn btn-small btn-primary" style="margin-bottom: 10px;" onclick="closeNewAssignment()">X</a>
     </div>
     <div class="gridListContent gridListContent2">
         <div>
             <div id="customerSelection">
-                <div>
-                    <a id="btnAddCustomer" class="btn btn-dark" onclick='openCustomerForm(this)'>Kunde anlegen</a>
-                </div>
                 <div id="customerSearch">
-                    <label id="searchBarLabel">Suche:</label><br />
-                    <input class="searchBar" oninput="search(this, this.value, @jsonModel, '/Home/SearchResultPartialCustomer/')" />
+                    <label id="searchBarLabel">Kunden auswählen:</label><br />
+                    <input class="searchBar" placeholder="Suche ..." oninput="search(this, this.value, @jsonModel, '/Home/SearchResultPartialCustomer/')" />
+                    <a id="btnAddCustomer" class="btn btn-secondary" onclick='openCustomerForm(this)'>Kunde anlegen</a>
                 </div>
                 <div id="selectedCustomer">
                 </div>
             </div>
-        </div>
-        <div id="selectedShareholder">
+            <div id="selectedShareholder">
+            </div>
         </div>
     </div>
-    <div>
+    <div class="gridListContent">
         @await Html.PartialAsync("Partials/PositionListForm", Model.Artikel)
     </div>
     <div class="gridListContent gridListContent2">
         @await Html.PartialAsync("Partials/BonusForm", Model.Bonus) @* change Bonus later *@
     </div>
-    <div>
+    <div class="gridListContent">
         @await Html.PartialAsync("Partials/NoticeForm")
     </div>
-    <div>
-        <a class="btn btn-outline-danger" onclick="saveNewAssignment()">Auftrag anlegen</a>
+    <div class="alignContentEndContainer">
+        <a class="btn btn-primary" onclick="saveNewAssignment()">Auftrag anlegen</a>
     </div>
     <div>
         @Html.DisplayFor(modelItem => Model.Vertriebsmitarbeiter, "SalesStaffInformation")

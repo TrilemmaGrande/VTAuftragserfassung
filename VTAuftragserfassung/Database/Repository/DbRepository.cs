@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using System.Reflection;
 using VTAuftragserfassung.Database.DataAccess;
 using VTAuftragserfassung.Models;
 using VTAuftragserfassung.Models.ViewModels;
@@ -89,18 +90,27 @@ namespace VTAuftragserfassung.Database.Repository
             return pvm;
         }
 
-        public int SaveCustomer(Kunde customer) => _dataAccess.Create(customer);
+        public int SaveCustomer(Kunde customer)
+        {
+            int pk = _dataAccess.Create(customer);
+            UpdateCachedModel(new Kunde());
+            return pk;
+        }
 
         public int SaveAssignmentVM(AssignmentViewModel avm)
         {
             int pkAssignment = _dataAccess.Create(avm.Auftrag);
-            List<Position> positions = [];
-            avm.PositionenVM.ForEach(i =>
+            if (avm.PositionenVM != null && avm.PositionenVM.Count > 0)
             {
-                i.Position.FK_Auftrag = pkAssignment;
-                positions.Add(i.Position);
-            });
-            _dataAccess.CreateAll(positions);
+                List<Position> positions = [];
+                avm.PositionenVM.ForEach(i =>
+                {
+                    i.Position.FK_Auftrag = pkAssignment;
+                    positions.Add(i.Position);
+                });
+                _dataAccess.CreateAll(positions);
+            }
+            UpdateCachedModel(new AssignmentViewModel());
             return pkAssignment;
         }
 
@@ -108,15 +118,21 @@ namespace VTAuftragserfassung.Database.Repository
 
         #region Private Methods
 
-        private List<T> GetCachedModel<T>(T model) where T : IDatabaseObject
+        private List<T>? GetCachedModel<T>(T model) where T : IDatabaseObject
         {
             if (_memoryCache.TryGetValue(model?.GetType().Name!, out List<T>? cachedModel))
             {
                 return cachedModel ?? [];
             }
-            List<T> modelData = _dataAccess.ReadAll(model!);
+            List<T>? modelData = _dataAccess.ReadAll(model!);
             _memoryCache.Set(model!.GetType().Name, modelData);
             return modelData;
+        }
+
+        private void UpdateCachedModel<T>(T model) where T : IDatabaseObject
+        {
+            List<T>? modelData = _dataAccess.ReadAll(model);
+            _memoryCache.Set(model!.GetType().Name, modelData);
         }
 
         #endregion Private Methods

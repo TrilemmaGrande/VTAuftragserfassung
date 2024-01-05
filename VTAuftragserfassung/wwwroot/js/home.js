@@ -67,7 +67,7 @@ function saveNewAssignment() {
     });
 
     assignmentData.forEach((obj4, idx4) => {
-        assignmentViewObj.Auftrag[obj.getAttribute('name')] = obj.value;
+        assignmentViewObj.Auftrag[obj4.getAttribute('name')] = obj4.value;
     });
 
     assignmentViewObj.Auftrag.HatZugabe = checkboxValueToInt(assignmentViewObj.Auftrag.HatZugabe);
@@ -84,7 +84,7 @@ function closeNewAssignment() {
     positionNr = 0;
 }
 
-// Assignment PositionRow
+// Assignment PositionRow Amount
 
 function changePositionAmount(amountField, articlePrice, positionNumber) {
     let amount = parseInt(amountField.value);
@@ -92,12 +92,25 @@ function changePositionAmount(amountField, articlePrice, positionNumber) {
         amount = 1;
         amountField.value = 1;
     }
+    let hiddenPositionSumElement = document.querySelector(`[data-row-id="hidden${positionNumber}"]`);
     let positionSumElement = document.querySelector(`[data-row-id="${positionNumber}"]`);
     let calculatedSum = amount * articlePrice;
     positionSumElement.innerHTML = formatCurrency(calculatedSum);
+    hiddenPositionSumElement.setAttribute('value', calculatedSum);;
     amountField.setAttribute('value', amount);
 }
 
+function incrementPositionAmount(amountField, articlePrice, positionNumber) {
+    amountField.value++;
+    changePositionAmount(amountField, articlePrice, positionNumber)
+}
+
+function decrementPositionAmount(amountField, articlePrice, positionNumber) {
+    if (amountField.value > 1) {
+        amountField.value--;
+        changePositionAmount(amountField, articlePrice, positionNumber)
+    }
+}
 
 // Customer Form
 
