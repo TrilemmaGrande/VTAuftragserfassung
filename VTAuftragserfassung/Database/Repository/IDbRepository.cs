@@ -17,8 +17,6 @@ namespace VTAuftragserfassung.Database.Repository
 
         public Auth? GetAuthByUserPk(int userPk);
 
-        public List<Auftrag>? GetAssignmentsByUserId(string userId);
-
         public List<AssignmentViewModel> GetAssignmentVMsByUserId(string userId);
 
         public AssignmentFormViewModel GetAssignmentFormVMByUserId(string userId);

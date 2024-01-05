@@ -165,7 +165,6 @@ function search(ele, searchTerm, model, backendMethod) {
     }
 }
 
-
 function searchResultSelected(modelPK, targetElementId) {
     if (targetElementId == "selectedArticle") {
         selectedArticle(modelPK, targetElementId)

@@ -38,16 +38,15 @@ namespace VTAuftragserfassung.Database.Repository
 
         public List<Gesellschafter> GetAllShareholdersCached() => GetCachedModel(new Gesellschafter());
 
-        public List<Auftrag> GetAssignmentsByUserId(string userId) => _dataAccess.ReadAssignmentsByUserId(userId); // This may needed in Method Below for avms!
-
         public List<AssignmentViewModel> GetAssignmentVMsByUserId(string userId)
         {
+            List<Auftrag> assignments = _dataAccess.ReadAssignmentsByUserId(userId);
             List<Gesellschafter> shareholders = GetAllShareholdersCached();
             List<Artikel> articles = GetAllArticlesCached();
             List<Kunde> customers = GetAllCustomersCached();
-            List<AssignmentViewModel> avms = _dataAccess.ReadAssignmentsWithSalesStaffByUserId(userId); // This is so fucking wrong! Split it!
             List<PositionViewModel> pvms = _dataAccess.ReadPositionVMsByUserId(userId);
 
+            List<AssignmentViewModel> avms = assignments.Select(i => new AssignmentViewModel() { Auftrag = i }).ToList();
             foreach (var avm in avms)
             {
                 avm.PositionenVM!.AddRange(pvms.Where(i => i.Position?.FK_Auftrag == avm.Auftrag?.PK_Auftrag));
