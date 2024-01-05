@@ -32,7 +32,7 @@ function openAssignmentForm() {
     }
     let modalDiv = document.createElement('div');
     modalDiv.classList.add('assignmentModalContainer');
-    modalDiv.innerHTML = backendRequest("GET", "/Home/NewAssignment");
+    modalDiv.innerHTML = backendRequestGET("/Home/NewAssignment");
     let main = document.querySelector('main');
     if (main) {
         main.parentNode.insertBefore(modalDiv, main.nextSibling);
@@ -57,14 +57,14 @@ function saveNewAssignment() {
         let posDataSet = obj.querySelectorAll('[property-name="positionData"]');
         let artDataSet = obj.querySelectorAll('[property-name="articleData"]');
         posDataSet.forEach((obj2, idx2) => {
-            model.Position[obj2.getAttribute('name')] = obj2.value;            
+            model.Position[obj2.getAttribute('name')] = obj2.value;
         });
         artDataSet.forEach((obj3, idx3) => {
             model.Artikel[obj3.getAttribute('name')] = obj3.value;
         });
         positionList.push(model);
         assignmentViewObj.Auftrag.SummeAuftrag += parseFloat(model.Position.Menge * model.Artikel.Preis)
-    });   
+    });
 
     assignmentData.forEach((obj, idx) => {
         assignmentViewObj.Auftrag[obj.getAttribute('name')] = obj.value;
@@ -74,7 +74,7 @@ function saveNewAssignment() {
     assignmentViewObj.Auftrag.HatZugabe = checkboxValueToInt(assignmentViewObj.Auftrag.HatZugabe);
 
     backendRequestPOST("/Home/CreateNewAssignment/", assignmentViewObj);
-  
+
     closeNewAssignment();
 }
 
@@ -107,8 +107,8 @@ function openCustomerForm(btn) {
     btn.setAttribute("onclick", "closeCustomerForm(this);");
     document.getElementById("customerSearch").style.display = "none";
     let targetElement = document.getElementById('selectedCustomer');
-    let customerForm = backendRequest("GET", "/Home/AddCustomerForm/")
-    let shareholderPartial = backendRequest("GET", "/Home/ShareholderFormPartial/");
+    let customerForm = backendRequestGET("/Home/AddCustomerForm/")
+    let shareholderPartial = backendRequestGET("/Home/ShareholderFormPartial/");
     targetElement.innerHTML = customerForm;
     document.getElementById("selectedShareholder").innerHTML = shareholderPartial;
 }
@@ -160,7 +160,7 @@ function search(ele, searchTerm, model, backendMethod) {
     searchResultDiv.classList.add('searchResult');
     ele.after(searchResultDiv);
     if (resultList.length > 0) {
-        searchResultDiv.innerHTML = backendRequest("POST", backendMethod, resultList);
+        searchResultDiv.innerHTML = backendRequestPOST(backendMethod, resultList);
     } else {
         searchResultDiv.innerHTML = '';
     }
@@ -184,18 +184,18 @@ function searchResultSelected(modelPK, targetElementId) {
 
 function selectedArticle(modelPK, targetElementId) {
     positionNr++;
-    let targetPartial = backendRequest("GET", "/Home/AddPositionListRowFormPartial/" + modelPK + "?positionNr=" + positionNr);
+    let targetPartial = backendRequestGET("/Home/AddPositionListRowFormPartial/" + modelPK + "?positionNr=" + positionNr);
     let targetElement = document.getElementById(targetElementId)
     targetElement.innerHTML = targetElement.innerHTML + targetPartial;
 }
 
 function selectedCustomer(modelPK, targetElementId) {
-    let targetPartial = backendRequest("GET", "/Home/AddCustomerDetailsPartial/" + modelPK)
+    let targetPartial = backendRequestGET("/Home/AddCustomerDetailsPartial/" + modelPK)
     let targetElement = document.getElementById(targetElementId)
     targetElement.innerHTML = targetPartial;
 
     let shareholderFK = targetElement.querySelector(`[data-name="shareholderFK"]`).dataset.fk_shareholder;
-    let shareholderPartial = backendRequest("GET", "/Home/ShareholderDetailsPartial/" + shareholderFK);
+    let shareholderPartial = backendRequestGET("/Home/ShareholderDetailsPartial/" + shareholderFK);
     document.getElementById("selectedShareholder").innerHTML = shareholderPartial;
 }
 
