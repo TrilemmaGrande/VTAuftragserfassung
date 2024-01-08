@@ -22,67 +22,107 @@ namespace VTAuftragserfassung.Database.Connection
 
         #region Public Methods
 
-        public DataTable ConnectionRead(string command)
+        public DataTable? ConnectionRead(string command)
         {
-            using (SqlConnection sqlConn = new SqlConnection(_connectionString))
+            try
             {
-                sqlConn.Open();
 
-                using (SqlCommand cmd = new SqlCommand(command, sqlConn))
+                using (SqlConnection sqlConn = new SqlConnection(_connectionString))
                 {
-                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
-                    {
-                        DataTable ds = new DataTable();
-                        adapter.Fill(ds);
+                    sqlConn.Open();
 
-                        return ds;
+                    using (SqlCommand cmd = new SqlCommand(command, sqlConn))
+                    {
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                        {
+                            DataTable ds = new DataTable();
+                            adapter.Fill(ds);
+
+                            return ds;
+                        }
                     }
                 }
             }
-        }
-
-        public object ConnectionReadScalar(string command)
-        {
-            using (SqlConnection sqlConn = new SqlConnection(_connectionString))
+            catch (Exception ex)
             {
-                sqlConn.Open();
-
-                using (SqlCommand cmd = new SqlCommand(command, sqlConn))
-                {
-                    return cmd.ExecuteScalar();
-                }
+                Console.WriteLine($"Fehler beim Lesen aus Datenbank: {ex.Message}");
+                return null;
             }
 
         }
 
-        public int ConnectionWriteGetPrimaryKey(string command)
+        public object? ConnectionReadScalar(string command)
         {
-            int dataSetPrimaryKey;
-            using (SqlConnection sqlConn = new SqlConnection(_connectionString))
+            try
             {
-                sqlConn.Open();
-                using (SqlCommand cmd = new SqlCommand(command, sqlConn))
+                using (SqlConnection sqlConn = new SqlConnection(_connectionString))
                 {
-                    cmd.ExecuteNonQuery();
+                    sqlConn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(command, sqlConn))
+                    {
+                        return cmd.ExecuteScalar();
+                    }
                 }
-                using (SqlCommand identityCmd = new SqlCommand("SELECT SCOPE_IDENTITY()", sqlConn))
-                {
-                    dataSetPrimaryKey = Convert.ToInt32(identityCmd.ExecuteScalar());
-                }
-                sqlConn.Close();
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Fehler beim Lesen aus Datenbank: {ex.Message}");
+                return null;
+            }
+        }
+
+        public int ConnectionWriteGetPrimaryKey(string command, SqlParameter[] parameters)
+        {
+            int dataSetPrimaryKey = -1;
+
+            try
+            {
+                using (SqlConnection sqlConn = new SqlConnection(_connectionString))
+                {
+                    sqlConn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(command, sqlConn))
+                    {
+                        cmd.Parameters.AddRange(parameters);
+                        cmd.CommandText += "; SELECT SCOPE_IDENTITY();";
+
+                        var result = cmd.ExecuteScalar();
+
+                        if (result != null && result != DBNull.Value)
+                        {
+                            dataSetPrimaryKey = Convert.ToInt32(result);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Fehler beim Schreiben in Datenbank: {ex.Message}");
+            }
+
             return dataSetPrimaryKey;
         }
-        public void ConnectionWrite(string command)
+        public void ConnectionWrite(string command, SqlParameter[] parameters)
         {
-            using (SqlConnection sqlConn = new SqlConnection(_connectionString))
+            try
             {
-                sqlConn.Open();
-                using (SqlCommand cmd = new SqlCommand(command, sqlConn))
+
+
+                using (SqlConnection sqlConn = new SqlConnection(_connectionString))
                 {
-                    cmd.ExecuteNonQuery();
+                    sqlConn.Open();
+                    using (SqlCommand cmd = new SqlCommand(command, sqlConn))
+                    {
+                        cmd.Parameters.AddRange(parameters);
+                        cmd.ExecuteNonQuery();
+                    }
+                    sqlConn.Close();
                 }
-                sqlConn.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Fehler beim Schreiben in Datenbank: {ex.Message}");
             }
         }
 

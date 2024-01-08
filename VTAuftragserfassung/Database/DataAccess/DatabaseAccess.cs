@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Data.SqlClient;
 using System.Reflection;
 using System.Text;
 using VTAuftragserfassung.Database.Connection;
@@ -29,17 +30,20 @@ namespace VTAuftragserfassung.Database.DataAccess
         public int Create<T>(T dbModel) where T : IDatabaseObject
         {
             string cmd = CreateInsertString(dbModel);
-            return _conn.ConnectionWriteGetPrimaryKey(cmd);
+            SqlParameter[] parameters = GenerateParameters(dbModel);
+
+            return _conn.ConnectionWriteGetPrimaryKey(cmd, parameters);
         }
 
         public void CreateAll<T>(List<T> dbModels) where T : IDatabaseObject
         {
-            StringBuilder cmd = new StringBuilder();
             foreach (var dbModel in dbModels)
             {
-                cmd.Append(CreateInsertString(dbModel));
+                string cmd = CreateInsertString(dbModel);
+                SqlParameter[] parameters = GenerateParameters(dbModel);
+
+                _conn.ConnectionWrite(cmd, parameters);
             }
-            _conn.ConnectionWrite(cmd.ToString());
         }
 
         public List<T>? ReadAll<T>(T dbModel) where T : IDatabaseObject
@@ -78,36 +82,46 @@ namespace VTAuftragserfassung.Database.DataAccess
         private string CreateInsertString<T>(T dbModel) where T : IDatabaseObject
         {
             IEnumerable<PropertyInfo> properties = typeof(T).GetProperties()
-           .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "PK_" + typeof(T).Name);
+                .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "PK_" + typeof(T).Name);
 
-            var columns = string.Join(", ", properties.Select(prop => prop.Name).Skip(1));
-            var values = string.Join(", ", properties.Select(prop => FormatValueForDatabase(prop.GetValue(dbModel) ?? "")).Skip(1));
+            string tableName = properties.First().GetValue(dbModel)?.ToString()?.Trim('\'') ?? "";
+            string columns = string.Join(", ", properties.Skip(1).Select(prop => prop.Name));
+            string values = string.Join(", ", properties.Skip(1).Select(prop => $"@{prop.Name}"));
 
-            return $"INSERT INTO {dbModel.TableName} ({columns}) VALUES ({values});";
+            return $"INSERT INTO {tableName} ({columns}) VALUES ({values});";
         }
 
-        private string FormatValueForDatabase(object value)
+        private SqlParameter[] GenerateParameters<T>(T dbModel) where T : IDatabaseObject
         {
-            if (value is string)
+            var parameters = typeof(T).GetProperties()
+                .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "PK_" + typeof(T).Name)
+                .Skip(1)
+                .Select(FormatPropertyForDatabase(dbModel))
+                .ToArray();
+
+            return parameters;
+        }
+
+        private Func<PropertyInfo, SqlParameter> FormatPropertyForDatabase<T>(T dbModel) where T : IDatabaseObject
+        {
+            return prop =>
             {
-                return $"'{value}'";
-            }
-            else if (value is Auftragsstatus)
-            {
-                return ((int)value).ToString();
-            }
-            else if (value is DateTime)
-            {
-                return $"'{(DateTime)value:yyyy-MM-dd HH:mm:ss}'";
-            }
-            else if (value is bool)
-            {
-                return ((bool)value) ? "1" : "0";
-            }
-            else
-            {
-                return value.ToString() ?? string.Empty;
-            }
+                var paramName = $"@{prop.Name}";
+                var propValue = prop.GetValue(dbModel);
+
+                if (prop.PropertyType == typeof(bool))
+                {
+                    return new SqlParameter(paramName, (bool)propValue ? 1 : 0);
+                }
+                else if (prop.PropertyType.IsEnum)
+                {
+                    return new SqlParameter(paramName, (int)propValue);
+                }
+                else
+                {
+                    return new SqlParameter(paramName, propValue ?? DBNull.Value);
+                }
+            };
         }
 
         private T? Read<T>(T dbModel, string cmd) where T : IDatabaseObject
