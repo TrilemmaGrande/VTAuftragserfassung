@@ -9,6 +9,10 @@
       "PackagePath": "staticwebassets\\Resources\\img\\GAS_Logo_Balken.jpg"
     },
     {
+      "Id": "C:\\Users\\nils.reinshagen\\source\\repos\\VTAuftragserfassung\\VTAuftragserfassung\\wwwroot\\Resources\\img\\facicon-gas.png",
+      "PackagePath": "staticwebassets\\Resources\\img\\facicon-gas.png"
+    },
+    {
       "Id": "C:\\Users\\nils.reinshagen\\source\\repos\\VTAuftragserfassung\\VTAuftragserfassung\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

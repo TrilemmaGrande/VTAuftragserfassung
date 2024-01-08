@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "nITcRSWcmHrFt4bhX/OX3YVvN3pBDn922nSZ/XKxT+A=",
+  "Hash": "oH4ArSWQ7V9QB4DVnvEEAqvDdAJjoovNGqNamCw1ZvY=",
   "Source": "VTAuftragserfassung",
   "BasePath": "_content/VTAuftragserfassung",
   "Mode": "Default",
@@ -1231,6 +1231,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Identity": "C:\\Users\\nils.reinshagen\\source\\repos\\VTAuftragserfassung\\VTAuftragserfassung\\wwwroot\\Resources\\img\\facicon-gas.png",
+      "SourceId": "VTAuftragserfassung",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\nils.reinshagen\\source\\repos\\VTAuftragserfassung\\VTAuftragserfassung\\wwwroot\\",
+      "BasePath": "_content/VTAuftragserfassung",
+      "RelativePath": "Resources/img/facicon-gas.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Resources\\img\\facicon-gas.png"
     },
     {
       "Identity": "C:\\Users\\nils.reinshagen\\source\\repos\\VTAuftragserfassung\\VTAuftragserfassung\\wwwroot\\Resources\\img\\GAS_Logo_Balken.jpg",

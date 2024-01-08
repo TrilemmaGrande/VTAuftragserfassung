@@ -137,7 +137,7 @@ function openCustomerForm(btn) {
 function closeCustomerForm(btn) {
     btn.text = "Kunden anlegen";
     btn.setAttribute("onclick", "openCustomerForm(this)");
-    document.getElementById("customerSearch").style.display = "block";
+    document.getElementById("customerSearch").style.display = "inline-block";
     document.getElementById('selectedCustomer').innerHTML = '';
     document.getElementById('selectedShareholder').innerHTML = '';
 }
