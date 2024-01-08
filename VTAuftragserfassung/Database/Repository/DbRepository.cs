@@ -124,15 +124,15 @@ namespace VTAuftragserfassung.Database.Repository
             {
                 return cachedModel ?? [];
             }
-            List<T>? modelData = _dataAccess.ReadAll(model!);
-            _memoryCache.Set(model!.GetType().Name, modelData);
-            return modelData;
+            return UpdateCachedModel(model);
         }
 
-        private void UpdateCachedModel<T>(T model) where T : IDatabaseObject
+        private List<T>? UpdateCachedModel<T>(T model) where T : IDatabaseObject
         {
-            List<T>? modelData = _dataAccess.ReadAll(model);
-            _memoryCache.Set(model!.GetType().Name, modelData);
+            List<T>? modelData = _dataAccess.ReadAll(model!);
+            _memoryCache.Remove(model!.GetType().Name);
+            _memoryCache.Set(model!.GetType().Name, modelData, TimeSpan.FromMinutes(10));
+            return modelData;
         }
 
         #endregion Private Methods

@@ -64,6 +64,7 @@ function saveNewAssignment() {
             model.Artikel[obj3.getAttribute('name')] = obj3.value;
         });
         positionList.push(model);
+
         let sumPosition = parseFloat(model.Position.Menge) * parseFloat(model.Artikel.Preis.replace(',', '.'))
         assignmentViewObj.Auftrag.SummeAuftrag += sumPosition;
     });
@@ -203,6 +204,10 @@ function selectedArticle(modelPK, targetElementId) {
     let targetPartial = backendRequestGET("/Home/AddPositionListRowFormPartial/" + modelPK + "?positionNr=" + positionNr);
     let targetElement = document.getElementById(targetElementId)
     targetElement.innerHTML = targetElement.innerHTML + targetPartial;
+}
+
+function removePosition(element) {
+    element.remove();
 }
 
 function selectedCustomer(modelPK, targetElementId) {

@@ -1,7 +1,6 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
-using System.Text;
 using VTAuftragserfassung.Database.Connection;
 using VTAuftragserfassung.Models;
 using VTAuftragserfassung.Models.ViewModels;
