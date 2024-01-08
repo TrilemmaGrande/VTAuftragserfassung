@@ -17,8 +17,8 @@ function checkboxCheckedToInt(checked) {
 
 function toggleAssignmentDetails(ele) {
     let openEle = ele.parentElement.querySelector('.assignmentListRowWrapper.show');
-    if (openEle) { openEle.classList.remove('show'); }
-    if (ele != openEle) { ele.classList.add('show'); }
+    if (openEle) { openEle.classList.remove('show') };
+    if (ele != openEle) { ele.classList.add('show') };
 }
 
 
@@ -45,9 +45,9 @@ function removeOldModal() {
 
 function saveNewAssignment() {
     let fk_customer = document.querySelector(`[data-name="assigmentCustomerFK"]`).value;
-    let assignmentBonus = document.querySelector(`[data-name="hasBonusCheckbox"]`).checked
-    let assignmentData = document.querySelectorAll('[property-name="assignmentData"]')
-    let positionsListData = document.querySelectorAll('[property-name="positionsListData"]')
+    let assignmentBonus = document.querySelector(`[data-name="hasBonusCheckbox"]`).checked;
+    let assignmentData = document.querySelectorAll('[property-name="assignmentData"]');
+    let positionsListData = document.querySelectorAll('[property-name="positionsListData"]');
 
     let positionList = [];
     let assignmentViewObj = {
@@ -69,7 +69,7 @@ function saveNewAssignment() {
 
         positionList.push(model);
 
-        let sumPosition = parseFloat(model.Position.Menge) * parseFloat(model.Artikel.Preis.replace(',', '.'))
+        let sumPosition = parseFloat(model.Position.Menge) * parseFloat(model.Artikel.Preis.replace(',', '.'));
         assignmentViewObj.Auftrag.SummeAuftrag += sumPosition;
     });
 
@@ -99,7 +99,7 @@ function changePositionAmount(amountField, articlePrice, positionNumber) {
     if (isNaN(amount) || amount <= 0) {
         amount = 1;
         amountField.value = 1;
-    }
+    };
     let hiddenPositionSumElement = document.querySelector(`[data-row-id="hidden${positionNumber}"]`);
     let positionSumElement = document.querySelector(`[data-row-id="${positionNumber}"]`);
     let calculatedSum = amount * articlePrice;
@@ -110,14 +110,14 @@ function changePositionAmount(amountField, articlePrice, positionNumber) {
 
 function incrementPositionAmount(amountField, articlePrice, positionNumber) {
     amountField.value++;
-    changePositionAmount(amountField, articlePrice, positionNumber)
+    changePositionAmount(amountField, articlePrice, positionNumber);
 }
 
 function decrementPositionAmount(amountField, articlePrice, positionNumber) {
     if (amountField.value > 1) {
         amountField.value--;
-        changePositionAmount(amountField, articlePrice, positionNumber)
-    }
+        changePositionAmount(amountField, articlePrice, positionNumber);
+    };
 }
 
 // Customer Form
@@ -143,9 +143,9 @@ function closeCustomerForm(btn) {
 }
 
 function saveNewCustomer() {
-    let customerData = document.querySelectorAll('[property-name="customerData"]')
-    let isWorkshopData = document.querySelector(`[data-name="isWorkshopCheckbox"]`).checked
-    let isSaleData = document.querySelector(`[data-name="isSaleCheckbox"]`).checked
+    let customerData = document.querySelectorAll('[property-name="customerData"]');
+    let isWorkshopData = document.querySelector(`[data-name="isWorkshopCheckbox"]`).checked;
+    let isSaleData = document.querySelector(`[data-name="isSaleCheckbox"]`).checked;
     let customer = {};
     customerData.forEach((obj, idx) => {
         customer[obj.getAttribute('name')] = obj.value;
@@ -173,10 +173,10 @@ function search(ele, searchTerm, model, backendMethod) {
 
         if (JSON.stringify(propertyArray).toLowerCase().includes(searchTerm.trim().toLowerCase()) && searchTerm.length > 0) {
             resultList.push(element);
-        }
+        };
 
         propertyArray = [];
-    }
+    };
 
     searchResultDiv = document.createElement('div');
     searchResultDiv.classList.add('searchResult');
@@ -185,28 +185,28 @@ function search(ele, searchTerm, model, backendMethod) {
         searchResultDiv.innerHTML = backendRequestPOST(backendMethod, resultList);
     } else {
         searchResultDiv.innerHTML = '';
-    }
+    };
 }
 
 function searchResultSelected(modelPK, targetElementId) {
     if (targetElementId == "selectedArticle") {
-        selectedArticle(modelPK, targetElementId)
+        selectedArticle(modelPK, targetElementId);
     }
     else if (targetElementId == "selectedCustomer") {
-        selectedCustomer(modelPK, targetElementId)
-    }
+        selectedCustomer(modelPK, targetElementId);
+    };
     document.getElementById("searchTable").remove();
     document.getElementsByClassName("searchResult")[0].remove();
     let searchBarElement = document.getElementsByClassName("searchBar");
     for (const element of searchBarElement) {
         element.value = '';
-    }
+    };
 }
 
 function selectedArticle(modelPK, targetElementId) {
     positionNr++;
     let targetPartial = backendRequestGET("/Home/AddPositionListRowFormPartial/" + modelPK + "?positionNr=" + positionNr);
-    let targetElement = document.getElementById(targetElementId)
+    let targetElement = document.getElementById(targetElementId);
     targetElement.innerHTML = targetElement.innerHTML + targetPartial;
 }
 
@@ -215,8 +215,8 @@ function removePosition(element) {
 }
 
 function selectedCustomer(modelPK, targetElementId) {
-    let targetPartial = backendRequestGET("/Home/AddCustomerDetailsPartial/" + modelPK)
-    let targetElement = document.getElementById(targetElementId)
+    let targetPartial = backendRequestGET("/Home/AddCustomerDetailsPartial/" + modelPK);
+    let targetElement = document.getElementById(targetElementId);
     targetElement.innerHTML = targetPartial;
 
     document.querySelector(`[data-name="assigmentCustomerFK"]`).value = modelPK;
