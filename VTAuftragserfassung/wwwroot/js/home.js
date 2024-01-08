@@ -25,17 +25,21 @@ function toggleAssignmentDetails(ele) {
 // Assignment Form
 
 function openAssignmentForm() {
-    let oldAssignment = document.getElementsByClassName('assignmentModalContainer');
-    if (oldAssignment.length > 0) {
-        oldAssignment[0].remove();
-        positionNr = 0;
-    }
+    removeOldModal();
     let modalDiv = document.createElement('div');
     modalDiv.classList.add('assignmentModalContainer');
     modalDiv.innerHTML = backendRequestGET("/Home/NewAssignment");
     let main = document.querySelector('main');
     if (main) {
         main.parentNode.insertBefore(modalDiv, main.nextSibling);
+    }
+}
+
+function removeOldModal() {
+    let oldAssignment = document.getElementsByClassName('assignmentModalContainer');
+    if (oldAssignment.length > 0) {
+        oldAssignment[0].remove();
+        positionNr = 0;
     }
 }
 
@@ -47,22 +51,22 @@ function saveNewAssignment() {
 
     let positionList = [];
     let assignmentViewObj = {
-        PositionenVM: positionList, Auftrag: { FK_Kunde: fk_customer, SummeAuftrag: 0 }
+        PositionenVM: positionList, Auftrag: { FK_Kunde: fk_customer, SummeAuftrag: 0.00 }
     };
 
     positionsListData.forEach((obj, idx) => {
-        let model = {
-            Position: {},
-            Artikel: {}
-        };
         let posDataSet = obj.querySelectorAll('[property-name="positionData"]');
         let artDataSet = obj.querySelectorAll('[property-name="articleData"]');
+        let model = { Position: {}, Artikel: {} };
+
         posDataSet.forEach((obj2, idx2) => {
             model.Position[obj2.getAttribute('name')] = obj2.value;
         });
+
         artDataSet.forEach((obj3, idx3) => {
             model.Artikel[obj3.getAttribute('name')] = obj3.value;
         });
+
         positionList.push(model);
 
         let sumPosition = parseFloat(model.Position.Menge) * parseFloat(model.Artikel.Preis.replace(',', '.'))
