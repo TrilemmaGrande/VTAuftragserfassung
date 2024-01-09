@@ -58,9 +58,11 @@ body {
     border-radius: 5px;
     transition: background-color 0.3s;
 }
+
     .btn:hover {
         color: #f2f2f2;
     }
+
     .btn:active {
         background-color: #165b9e;
     }
@@ -153,14 +155,14 @@ body {
         box-shadow: 0 0 4px 2px #165b9e6b;
     }
 
-    .btNav:active {
-        background-color: #165b9e;
-    }
+.btNav:active {
+    background-color: #165b9e;
+}
 
 .txtNav {
     padding: 2.5px;
     font-size: 18px;
-    font-weight:420;
+    font-weight: 420;
     margin: 0 30px;
     min-width: 120px;
     border: none;
@@ -305,7 +307,6 @@ label {
 /*Assignment List*/
 .assignmentListRowWrapper {
     background-color: #f9f9f9;
-    border-bottom: dotted 1px #165b9e6b;
     cursor: pointer;
 }
 
@@ -330,14 +331,23 @@ label {
 .assignmentListRowWrapper .assignmentDetailsPartial {
     display: grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows 0.2s ease-out;
+    color: #fff0;
+    padding: 0;
+    transition: grid 0.2s ease-in-out;
     box-shadow: inset 0 0 10px 1px #165b9e6b;
 }
 
+.assignmentListRowWrapper.show .assignmentListRowContent {
+    box-shadow: inset 0 0 10px 1px #165b9e6b;
+    color: #165b9e;
+}
+
 .assignmentListRowWrapper.show .assignmentDetailsPartial {
+    box-shadow: inset 0 0 10px 1px #165b9e6b;
     padding: 20px;
     grid-template-rows: 1fr;
     opacity: 1;
+    color: #000;
 }
 
 .assignmentListRowWrapper .assignmentDetailsPartial > .assignmentDetailsWrapper {
@@ -353,14 +363,12 @@ label {
 
 .positionListRowWrapper {
     background-color: #f2f2f2;
-    border-top: dotted 1px #165b9e6b;
-    border-bottom: dotted 1px #165b9e6b;
     cursor: pointer;
 }
 
 .positionListRowContent {
     display: grid;
-    grid-template-columns: repeat(7, minmax(100px, 1fr));
+    grid-template-columns: repeat(8, minmax(100px, 1fr));
     background-color: #f2f2f2;
     border-bottom: dotted 1px #165b9e6b;
     padding: 2.5px;

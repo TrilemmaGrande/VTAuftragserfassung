@@ -10,19 +10,21 @@
             <div>Verpackungseinheit</div>
         </div>
     </div>
-    <div class="gridContainer" id="resultTblBody">
-        @foreach (var item in Model)
-        {
-            <a class="gridListContent gridListContentSearchResult"
-               onMouseOut="this.style.color='#000'"
-               onMouseOver="this.style.color='#165b9e'"
-               onclick="searchResultSelected(@item.PK_Artikel.ToString(), 'selectedArticle')">
-                <div>@item.Artikelnummer</div>
-                <div>@item.Bezeichnung1</div>
-                <div>@item.Bezeichnung2</div>
-                <div>@Html.DisplayFor(modelItem => (item.Preis), "FormatCurrency")</div>
-                <div>@item.Verpackungseinheit</div>
-            </a>
-        }
+    <div style="overflow:auto;">
+        <div class="gridContainer" id="resultTblBody">
+            @foreach (var item in Model)
+            {
+                <a class="gridListContent gridListContentSearchResult"
+                   onMouseOut="this.style.color='#000'"
+                   onMouseOver="this.style.color='#165b9e'"
+                   onclick="searchResultSelected(@item.PK_Artikel.ToString(), 'selectedArticle')">
+                    <div>@item.Artikelnummer</div>
+                    <div>@item.Bezeichnung1</div>
+                    <div>@item.Bezeichnung2</div>
+                    <div>@Html.DisplayFor(modelItem => (item.Preis), "FormatCurrency")</div>
+                    <div>@item.Verpackungseinheit</div>
+                </a>
+            }
+        </div>
     </div>
 </div>

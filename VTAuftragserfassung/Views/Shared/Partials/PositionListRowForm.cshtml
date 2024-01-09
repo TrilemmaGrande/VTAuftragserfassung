@@ -24,6 +24,8 @@
         <div>@artikel.Verpackungseinheit</div>
         <div data-row-id="@position.PositionsNummer">
             @Html.DisplayFor(modelItem => (position.SummePosition), "FormatCurrency")
+        </div>
+        <div>
             <a class="btn btn-small btn-secondary" onclick="removePosition(this.parentNode.parentNode.parentNode)">x</a>
         </div>
     </div>
