@@ -1,15 +1,16 @@
 ﻿@{
     ViewData["Title"] = "Assignment Page";
+
+    var jsonModel = System.Text.Json.JsonSerializer.Serialize(Model);
+   
     IEnumerable<AssignmentViewModel> sortedModel = Model
         .OrderByDescending(i => i.Auftrag.ErstelltAm)
         .ThenByDescending(ii => ii.Auftrag.LetzteStatusAenderung);
-    var jsonModel = System.Text.Json.JsonSerializer.Serialize(Model);
-
 }
 @model List<AssignmentViewModel>
 
 
-<div class="gridContainer">
+<div>
     <div class="headerListWrapper">
         <div class="gridListContent gridListContent9">
             <div>Auftrag ID</div>
@@ -23,7 +24,7 @@
             <div>Status</div>
         </div>
     </div>
-    <div>
+    <div class="gridContainer">
         @foreach (var row in sortedModel)
         {
             @await Html.PartialAsync("Partials/AssignmentListRow", row)

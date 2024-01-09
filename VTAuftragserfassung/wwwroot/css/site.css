@@ -5,8 +5,22 @@
     }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #545b62;
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus, input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #165b9e6b;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f9f9f9;
+    border: solid 1px #f9f9f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #165b9e6b;
 }
 
 html {
@@ -27,7 +41,6 @@ html {
 }
 
 body {
-    height: 100%;
     margin-bottom: 60px;
 }
 
@@ -204,9 +217,6 @@ label {
     position: absolute;
     z-index: 100;
     max-height: 25rem;
-    overflow-y: auto;
-    border: 1px solid #ddd;
-    border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -230,11 +240,16 @@ label {
         background-color: #e0e0e0;
         color: #165b9e;
     }
-
+    
 
 /* Grid Styles */
 .gridContainer {
-    border: 1px solid #ddd;
+    overflow: auto;
+    overflow-x: hidden;
+    max-height: 50vh;
+    bottom: 0;
+    top: 0;
+
 }
 
 .headerListWrapper {
@@ -242,6 +257,7 @@ label {
     top: 0;
     border: 1px solid #165b9e6e;
     box-shadow: 0 0 3px 1px #165b9e6F;
+    border-radius: 5px;
 }
 
 .gridListContent {
@@ -250,6 +266,8 @@ label {
     padding: 2.5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    box-shadow: inset 0 0 1px 2px #165b9e0f;
+    border-radius: 5px;
 }
 
 .gridListContent2 {
@@ -317,7 +335,8 @@ label {
     padding: 2.5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    box-shadow: inset 0 0 4px 2px #00000025;
+    box-shadow: inset 0 0 1px 2px #165b9e0f;
+    border-radius: 5px;
 }
 
     .assignmentListRowContent:hover {
@@ -335,6 +354,7 @@ label {
     padding: 0;
     transition: grid 0.2s ease-in-out;
     box-shadow: inset 0 0 10px 1px #165b9e6b;
+    border-radius: 5px;
 }
 
 .assignmentListRowWrapper.show .assignmentListRowContent {
