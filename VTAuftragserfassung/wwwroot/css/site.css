@@ -167,6 +167,11 @@ label{
     width: 100px;
 }
 
+.error-border {
+    border: 1px solid red;
+    color: red;
+}
+
 /* Flex */
 
 .alignContentEndContainer {
