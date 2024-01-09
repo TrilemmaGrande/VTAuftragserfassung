@@ -21,7 +21,7 @@ html {
     bottom: 0;
     width: 100%;
     white-space: nowrap;
-    line-height: 60px;   
+    line-height: 60px;
     background-color: #165b9e;
     color: white;
 }
@@ -43,10 +43,10 @@ body {
 /* Button */
 
 .btn {
+    color: #f2f2f2;
     display: inline-block;
     min-width: fit-content;
     max-width: 100px;
-    height: 100%;
     vertical-align: central;
     padding: 5px 10px;
     font-size: 14px;
@@ -58,6 +58,12 @@ body {
     border-radius: 5px;
     transition: background-color 0.3s;
 }
+    .btn:hover {
+        color: #f2f2f2;
+    }
+    .btn:active {
+        background-color: #165b9e;
+    }
 
 .vertical-group {
     display: flex;
@@ -70,17 +76,22 @@ body {
     align-items: center;
     justify-content: center;
     padding: 2px 5px;
-    margin-left:4px;
+    margin-left: 4px;
     width: 25px;
     font-size: 12px;
 }
 
 .btn-primary {
     color: #fff;
-    background-color: black;
+    background-color: #333;
 }
 
     .btn-primary:hover {
+        background-color: #6c757d;
+        box-shadow: 0 0 4px 2px #165b9e6b;
+    }
+
+    .btn-primary:active {
         background-color: #165b9e;
     }
 
@@ -91,8 +102,12 @@ body {
 
     .btn-secondary:hover {
         background-color: #545b62;
+        box-shadow: 0 0 4px 2px #165b9e6b;
     }
 
+    .btn-secondary:active {
+        background-color: #165b9e;
+    }
 
 .closeButton {
     position: absolute;
@@ -108,53 +123,55 @@ body {
     }
 
 .btnLogout {
-    padding: 10px;
     font-size: 18px;
-    margin: 10px;
     border: none;
     color: white;
-    background-color: black;
+    background-color: #333;
     text-decoration: none;
-    border-radius: 12px;
 }
 
     .btnLogout:hover {
         color: #f2f2f2;
-        background-color:darkred;
+        background-color: darkred;
+        box-shadow: 0 0 4px 2px #165b9e6b;
     }
 
 /* Nav */
 
 .btnNav {
-    padding: 10px;
+    padding: 5px;
     font-size: 18px;
-    margin: 10px;
     border: none;
     color: #f2f2f2;
-    background-color: Black;
+    background-color: #333;
     text-decoration: none;
-    border-radius: 12px;
+    max-width: fit-content;
 }
 
     .btnNav:hover {
-        color: #f2f2f2;
+        background-color: #6c757d;
+        box-shadow: 0 0 4px 2px #165b9e6b;
+    }
+
+    .btNav:active {
         background-color: #165b9e;
     }
 
 .txtNav {
-    padding: 10px;
+    padding: 2.5px;
     font-size: 18px;
-    margin: 10px;
+    font-weight:420;
+    margin: 0 30px;
+    min-width: 120px;
     border: none;
-    color: #f2f2f2;
-    background-color: #165b9eD7;
-    border-radius: 12px;
+    color: #165b9e;
 }
 
 /* Input */
 
 input {
     padding: 2px 2px;
+    margin: 4px;
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -162,7 +179,7 @@ input {
     resize: none;
 }
 
-label{
+label {
     min-width: fit-content;
     width: 100px;
 }
@@ -182,6 +199,8 @@ label{
 /* Search Table */
 
 #searchTable {
+    position: absolute;
+    z-index: 100;
     max-height: 25rem;
     overflow-y: auto;
     border: 1px solid #ddd;
@@ -190,13 +209,14 @@ label{
 }
 
 #searchResult {
-    position: absolute;
+    position: relative;
+    width: 100%;
     z-index: 100;
 }
 
 .resultTblRow {
     display: block;
-    padding: 5px;
+    padding: 2.5px;
     text-decoration: none;
     color: #333;
     border-bottom: 1px solid #ddd;
@@ -218,13 +238,14 @@ label{
 .headerListWrapper {
     position: sticky;
     top: 0;
-    border: 1px solid #ddd;
+    border: 1px solid #165b9e6e;
+    box-shadow: 0 0 3px 1px #165b9e6F;
 }
 
 .gridListContent {
     display: grid;
     background-color: #f9f9f9;
-    padding: 10px;
+    padding: 2.5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -232,9 +253,11 @@ label{
 .gridListContent2 {
     grid-template-columns: repeat(2, minmax(100px, 1fr));
 }
+
 .gridListContent3 {
     grid-template-columns: repeat(3, minmax(100px, 1fr));
 }
+
 .gridListContent5 {
     grid-template-columns: repeat(5, minmax(100px, 1fr));
 }
@@ -242,9 +265,11 @@ label{
 .gridListContent7 {
     grid-template-columns: repeat(7, minmax(100px, 1fr));
 }
+
 .gridListContent8 {
     grid-template-columns: repeat(8, minmax(100px, 1fr));
 }
+
 .gridListContent9 {
     grid-template-columns: repeat(9, minmax(100px, 1fr));
 }
@@ -253,8 +278,7 @@ label{
     grid-template-columns: repeat(5, minmax(100px, 1fr));
     background-color: #fff;
     border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
+    padding: 2.5px;
     text-align: left;
     text-decoration: none;
     color: #333;
@@ -272,7 +296,6 @@ label{
     }
 
     .gridListContentSearchResult > div {
-        margin-bottom: 8px;
         margin-left: 10px;
         margin-right: 10px;
         width: 100%;
@@ -282,7 +305,6 @@ label{
 /*Assignment List*/
 .assignmentListRowWrapper {
     background-color: #f9f9f9;
-    border-top: dotted 1px #165b9e6b;
     border-bottom: dotted 1px #165b9e6b;
     cursor: pointer;
 }
@@ -291,16 +313,15 @@ label{
     display: grid;
     grid-template-columns: repeat(9, minmax(100px, 1fr));
     background-color: #f9f9f9;
-    border-top: dotted 1px #165b9e6b;
-    border-bottom: dotted 1px #165b9e6b;
-    padding: 10px;
+    padding: 2.5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    box-shadow: inset 0 0 4px 2px #00000025;
 }
 
     .assignmentListRowContent:hover {
-        background-color: #165b9eD7;
-        color: #f2f2f2;
+        color: #165b9e;
+        box-shadow: inset 0 0 4px 2px #165b9e6b;
     }
 
 /*AssignmentList Details*/
@@ -310,10 +331,11 @@ label{
     display: grid;
     grid-template-rows: 0fr;
     transition: grid-template-rows 0.2s ease-out;
-    border: none;
+    box-shadow: inset 0 0 10px 1px #165b9e6b;
 }
 
 .assignmentListRowWrapper.show .assignmentDetailsPartial {
+    padding: 20px;
     grid-template-rows: 1fr;
     opacity: 1;
 }
@@ -323,9 +345,7 @@ label{
 }
 
 .assignmentListRowWrapper.show .assignmentDetailsPartial > .assignmentDetailsWrapper {
-    padding: 20px;
     width: 100%;
-    border: solid 2px;
 }
 
 
@@ -342,15 +362,16 @@ label{
     display: grid;
     grid-template-columns: repeat(7, minmax(100px, 1fr));
     background-color: #f2f2f2;
-    border-top: dotted 1px #165b9e6b;
     border-bottom: dotted 1px #165b9e6b;
-    padding: 10px;
+    padding: 2.5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .decimalInput {
     width: 50px;
+    margin: 0;
+    padding: 0 2px;
 }
 /* New Assignment */
 .assignmentModalContainer {
@@ -377,7 +398,7 @@ label{
 .noticeInput {
     width: 100%;
     height: 80px;
-    padding: 5px 5px;
+    padding: 0 4px;
     box-sizing: border-box;
     border: 2px solid #ccc;
     border-radius: 4px;

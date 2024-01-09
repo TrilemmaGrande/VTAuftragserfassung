@@ -25,7 +25,7 @@ function toggleAssignmentDetails(ele) {
 // Assignment Form
 
 function openAssignmentForm() {
-    removeOldModal();
+    removeOldAssignmentForm();
     let modalDiv = document.createElement('div');
     modalDiv.classList.add('assignmentModalContainer');
     modalDiv.innerHTML = backendRequestGET("/Home/NewAssignment");
@@ -35,7 +35,7 @@ function openAssignmentForm() {
     }
 }
 
-function removeOldModal() {
+function removeOldAssignmentForm() {
     let oldAssignment = document.getElementsByClassName('assignmentModalContainer');
     if (oldAssignment.length > 0) {
         oldAssignment[0].remove();
@@ -45,11 +45,13 @@ function removeOldModal() {
 
 function saveNewAssignment() {
     let fk_customer = document.querySelector(`[data-name="assigmentCustomerFK"]`).value;
+    if (!(validationAddBorder(document.getElementById('customerSearchBar'), fk_customer !== ''))) {
+        alert('Bitte Kunden auswählen oder anlegen');
+        return;
+    }
     let assignmentBonus = document.querySelector(`[data-name="hasBonusCheckbox"]`).checked;
     let assignmentData = document.querySelectorAll('[property-name="assignmentData"]');
     let positionsListData = document.querySelectorAll('[property-name="positionsListData"]');
-
-
 
     let positionList = [];
     let assignmentViewObj = {
@@ -144,36 +146,42 @@ function closeCustomerForm(btn) {
     document.getElementById('selectedShareholder').innerHTML = '';
 }
 
-function inputValidationCheck(formId) {
-    let form = document.getElementById(formId);
-    let inputFields = form.querySelectorAll('input[required]');
-    let selectFields = form.querySelectorAll('select[required]');
-    let checkBoxes = form.querySelectorAll('input[type="checkbox"][required]');
-
+function inputValidationCheck(formIds) {
+    let inputFields = [];
+    let selectFields = [];
+    let checkBoxes = [];
     let success = true;
 
+    for (const formId of formIds) {
+        let form = document.getElementById(formId);
+        inputFields.push(...form.querySelectorAll('input[required]'));
+        selectFields.push(...form.querySelectorAll('select[required]'));
+        checkBoxes.push(...form.querySelectorAll('input[type="checkbox"][required]'));
+    }
+
     for (const element of inputFields) {
-        success = validationAddBorder(!element.value.trim()) ? success : false;
+        success = validationAddBorder(element, element.value.trim() !== '') ? success : false;
     }
     for (const element of selectFields) {
-        success = validationAddBorder(element.value === '' || element.value === '0') ? success : false;
+        success = validationAddBorder(element, element.value !== '' && element.value !== '0') ? success : false;
     }
     for (const element of checkBoxes) {
-        success = validationAddBorder(!element.checked) ? success : false;
+        success = validationAddBorder(element, element.checked) ? success : false;
     }
+
     if (!success) {
         alert('Bitte füllen Sie alle Pflichtfelder aus.');
     }
     return success;
 }
 
-function validationAddBorder(check) {
+function validationAddBorder(element, check) {
     check ? element.classList.remove('error-border') : element.classList.add('error-border');
     return check;
 }
 
 function saveNewCustomer() {
-    if (!inputValidationCheck('customerForm') || !inputValidationCheck('shareholderForm')) {
+    if (!(inputValidationCheck(['customerForm', 'shareholderForm']))) {
         return;
     }
 
@@ -229,12 +237,26 @@ function searchResultSelected(modelPK, targetElementId) {
     else if (targetElementId == "selectedCustomer") {
         selectedCustomer(modelPK, targetElementId);
     }
+    
     document.getElementById("searchTable").remove();
     document.getElementsByClassName("searchResult")[0].remove();
     let searchBarElement = document.getElementsByClassName("searchBar");
     for (const element of searchBarElement) {
         element.value = '';
     }
+}
+
+
+function selectedCustomer(modelPK, targetElementId) {
+    let targetPartial = backendRequestGET("/Home/AddCustomerDetailsPartial/" + modelPK);
+    let targetElement = document.getElementById(targetElementId);
+    targetElement.innerHTML = targetPartial;
+
+    document.querySelector(`[data-name="assigmentCustomerFK"]`).value = modelPK;
+
+    let shareholderFK = targetElement.querySelector(`[data-name="shareholderFK"]`).dataset.fk_shareholder;
+    let shareholderPartial = backendRequestGET("/Home/ShareholderDetailsPartial/" + shareholderFK);
+    document.getElementById("selectedShareholder").innerHTML = shareholderPartial;
 }
 
 function selectedArticle(modelPK, targetElementId) {
@@ -248,16 +270,5 @@ function removePosition(element) {
     element.remove();
 }
 
-function selectedCustomer(modelPK, targetElementId) {
-    let targetPartial = backendRequestGET("/Home/AddCustomerDetailsPartial/" + modelPK);
-    let targetElement = document.getElementById(targetElementId);
-    targetElement.innerHTML = targetPartial;
-
-    document.querySelector(`[data-name="assigmentCustomerFK"]`).value = modelPK;
-
-    let shareholderFK = targetElement.querySelector(`[data-name="shareholderFK"]`).dataset.fk_shareholder;
-    let shareholderPartial = backendRequestGET("/Home/ShareholderDetailsPartial/" + shareholderFK);
-    document.getElementById("selectedShareholder").innerHTML = shareholderPartial;
-}
 
 

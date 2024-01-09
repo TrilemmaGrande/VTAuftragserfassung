@@ -21,16 +21,16 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="btnNav" asp-area="" asp-controller="Home" asp-action="Assignments">Aufträge</a>
+                            <a class="btn btnNav" asp-controller="Home" asp-action="Assignments">Aufträge</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <div class="btnNav" asp-controller="Home" onclick="openAssignmentForm()">Neuer Auftrag</div>
+                            <div class="btn btnNav" asp-controller="Home" onclick="openAssignmentForm()">Neuer Auftrag</div>
                         </li>
                     </ul>
-                    <label class="txtNav align-self-end">ID: @User.Identity?.Name</label>
-                    <a class="btnLogout" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
+                    <label class="txtNav align-self-end">Benutzer: @User.Identity?.Name</label>
+                    <a class="btn btnLogout" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
                 </div>
             </div>
         </nav>

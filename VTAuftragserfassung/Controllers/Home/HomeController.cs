@@ -55,6 +55,12 @@ namespace VTAuftragserfassung.Controllers.Home
             return PartialView("Partials/SearchResultCustomer", modelList);
         }
 
+        [HttpPost("/Home/SearchResultPartialAssignment/")]
+        public PartialViewResult SearchResultPartialAssignment([FromBody] List<AssignmentViewModel> modelList)
+        {
+            return PartialView("Partials/SearchResultAssignment", modelList);
+        }
+
         [HttpGet("/Home/AddCustomerForm/")]
         public PartialViewResult AddCustomerForm()
         {

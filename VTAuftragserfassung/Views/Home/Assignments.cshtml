@@ -3,9 +3,11 @@
     IEnumerable<AssignmentViewModel> sortedModel = Model
         .OrderByDescending(i => i.Auftrag.ErstelltAm)
         .ThenByDescending(ii => ii.Auftrag.LetzteStatusAenderung);
+    var jsonModel = System.Text.Json.JsonSerializer.Serialize(Model);
 
 }
 @model List<AssignmentViewModel>
+
 
 <div class="gridContainer">
     <div class="headerListWrapper">
@@ -21,7 +23,6 @@
             <div>Status</div>
         </div>
     </div>
-
     <div>
         @foreach (var row in sortedModel)
         {
