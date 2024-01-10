@@ -1,47 +1,43 @@
 ﻿@model Kunde
 
-<span data-name="shareholderFK" data-fk_shareholder="@Model.FK_Gesellschafter"></span>
-<div>
-    <label>Kd.-Nr.</label>
-    <span>@Model.Kundennummer</span>
+<input data-name="shareholderFK" data-fk_shareholder="@Model.FK_Gesellschafter" type="hidden"/>
+<div class="keyValue" id="company">
+    <div class="key">Firma</div>
+    <div class="value">@Model.Firma</div>
 </div>
-<div>
-    <label>Vorname</label>
-    <span>@Model.Vorname</span>
+<div class="keyValue" id="customerId">
+    <div class="key">Kd.-Nr.</div>
+    <div class="value">@Model.Kundennummer</div>
 </div>
-<div>
-    <label>Nachname</label>
-    <span>@Model.Nachname</span>
+<div class="keyValue" id="firstName">
+    <div class="key">Vorname</div>
+    <div class="value">@Model.Vorname</div>
 </div>
-<div>
-    <label>Firma</label>
-    <span>@Model.Firma</span>
+<div class="keyValue" id="lastName"> 
+    <div class="key">Nachname</div>
+    <div class="value">@Model.Nachname</div>
 </div>
-<div>
-    <label>Tel.</label>
-    <span>@Model.Telefon</span>
+<div class="keyValue" id="mail">
+    <div class="key">E-Mail</div>
+    <div class="value">not@implemented</div>
 </div>
-<div>
-    <span></span>
+<div class="keyValue" id="telephone">
+    <div class="key">Tel.</div>
+    <div class="value">@Model.Telefon</div>
 </div>
-<div>
-    <label>Straße</label>
-    <span>@Model.Strasse</span>
+<div class="keyValue" id="street">
+    <div class="key">Straße</div>
+    <div class="value">@Model.Strasse</div>
 </div>
-<div>
-    <label>PLZ</label>
-    <span>@Model.Postleitzahl</span>
+<div class="keyValue" id="postalCode">
+    <div class="key">PLZ</div>
+    <div class="value">@Model.Postleitzahl</div>
 </div>
-<div>
-    <label>Ort</label>
-    <span>@Model.Ort</span>
+<div class="keyValue" id="city">
+    <div class="key">Ort</div>
+    <div class="value">@Model.Ort</div>
 </div>
-<div>
-    <span></span>
-</div>
-<div>
+<div id="isWorkshopOrTrader">
     @Html.DisplayFor(modelItem => (@Model.IstWerkstatt), "IntTobooleanCheckbox") Werkstatt
-</div>
-<div>
     @Html.DisplayFor(modelItem => (@Model.IstHandel), "IntTobooleanCheckbox") Handel
 </div>

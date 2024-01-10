@@ -1,22 +1,22 @@
 ﻿@model AssignmentViewModel
 
 <div class="assignmentDetailsWrapper">
-    <div class="gridListContent gridListContent2">
-        <div>
+    <div class="gridListContent gridListContent3">
+        <div class="customerDetailsContainer">
             @await Html.PartialAsync("Partials/CustomerDetails", @Model!.Kunde)
         </div>
-        <div>
+        <div class="shareholderDetailsContainer">
             @await Html.PartialAsync("Partials/ShareholderDetails", @Model!.Gesellschafter)
         </div>
     </div>
-    <div>
+    <div class="gridListContent">
         @await Html.PartialAsync("Partials/PositionListDetails", @Model!.PositionenVM)
         @await Html.PartialAsync("Partials/AssignmentSum")
     </div>
     <div class="gridListContent gridListContent2">
         @await Html.PartialAsync("Partials/BonusDetails", @Model!.Auftrag?.HatZugabe)
     </div>
-    <div class="gridListContent gridListContent2">
+    <div class="gridListContent">
         @await Html.PartialAsync("Partials/NoticeDetails", @Model!.Auftrag?.Hinweis)
     </div>
 </div>
