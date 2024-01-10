@@ -11,6 +11,9 @@
     </div>
     <div>
         @await Html.PartialAsync("Partials/PositionListDetails", @Model!.PositionenVM)
+        <div>
+            <span>Gesamt Netto:</span><div>@Html.DisplayFor(modelItem => (@Model!.Auftrag!.SummeAuftrag), "FormatCurrency")</div>
+        </div>
     </div>
     <div class="gridListContent gridListContent2">
         @await Html.PartialAsync("Partials/BonusDetails", @Model!.Auftrag?.HatZugabe)

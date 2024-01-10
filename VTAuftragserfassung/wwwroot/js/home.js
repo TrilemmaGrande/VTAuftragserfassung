@@ -61,20 +61,17 @@ function saveNewAssignment() {
     positionsListData.forEach((obj, idx) => {
         let posDataSet = obj.querySelectorAll('[property-name="positionData"]');
         let artDataSet = obj.querySelectorAll('[property-name="articleData"]');
-        let model = { Position: {}, Artikel: {} };
+        let positionViewObj = { Position: {}, Artikel: {} };
 
         posDataSet.forEach((obj2, idx2) => {
-            model.Position[obj2.getAttribute('name')] = obj2.value;
+            positionViewObj.Position[obj2.getAttribute('name')] = obj2.value;
         });
 
         artDataSet.forEach((obj3, idx3) => {
-            model.Artikel[obj3.getAttribute('name')] = obj3.value;
+            positionViewObj.Artikel[obj3.getAttribute('name')] = obj3.value;
         });
 
-        positionList.push(model);
-
-        let sumPosition = parseFloat(model.Position.Menge) * parseFloat(model.Artikel.Preis.replace(',', '.'));
-        assignmentViewObj.Auftrag.SummeAuftrag += sumPosition;
+        positionList.push(positionViewObj);        
     });
 
     assignmentData.forEach((obj4, idx4) => {
@@ -82,8 +79,6 @@ function saveNewAssignment() {
     });
 
     assignmentViewObj.Auftrag.HatZugabe = checkboxCheckedToInt(assignmentBonus);
-    assignmentViewObj.Auftrag.SummeAuftrag = assignmentViewObj.Auftrag.SummeAuftrag.toString();
-    assignmentViewObj.Auftrag.SummeAuftrag = assignmentViewObj.Auftrag.SummeAuftrag.replace('.', ',');
     backendRequestPOST("/Home/CreateNewAssignment/", assignmentViewObj);
 
     closeNewAssignment();

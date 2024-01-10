@@ -12,8 +12,10 @@
             <div>Pos. Gesamtpreis Netto</div>
         </div>
     </div>
-    @foreach (var pvm in Model)
-    {
-        @await Html.PartialAsync("Partials/PositionListRowDetails", pvm)
-    }
+    <div>
+        @foreach (var pvm in Model)
+        {
+            @await Html.PartialAsync("Partials/PositionListRowDetails", pvm)
+        }
+    </div>
 </div>

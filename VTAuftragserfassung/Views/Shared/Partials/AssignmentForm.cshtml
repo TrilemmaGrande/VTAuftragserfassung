@@ -5,7 +5,7 @@
 @model AssignmentFormViewModel
 
 <input data-name="assigmentCustomerFK" value="" type="hidden" />
-<input data-row-id="hiddenAssignmentSum" value="" type="hidden"/>
+<input data-row-id="hiddenAssignmentSum" property-name="assignmentData" name="SummeAuftrag" value="" type="hidden" />
 <div class="assignmentModal">
     <div class="alignContentEndContainer">
         <a class="btn btn-small btn-primary" onclick="closeNewAssignment()">X</a>
@@ -33,7 +33,9 @@
     </div>
     <div class="ModuleWrapper">
         @await Html.PartialAsync("Partials/PositionListForm", Model.Artikel)
-        <span>Gesamt Netto:</span><div data-row-id="assignmentSum">0,00 €</div>
+        <div>
+            <span>Gesamt Netto:</span><div data-row-id="assignmentSum">0,00 €</div>
+        </div>
     </div>
     <div class="ModuleWrapper gridListContent2">
         @await Html.PartialAsync("Partials/BonusForm")
