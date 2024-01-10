@@ -10,7 +10,7 @@
     <div class="alignContentEndContainer">
         <a class="btn btn-small btn-primary" onclick="closeNewAssignment()">X</a>
     </div>
-    <div class="ModuleWrapper gridListContent gridListContent4">
+    <div class="ModuleWrapper">
         <div>
             <div id="customerSelection">
                 <div class="form" id="customerSearchForm">
@@ -22,10 +22,10 @@
                         <a id="btnAddCustomer" class="btn btn-secondary" onclick="openCustomerForm(this)">Kunde anlegen</a>
                     </span>
                 </div>
-                <div class="gridListContent gridListContent2">
-                    <div class="customerDetailsContainer" id="selectedCustomer">
+                <div class="gridContentContainer gridListContent3">
+                    <div class="customerFormContainer" id="selectedCustomer">
                     </div>
-                    <div id="selectedShareholder">
+                    <div class="shareholderFormContainer" id="selectedShareholder">
                     </div>
                 </div>
             </div>
@@ -33,16 +33,16 @@
     </div>
     <div class="ModuleWrapper">
         @await Html.PartialAsync("Partials/PositionListForm", Model.Artikel)     
-        @await Html.PartialAsync("Partials/AssignmentSum")
+        @await Html.PartialAsync("Partials/AssignmentSumForm")
     </div>
-    <div class="ModuleWrapper gridListContent2">
+    <div class="ModuleWrapper">
         @await Html.PartialAsync("Partials/BonusForm")
     </div>
     <div class="ModuleWrapper">
         @await Html.PartialAsync("Partials/NoticeForm")
     </div>
     <div class="ModuleWrapper">
-        <div class="gridListContent gridListContent2 ">
+        <div class="gridContentContainer gridListContent2 ">
             <div>
                 @Html.DisplayFor(modelItem => Model.Vertriebsmitarbeiter, "SalesStaffInformation")
             </div>

@@ -9,6 +9,10 @@
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #165b9e6b;
 }
 
+.form-control:disabled {
+    background-color: #f2f2f2f2;
+}
+
 ::-webkit-scrollbar {
     width: 4px;
     border-radius: 20px;
@@ -198,18 +202,14 @@ body {
 /* Input */
 
 input {
-    padding: 2px 2px;
-    margin: 4px;
-    box-sizing: border-box;
+    padding: 0px 2px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    background-color: #f8f8f8;
     resize: none;
 }
 
 label {
     min-width: fit-content;
-    width: 100px;
 }
 
 .error-border {
@@ -269,7 +269,11 @@ label {
     border-radius: 5px;
 }
 
-.gridListContent {
+.gridContentContainer {
+    display: grid;
+}
+
+.gridListContentContainer {
     display: grid;
     background-color: #f9f9f9;
     padding: 2.5px;
@@ -443,7 +447,7 @@ label {
     resize: none;
 }
 
-/* Shareholder Details*/
+/* Shareholder */
 
 .shareholderDetailsContainer {
     align-items: center;
@@ -451,7 +455,13 @@ label {
     grid-column: 3;
 }
 
-/* Customer Details */
+.shareholderFormContainer {
+    align-items: center;
+    padding: 5px;
+    grid-column: 3;
+}
+
+/* Customer  */
 .customerDetailsContainer {
     display: grid;
     grid-template-columns: repeat(2, minmax(80px, 2fr));
@@ -459,6 +469,15 @@ label {
     row-gap: 1px;
     align-items: center;
     padding: 5px;
+    grid-column: 1/2;
+}
+
+.customerFormContainer {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(80px, 2fr));
+    column-gap: 10px;
+    row-gap: 1px;
+    align-items: center;
     grid-column: 1/2;
 }
 
@@ -495,54 +514,59 @@ label {
     background-color: #f2f2f2;
 }
 
-.customerDetailsContainer #company {
+#company {
     grid-row: 1;
     grid-column: 1/2;
 }
 
-.customerDetailsContainer #isWorkshopOrTrader {
+#isWorkshopOrTrader {
     grid-row: 1;
-    grid-column: 2/3;
+    grid-column: 2;
 }
 
-.customerDetailsContainer #customerId {
+#customerId {
     grid-row: 2;
     grid-column: 1/2;
 }
 
-.customerDetailsContainer #telephone {
+#telephone {
     grid-row: 2;
     grid-column: 2/3;
 }
 
-.customerDetailsContainer #firstName {
+#firstName {
     grid-row: 3;
 }
 
-.customerDetailsContainer #lastName {
+#lastName {
     grid-row: 3;
     grid-column: 2/3;
 }
 
-.customerDetailsContainer #mail {
+#mail {
     grid-row: 4;
 }
 
-.customerDetailsContainer #street {
+#street {
     grid-row: 6;
     grid-column: 1/2;
 }
 
-.customerDetailsContainer #postalCode {
+#postalCode {
     grid-row: 7;
 }
 
-.customerDetailsContainer #city {
+#city {
     grid-row: 7;
     grid-column: 2/3;
 }
 
-.customerDetailsContainer #notice {
+#notice {
     grid-row: 1;
     grid-column: 1/2;
+}
+
+#btnAddCustomer {
+    grid-row: 8;
+    grid-column: 1;
 }

@@ -4,23 +4,20 @@
 @model List<Artikel>
 
 <div>
-    <div>
-        <label id="searchBarLabel">Artikel auswählen:</label><br />
-        <input class="searchBar" placeholder="Suche ..." oninput="search(this, this.value, @jsonModel, '/Home/SearchResultPartialArticle/')" />
+    <label id="searchBarLabel">Artikel auswählen:</label><br />
+    <input class="searchBar" placeholder="Suche ..." oninput="search(this, this.value, @jsonModel, '/Home/SearchResultPartialArticle/')" />
+</div>
+<div class="headerListWrapper">
+    <div class="gridListContentContainer gridListContent8">
+        <div>Art. Nr.</div>
+        <div>Bezeichnung</div>
+        <div>Zusatzbezeichnung</div>
+        <div>Einzelpreis Netto</div>
+        <div>Menge</div>
+        <div>Verpackungseinheit</div>
+        <div>Pos. Gesamtpreis Netto</div>
     </div>
-    <div class="headerListWrapper">
-        <div class="gridListContent gridListContent8">
-            <div>Art. Nr.</div>
-            <div>Bezeichnung</div>
-            <div>Zusatzbezeichnung</div>
-            <div>Einzelpreis Netto</div>
-            <div>Menge</div>
-            <div>Verpackungseinheit</div>
-            <div>Pos. Gesamtpreis Netto</div>
-        </div>
-    </div>
-    <div>
-        <div id="selectedArticle"></div>
-    </div>
-   
+</div>
+<div>
+    <div id="selectedArticle"></div>
 </div>

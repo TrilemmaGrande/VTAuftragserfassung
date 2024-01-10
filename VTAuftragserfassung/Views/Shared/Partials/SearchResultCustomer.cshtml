@@ -4,7 +4,7 @@
     <div class="gridContainer" id="resultTblBody">
         @foreach (var item in Model)
         {
-            <a class="gridListContent gridListContentSearchResult"
+            <a class="gridListContentContainer gridListContentSearchResult"
                onMouseOut="this.style.color='#000'"
                onMouseOver="this.style.color='#165b9e'"
                onclick="searchResultSelected(@item.PK_Kunde.ToString(), 'selectedCustomer')">

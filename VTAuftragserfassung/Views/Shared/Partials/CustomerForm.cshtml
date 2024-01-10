@@ -1,36 +1,40 @@
-﻿<div class="gridListContent gridListContent2">
-    <div class="form-group" id="customerForm">
-        <input property-name="customerData" name="Kundennummer" type="text" required placeholder="Kd.-Nr." />
-
-        <input property-name="customerData" name="Vorname" type="text" required placeholder="Vorname" />
-
-        <input property-name="customerData" name="Nachname" type="text" required placeholder="Nachname" />
-
-        <input property-name="customerData" name="Firma" type="text" placeholder="Firma" />
-
-        <input property-name="customerData" name="Telefon" type="tel" placeholder="Tel." />
-
-        <input property-name="customerData" name="Strasse" type="text" required placeholder="Straße" />
-
-        <input property-name="customerData" name="Postleitzahl" type="text" required placeholder="PLZ" />
-
-        <input property-name="customerData" name="Ort" type="text" required placeholder="Ort" />
-    </div>
-
-    <div class="checkbox-group">
-        <div>
-            <input id="isWorkshopCheckbox" data-name="isWorkshopCheckbox" type="checkbox" />
-            <label for="isWorkshopCheckbox">Werkstatt</label>
-        </div>
-
-        <div>
-            <input id="isSaleCheckbox" data-name="isSaleCheckbox" type="checkbox" />
-            <label for="isSaleCheckbox">Handel</label>
-        </div>
-    </div>
-
+﻿
+<div class="keyValue" id="company">
+    <input property-name="customerData" name="Firma" type="text" placeholder="Firma" />
+</div>
+<div class="keyValue" id="customerId">
+    <input property-name="customerData" name="Kundennummer" type="text" required placeholder="Kd.-Nr." />
+</div>
+<div class="keyValue" id="firstName">
+    <input property-name="customerData" name="Vorname" type="text" required placeholder="Vorname" />
+</div>
+<div class="keyValue" id="lastName">
+    <input property-name="customerData" name="Nachname" type="text" required placeholder="Nachname" />
+</div>
+<div class="keyValue" id="mail">
+    <div class="key">E-Mail</div>
+    <div class="value">ThisIsNot@implemented.yet</div>
+</div>
+<div class="keyValue" id="telephone">
+    <input property-name="customerData" name="Telefon" type="tel" placeholder="Tel." />
+</div>
+<div class="keyValue" id="street">
+    <input property-name="customerData" name="Strasse" type="text" required placeholder="Straße" />
+</div>
+<div class="keyValue" id="postalCode">
+    <input property-name="customerData" name="Postleitzahl" type="text" required placeholder="PLZ" />
+</div>
+<div class="keyValue" id="city">
+    <input property-name="customerData" name="Ort" type="text" required placeholder="Ort" />
+</div>
+<div id="isWorkshopOrTrader">
     <div>
-        <a id="btnAddCustomer" class="btn btn-primary" onclick="saveNewCustomer()">Kunden speichern</a>
+        <input id="isWorkshopCheckbox" data-name="isWorkshopCheckbox" type="checkbox" />
+        <label for="isWorkshopCheckbox">Werkstatt</label>
+        <input id="isSaleCheckbox" data-name="isSaleCheckbox" type="checkbox" />
+        <label for="isSaleCheckbox">Handel</label>
     </div>
 </div>
-
+<div  id="btnAddCustomer" >
+    <a class="btn btn-primary" onclick="saveNewCustomer()">Kunden speichern</a>
+</div>

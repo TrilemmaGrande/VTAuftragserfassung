@@ -2,7 +2,7 @@
 
 <div id="searchTable">
     <div class="headerListWrapper">
-        <div class="gridListContent gridListContent7">
+        <div class="gridListContentContainer gridListContent7">
             <div>Art. Nr.</div>
             <div>Bezeichnung</div>
             <div>Zusatzbezeichnung</div>
@@ -14,7 +14,7 @@
         <div class="gridContainer" id="resultTblBody">
             @foreach (var item in Model)
             {
-                <a class="gridListContent gridListContentSearchResult"
+                <a class="gridListContentContainer gridListContentSearchResult"
                    onMouseOut="this.style.color='#000'"
                    onMouseOver="this.style.color='#165b9e'"
                    onclick="searchResultSelected(@item.PK_Artikel.ToString(), 'selectedArticle')">

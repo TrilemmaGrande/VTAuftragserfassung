@@ -58,8 +58,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWxzXEFzc2lnbm1lbnRMaXN0Um93LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/Partials/AssignmentSum.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWxzXEFzc2lnbm1lbnRTdW0uY3NodG1s
+[C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/Partials/AssignmentSumDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWxzXEFzc2lnbm1lbnRTdW1EZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/Partials/AssignmentSumForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFBhcnRpYWxzXEFzc2lnbm1lbnRTdW1Gb3JtLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/nils.reinshagen/source/repos/VTAuftragserfassung/VTAuftragserfassung/Views/Shared/Partials/BonusDetails.cshtml]
