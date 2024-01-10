@@ -100,15 +100,13 @@ function closeNewAssignment() {
 
 function changePositionAmount(amountField, articlePrice, positionNumber) {
     let amount = parseInt(amountField.value);
+    let calculatedPositionSum = amount * articlePrice;
     if (isNaN(amount) || amount <= 0) {
         amount = 1;
         amountField.value = 1;
     }
-    let hiddenPositionSumElement = document.querySelector(`[data-row-id="hidden${positionNumber}"]`);
-    let positionSumElement = document.querySelector(`[data-row-id="${positionNumber}"]`);
-    let calculatedSum = amount * articlePrice;
-    positionSumElement.innerHTML = formatToCurrency(calculatedSum);
-    hiddenPositionSumElement.setAttribute('value', calculatedSum);;
+    updatePositionSum(positionNumber, calculatedPositionSum);
+    updateAssignmentSum();
     amountField.setAttribute('value', amount);
 }
 
@@ -122,6 +120,31 @@ function decrementPositionAmount(amountField, articlePrice, positionNumber) {
         amountField.value--;
         changePositionAmount(amountField, articlePrice, positionNumber);
     }
+}
+
+function updatePositionSum(positionNumber, positionSum) {
+    let hiddenPositionSumElement = document.querySelector(`[data-row-id="hidden${positionNumber}"]`);
+    let positionSumElement = document.querySelector(`[data-row-id="${positionNumber}"]`);
+    positionSumElement.innerHTML = formatToCurrency(positionSum);
+    hiddenPositionSumElement.setAttribute('value', positionSum);
+}
+
+function updateAssignmentSum() {
+    let hiddenPositionSumElements = document.querySelectorAll('[property-name="positionData"][name="SummePosition"]');
+    let hiddenAssignmentSumElement = document.querySelector('[data-row-id="hiddenAssignmentSum"]');
+    let assignmentSumElement = document.querySelector('[data-row-id="assignmentSum"]');
+    let calculatedAssignmentSum = 0.00;
+
+    hiddenPositionSumElements.forEach((obj, idx) => {
+        calculatedAssignmentSum += parseFloat(obj.value);
+    });
+    hiddenAssignmentSumElement.value = calculatedAssignmentSum;
+    assignmentSumElement.innerHTML = formatToCurrency(calculatedAssignmentSum);
+}
+
+function removePosition(element) {
+    element.remove();
+    updateAssignmentSum();
 }
 
 // Customer Form
@@ -264,11 +287,10 @@ function selectedArticle(modelPK, targetElementId) {
     let targetPartial = backendRequestGET("/Home/AddPositionListRowFormPartial/" + modelPK + "?positionNr=" + positionNr);
     let targetElement = document.getElementById(targetElementId);
     targetElement.innerHTML = targetElement.innerHTML + targetPartial;
+    updateAssignmentSum();
 }
 
-function removePosition(element) {
-    element.remove();
-}
+
 
 
 

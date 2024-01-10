@@ -5,6 +5,7 @@
 @model AssignmentFormViewModel
 
 <input data-name="assigmentCustomerFK" value="" type="hidden" />
+<input data-row-id="hiddenAssignmentSum" value="" type="hidden"/>
 <div class="assignmentModal">
     <div class="alignContentEndContainer">
         <a class="btn btn-small btn-primary" onclick="closeNewAssignment()">X</a>
@@ -15,7 +16,7 @@
                 <div class="form" id="customerSearchForm">
                     <span id="customerSearch">
                         <label id="searchBarLabel">Kunden auswählen:</label><br />
-                        <input class="searchBar" id="customerSearchBar" placeholder="Suche ..." oninput="search(this, this.value, @jsonModel, '/Home/SearchResultPartialCustomer/')" required/>
+                        <input class="searchBar" id="customerSearchBar" placeholder="Suche ..." oninput="search(this, this.value, @jsonModel, '/Home/SearchResultPartialCustomer/')" required />
                     </span>
                     <span>
                         <a id="btnAddCustomer" class="btn btn-secondary" onclick="openCustomerForm(this)">Kunde anlegen</a>
@@ -32,6 +33,7 @@
     </div>
     <div class="ModuleWrapper">
         @await Html.PartialAsync("Partials/PositionListForm", Model.Artikel)
+        <span>Gesamt Netto:</span><div data-row-id="assignmentSum">0,00 €</div>
     </div>
     <div class="ModuleWrapper gridListContent2">
         @await Html.PartialAsync("Partials/BonusForm")
