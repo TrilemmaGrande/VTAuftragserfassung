@@ -278,6 +278,11 @@ function selectedCustomer(modelPK, targetElementId) {
 }
 
 function selectedArticle(modelPK, targetElementId) {
+    let incrementArticleButton = document.getElementById("increment_" + modelPK)
+    if (incrementArticleButton) {
+        incrementArticleButton.click();
+        return;
+    }
     positionNr++;
     let targetPartial = backendRequestGET("/Home/AddPositionListRowFormPartial/" + modelPK + "?positionNr=" + positionNr);
     let targetElement = document.getElementById(targetElementId);

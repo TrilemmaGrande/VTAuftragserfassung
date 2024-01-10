@@ -15,11 +15,11 @@
         <div>@artikel.Bezeichnung1</div>
         <div>@artikel.Bezeichnung2 </div>
         <div>@Html.DisplayFor(modelItem => (artikel.Preis), "FormatCurrency")</div>
-        <div class="vertical-group">
+        <div class="horizontal-group">
             <input class="decimalInput" property-name="positionData" name="Menge" value="1"
                    oninput="changePositionAmount(this, @jsonPriceFormat, @position.PositionsNummer)" />
-            <a class="btn btn-small btn-secondary" onclick="incrementPositionAmount(this.parentNode.querySelector('input'), @jsonPriceFormat, @position.PositionsNummer)">+</a>
-            <a class="btn btn-small btn-secondary" onclick="decrementPositionAmount(this.parentNode.querySelector('input'), @jsonPriceFormat, @position.PositionsNummer)">-</a>
+            <a class="btn btn-small btn-secondary" id="increment_@artikel.PK_Artikel" onclick="incrementPositionAmount(this.parentNode.querySelector('input'), @jsonPriceFormat, @position.PositionsNummer)">+</a>
+            <a class="btn btn-small btn-secondary" id="decrement_@artikel.PK_Artikel" onclick="decrementPositionAmount(this.parentNode.querySelector('input'), @jsonPriceFormat, @position.PositionsNummer)">-</a>
         </div>
         <div>@artikel.Verpackungseinheit</div>
         <div data-row-id="@position.PositionsNummer">

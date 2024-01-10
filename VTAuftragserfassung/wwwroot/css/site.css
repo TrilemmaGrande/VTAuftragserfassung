@@ -80,7 +80,7 @@ body {
         background-color: #165b9e;
     }
 
-.vertical-group {
+.horizontal-group {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -226,6 +226,10 @@ label {
     z-index: 100;
 }
 
+#resultTblBody{
+    max-height: 25rem;
+}
+
 .resultTblRow {
     display: block;
     padding: 2.5px;
@@ -246,7 +250,6 @@ label {
 .gridContainer {
     overflow: auto;
     overflow-x: hidden;
-    max-height: 50vh;
     bottom: 0;
     top: 0;
 
