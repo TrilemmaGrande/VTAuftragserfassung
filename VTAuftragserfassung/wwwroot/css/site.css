@@ -44,6 +44,20 @@ body {
     margin-bottom: 60px;
 }
 
+/* Alignment */
+
+.horizontal-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+
+.alignContentEndContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
 /* Module */
 
 .ModuleWrapper {
@@ -80,11 +94,6 @@ body {
         background-color: #165b9e;
     }
 
-.horizontal-group {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
 
 .btn-small {
     display: inline-flex;
@@ -206,10 +215,6 @@ label {
 
 /* Flex */
 
-.alignContentEndContainer {
-    display: flex;
-    justify-content: flex-end;
-}
 
 /* Search Table */
 

@@ -32,10 +32,8 @@
         </div>
     </div>
     <div class="ModuleWrapper">
-        @await Html.PartialAsync("Partials/PositionListForm", Model.Artikel)
-        <div>
-            <span>Gesamt Netto:</span><div data-row-id="assignmentSum">0,00 €</div>
-        </div>
+        @await Html.PartialAsync("Partials/PositionListForm", Model.Artikel)     
+        @await Html.PartialAsync("Partials/AssignmentSum")
     </div>
     <div class="ModuleWrapper gridListContent2">
         @await Html.PartialAsync("Partials/BonusForm")
