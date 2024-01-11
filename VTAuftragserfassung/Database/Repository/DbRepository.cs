@@ -25,14 +25,18 @@ namespace VTAuftragserfassung.Database.Repository
         #endregion Public Constructors
 
         #region Public Methods
-        public int SaveCustomer(Kunde customer)
+        public int SaveCustomer(Kunde? customer)
         {
+            if (customer == null)
+            {
+                return 0;
+            }
             int pk = _dataAccess.Create(customer);
             UpdateCachedModel(new Kunde());
             return pk;
         }
 
-        public int SaveAssignmentVM(AssignmentViewModel avm)
+        public int SaveAssignmentVM(AssignmentViewModel? avm)
         {
             if (avm?.Auftrag == null)
             {
@@ -48,9 +52,13 @@ namespace VTAuftragserfassung.Database.Repository
             return pkAssignment;
         }
 
-        private void CreatePositions(List<PositionViewModel> positions, int pkAssignment)
+        private void CreatePositions(List<PositionViewModel>? positions, int pkAssignment)
         {
-            List<Position> positionList = positions.Select(i =>
+            if (positions == null || !positions.Any())
+            {
+                return;
+            }
+            List<Position>? positionList = positions.Select(i =>
             {
                 i.Position.FK_Auftrag = pkAssignment;
                 return i.Position;
@@ -108,8 +116,12 @@ namespace VTAuftragserfassung.Database.Repository
 
         public PositionViewModel? GetNewPositionVMByArticlePK(int articlePK)
         {
-            List<Artikel> articles = GetAllArticlesCached();
-            Artikel article = articles?.Find(i => i.PK_Artikel == articlePK)!;
+            List<Artikel>? articles = GetAllArticlesCached();
+            if (articles == null)
+            {
+                return null;
+            }
+            Artikel article = articles.Find(i => i.PK_Artikel == articlePK)!;
             PositionViewModel pvm = new()
             {
                 Artikel = article,
@@ -124,7 +136,7 @@ namespace VTAuftragserfassung.Database.Repository
             return pvm;
         }
 
-        public void Update<T>(T dbModel, string columnToUpdate) where T : IDatabaseObject => Update(dbModel, new[] { columnToUpdate });
+        public void Update<T>(T model, string columnToUpdate) where T : IDatabaseObject => Update(model, new[] { columnToUpdate });
 
         public void Update<T>(T model, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject
         {
@@ -135,20 +147,28 @@ namespace VTAuftragserfassung.Database.Repository
 
         #region Private Methods
 
-        private List<T>? GetCachedModel<T>(T model) where T : IDatabaseObject
+        private List<T>? GetCachedModel<T>(T? model) where T : IDatabaseObject
         {
-            if (_memoryCache.TryGetValue(model?.GetType().Name!, out List<T>? cachedModel))
+            if (model == null)
             {
-                return cachedModel ?? [];
+                return null;
+            }
+            if (_memoryCache.TryGetValue(model.GetType().Name, out List<T>? cachedModel))
+            {
+                return cachedModel ?? null;
             }
             return UpdateCachedModel(model);
         }
 
-        private List<T>? UpdateCachedModel<T>(T model) where T : IDatabaseObject
+        private List<T>? UpdateCachedModel<T>(T? model) where T : IDatabaseObject
         {
-            List<T>? modelData = _dataAccess.ReadAll(model!);
-            _memoryCache.Remove(model!.GetType().Name);
-            _memoryCache.Set(model!.GetType().Name, modelData, TimeSpan.FromMinutes(10));
+            if (model == null)
+            {
+                return null;
+            }
+            List<T>? modelData = _dataAccess.ReadAll(model);
+            _memoryCache.Remove(model.GetType().Name);
+            _memoryCache.Set(model.GetType().Name, modelData, TimeSpan.FromMinutes(10));
             return modelData;
         }
 

@@ -24,10 +24,10 @@ namespace VTAuftragserfassung.Database.Repository
 
         public PositionViewModel? GetNewPositionVMByArticlePK(int articlePK);
 
-        int SaveAssignmentVM(AssignmentViewModel avm);
+        int SaveAssignmentVM(AssignmentViewModel? avm);
 
-        int SaveCustomer(Kunde customer);
-        void Update<T>(T model, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject;
-        void Update<T>(T dbModel, string columnToUpdate) where T : IDatabaseObject;
+        int SaveCustomer(Kunde? customer);
+        void Update<T>(T? model, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject;
+        void Update<T>(T? model, string columnToUpdate) where T : IDatabaseObject;
     }
 }
