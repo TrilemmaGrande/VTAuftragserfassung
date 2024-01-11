@@ -204,7 +204,7 @@ function validationAddBorder(element, check) {
 }
 
 function saveNewCustomer() {
-    if (!(inputValidationCheck(['customerForm', 'shareholderForm']))) {
+    if (!(inputValidationCheck(['selectedCustomer', 'selectedShareholder']))) {
         return;
     }
 
