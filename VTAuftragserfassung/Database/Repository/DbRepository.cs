@@ -25,6 +25,29 @@ namespace VTAuftragserfassung.Database.Repository
         #endregion Public Constructors
 
         #region Public Methods
+        public int SaveCustomer(Kunde customer)
+        {
+            int pk = _dataAccess.Create(customer);
+            UpdateCachedModel(new Kunde());
+            return pk;
+        }
+
+        public int SaveAssignmentVM(AssignmentViewModel avm)
+        {
+            int pkAssignment = _dataAccess.Create(avm.Auftrag);
+            if (avm.PositionenVM != null && avm.PositionenVM.Count > 0)
+            {
+                List<Position> positions = [];
+                avm.PositionenVM.ForEach(i =>
+                {
+                    i.Position.FK_Auftrag = pkAssignment;
+                    positions.Add(i.Position);
+                });
+                _dataAccess.CreateAll(positions);
+            }
+            UpdateCachedModel(new AssignmentViewModel());
+            return pkAssignment;
+        }
 
         public Auth? GetAuthByUserPk(int userPk) => _dataAccess.ReadObjectByForeignKey(new Auth(), new Vertriebsmitarbeiter(), userPk);
 
@@ -89,28 +112,11 @@ namespace VTAuftragserfassung.Database.Repository
             return pvm;
         }
 
-        public int SaveCustomer(Kunde customer)
-        {
-            int pk = _dataAccess.Create(customer);
-            UpdateCachedModel(new Kunde());
-            return pk;
-        }
+        public void Update<T>(T dbModel, string columnToUpdate) where T : IDatabaseObject => Update(dbModel, new[] { columnToUpdate });
 
-        public int SaveAssignmentVM(AssignmentViewModel avm)
+        public void Update<T>(T model, IEnumerable<string> columnsToUpdate = null) where T : IDatabaseObject
         {
-            int pkAssignment = _dataAccess.Create(avm.Auftrag);
-            if (avm.PositionenVM != null && avm.PositionenVM.Count > 0)
-            {
-                List<Position> positions = [];
-                avm.PositionenVM.ForEach(i =>
-                {
-                    i.Position.FK_Auftrag = pkAssignment;
-                    positions.Add(i.Position);
-                });
-                _dataAccess.CreateAll(positions);
-            }
-            UpdateCachedModel(new AssignmentViewModel());
-            return pkAssignment;
+            _dataAccess.Update(model, columnsToUpdate);
         }
 
         #endregion Public Methods

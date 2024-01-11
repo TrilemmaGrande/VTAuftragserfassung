@@ -19,4 +19,7 @@
     <div class="gridListContentContainer">
         @await Html.PartialAsync("Partials/NoticeDetails", @Model!.Auftrag?.Hinweis)
     </div>
+    <div class="alignContentEndContainer">
+        <a class="btn btn-primary" onclick="cancelAssignment(@Model.Auftrag?.PK_Auftrag)">stornieren</a>
+    </div>
 </div>

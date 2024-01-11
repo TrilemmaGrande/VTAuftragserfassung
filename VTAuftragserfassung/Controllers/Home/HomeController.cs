@@ -108,6 +108,12 @@ namespace VTAuftragserfassung.Controllers.Home
             return _logic.CreateCustomer(customer);
         }
 
+        [HttpPost("/Home/UpdateAssignmentStatus/{assignmentPK}")]
+        public void UpdateAssignmentStatus(int assignmentPK, string assignmentStatus)
+        {
+            _logic.UpdateAssignmentStatus(assignmentPK, assignmentStatus);
+        }
+
         #endregion Public Methods
     }
 }

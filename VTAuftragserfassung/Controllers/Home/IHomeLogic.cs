@@ -26,6 +26,7 @@ namespace VTAuftragserfassung.Controllers.Home
         Gesellschafter GetShareholderByPK(int shareholderPK);
 
         List<Gesellschafter> GetAllShareholders();
+        void UpdateAssignmentStatus(int assignmentPK, string assignmentStatus);
 
         #endregion Public Methods
     }

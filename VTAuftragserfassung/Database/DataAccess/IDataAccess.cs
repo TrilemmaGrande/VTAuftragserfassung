@@ -22,6 +22,7 @@ namespace VTAuftragserfassung.Database.DataAccess
         List<PositionViewModel>? ReadPositionVMsByUserId(string userId);
 
         Vertriebsmitarbeiter? ReadUserByUserId(string userId);
+        void Update<T>(T dbModel, IEnumerable<string> columnsToUpdate = null) where T : DataAccess.IDatabaseObject;
 
         #endregion Public Methods
     }

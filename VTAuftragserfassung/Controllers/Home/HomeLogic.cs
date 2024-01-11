@@ -79,6 +79,13 @@ namespace VTAuftragserfassung.Controllers.Home
             return _repo.SaveCustomer(customer);
         }
 
+        public void UpdateAssignmentStatus(int assignmentPK, string assignmentStatus)
+        {
+            Enum.TryParse(assignmentStatus, out Auftragsstatus status);
+            Auftrag assignment = new() { PK_Auftrag = assignmentPK, Auftragsstatus = status };
+            _repo.Update(assignment, "Auftragsstatus");
+        }
+
         public void Logout()
         {
             _httpContextAccessor.HttpContext?.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

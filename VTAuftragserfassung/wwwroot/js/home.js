@@ -85,6 +85,11 @@ function saveNewAssignment() {
 }
 
 
+function cancelAssignment(modelPK) {
+    let assignmentStatus = "Storniert";
+    backendRequestPOST("/Home/UpdateAssignmentStatus/" + modelPK + "?assignmentStatus=" + assignmentStatus);
+}
+
 function closeNewAssignment() {
     let modalDiv = document.getElementsByClassName('assignmentModalContainer');
     modalDiv[0].remove();
@@ -289,6 +294,8 @@ function selectedArticle(modelPK, targetElementId) {
     targetElement.innerHTML = targetElement.innerHTML + targetPartial;
     updateAssignmentSum();
 }
+
+
 
 
 

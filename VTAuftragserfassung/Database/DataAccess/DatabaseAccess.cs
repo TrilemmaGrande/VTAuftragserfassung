@@ -45,6 +45,7 @@ namespace VTAuftragserfassung.Database.DataAccess
             }
         }
 
+  
         public List<T>? ReadAll<T>(T dbModel) where T : IDatabaseObject
             => ReadAll<T>($"SELECT * FROM {dbModel.TableName}");
 
@@ -74,6 +75,15 @@ namespace VTAuftragserfassung.Database.DataAccess
 
         public Vertriebsmitarbeiter? ReadUserByUserId(string userId) => ReadByCondition(new Vertriebsmitarbeiter(), "*", $"WHERE MitarbeiterId = '{userId}'");
 
+        public void Update<T>(T dbModel, IEnumerable<string> columnsToUpdate = null) where T : IDatabaseObject
+        {
+            string cmd = CreateUpdateString(dbModel, columnsToUpdate);
+            SqlParameter[] parameters = GenerateParameters(dbModel);
+
+            _conn.ConnectionWrite(cmd, parameters);
+        }
+
+
         #endregion Public Methods
 
         #region Private Methods
@@ -88,6 +98,25 @@ namespace VTAuftragserfassung.Database.DataAccess
             string values = string.Join(", ", properties.Skip(1).Select(prop => $"@{prop.Name}"));
 
             return $"INSERT INTO {tableName} ({columns}) VALUES ({values});";
+        }
+
+        private string CreateUpdateString<T>(T dbModel, IEnumerable<string> columnsToUpdate) where T : IDatabaseObject
+        {
+            string modelName = typeof(T).Name;
+
+            IEnumerable<PropertyInfo> properties = typeof(T).GetProperties()
+                .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "PK_" + modelName);
+
+            int modelPk = (int)typeof(T).GetProperty("PK_" + modelName).GetValue(dbModel);
+            string tableName = properties.First().GetValue(dbModel)?.ToString()?.Trim('\'') ?? "";
+
+            IEnumerable<PropertyInfo> propertiesToUpdate = columnsToUpdate != null
+                ? properties.Where(prop => columnsToUpdate.Contains(prop.Name))
+                : properties.Skip(1);
+
+            string setClause = string.Join(", ", propertiesToUpdate.Select(prop => $"{prop.Name} = @{prop.Name}"));
+
+            return $"UPDATE {tableName} SET {setClause} WHERE PK_{modelName} = {modelPk};";
         }
 
         private SqlParameter[] GenerateParameters<T>(T dbModel) where T : IDatabaseObject

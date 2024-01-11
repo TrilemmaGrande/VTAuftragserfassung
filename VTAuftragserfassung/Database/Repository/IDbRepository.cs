@@ -1,4 +1,5 @@
-﻿using VTAuftragserfassung.Models;
+﻿using VTAuftragserfassung.Database.DataAccess;
+using VTAuftragserfassung.Models;
 using VTAuftragserfassung.Models.ViewModels;
 
 namespace VTAuftragserfassung.Database.Repository
@@ -26,5 +27,7 @@ namespace VTAuftragserfassung.Database.Repository
         int SaveAssignmentVM(AssignmentViewModel avm);
 
         int SaveCustomer(Kunde customer);
+        void Update<T>(T model, IEnumerable<string> columnsToUpdate = null) where T : IDatabaseObject;
+        void Update<T>(T dbModel, string columnToUpdate) where T : IDatabaseObject;
     }
 }
