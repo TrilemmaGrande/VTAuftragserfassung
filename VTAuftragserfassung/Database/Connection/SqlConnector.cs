@@ -21,6 +21,10 @@ namespace VTAuftragserfassung.Database.Connection
 
         public DataTable? ConnectionRead(string command)
         {
+            if (string.IsNullOrEmpty(command))
+            {
+                return null;
+            }
             try
             {
 
@@ -50,6 +54,10 @@ namespace VTAuftragserfassung.Database.Connection
 
         public object? ConnectionReadScalar(string command)
         {
+            if (string.IsNullOrEmpty(command))
+            {
+                return null;
+            }
             try
             {
                 using (SqlConnection sqlConn = new(_connectionString))
@@ -72,6 +80,10 @@ namespace VTAuftragserfassung.Database.Connection
         public int ConnectionWriteGetPrimaryKey(string command, SqlParameter[]? parameters)
         {
             int dataSetPrimaryKey = 0;
+            if (string.IsNullOrEmpty(command) || parameters == null)
+            {
+                return 0;
+            }
             try
             {
                 using (SqlConnection sqlConn = new(_connectionString))
@@ -101,6 +113,10 @@ namespace VTAuftragserfassung.Database.Connection
         }
         public void ConnectionWrite(string command, SqlParameter[]? parameters)
         {
+            if (string.IsNullOrEmpty(command) || parameters == null)
+            {
+                return;
+            }
             try
             {
                 using (SqlConnection sqlConn = new(_connectionString))

@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
+using System.Reflection.Metadata.Ecma335;
 using VTAuftragserfassung.Database.Connection;
 using VTAuftragserfassung.Models;
 using VTAuftragserfassung.Models.ViewModels;
@@ -26,7 +27,7 @@ namespace VTAuftragserfassung.Database.DataAccess
 
         #region Public Methods
 
-        public int Create<T>(T dbModel) where T : IDatabaseObject
+        public int Create<T>(T? dbModel) where T : IDatabaseObject
         {
             if (dbModel == null)
             {
@@ -36,10 +37,10 @@ namespace VTAuftragserfassung.Database.DataAccess
             string cmd = CreateInsertString(dbModel);
             SqlParameter[]? parameters = GenerateParameters(dbModel);
 
-            return _conn.ConnectionWriteGetPrimaryKey(cmd, parameters);
+            return _conn.ConnectionWriteGetPrimaryKey(cmd, parameters!);
         }
 
-        public void CreateAll<T>(List<T> dbModels) where T : IDatabaseObject
+        public void CreateAll<T>(List<T>? dbModels) where T : IDatabaseObject
         {
             if (dbModels == null || dbModels.Count == 0)
             {
@@ -49,50 +50,51 @@ namespace VTAuftragserfassung.Database.DataAccess
             foreach (var dbModel in dbModels)
             {
                 string cmd = CreateInsertString(dbModel);
-                SqlParameter[] parameters = GenerateParameters(dbModel);
+                SqlParameter[]? parameters = GenerateParameters(dbModel);
 
                 _conn.ConnectionWrite(cmd, parameters);
             }
         }
 
 
-        public List<T>? ReadAll<T>(T dbModel) where T : IDatabaseObject
-            => ReadAll<T>($"SELECT * FROM {dbModel.TableName}");
+        public List<T>? ReadAll<T>(T? dbModel) where T : IDatabaseObject
+            => dbModel != null ? ReadAll<T>($"SELECT * FROM {dbModel.TableName}") : null;
 
-        public T1? ReadObjectByForeignKey<T1, T2>(T1 model, T2 foreignModel, int fk)
+        public T1? ReadObjectByForeignKey<T1, T2>(T1? dbModel, T2? foreignModel, int fk)
             where T1 : IDatabaseObject
             where T2 : IDatabaseObject
-            => ReadByCondition(model, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}");
+            => dbModel != null && foreignModel != null ? ReadByCondition(dbModel, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}") : default;
 
-        public T? ReadObjectByPrimaryKey<T>(T model, int pk) where T : IDatabaseObject
-            => ReadByCondition(model, "*", $"WHERE PK_{model.GetType().Name} = {pk}");
+        public T? ReadObjectByPrimaryKey<T>(T? dbModel, int pk) where T : IDatabaseObject
+            => dbModel != null ? ReadByCondition(dbModel, "*", $"WHERE PK_{dbModel.GetType().Name} = {pk}") : default;
 
-        public List<T1>? ReadObjectListByForeignKey<T1, T2>(T1 model, T2 foreignModel, int fk)
+        public List<T1>? ReadObjectListByForeignKey<T1, T2>(T1? dbModel, T2? foreignModel, int fk)
             where T1 : IDatabaseObject
             where T2 : IDatabaseObject
-            => ReadAllByCondition(model, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}");
+            => dbModel != null && foreignModel != null ? ReadAllByCondition(dbModel, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}") : default;
 
         public List<Auftrag>? ReadAssignmentsByUserId(string userId)
-            => ReadAllByCondition(new Auftrag(), "*",
+            => !string.IsNullOrEmpty(userId) ? ReadAllByCondition(new Auftrag(), "*",
                     $"INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) " +
-                    $"WHERE MitarbeiterId = '{userId}'");
+                    $"WHERE MitarbeiterId = '{userId}'") : null;
 
         public List<PositionViewModel>? ReadPositionVMsByUserId(string userId)
-                                    => ReadAllByCondition(new PositionViewModel(), "*",
+            => !string.IsNullOrEmpty(userId) ? ReadAllByCondition(new PositionViewModel(), "*",
                     $"INNER JOIN vta_Auftrag ON ( vta_Position.FK_Auftrag = vta_Auftrag.PK_Auftrag)" +
                     $"INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter)" +
-                    $"WHERE MitarbeiterId = '{userId}'");
+                    $"WHERE MitarbeiterId = '{userId}'") : null;
 
-        public Vertriebsmitarbeiter? ReadUserByUserId(string userId) => ReadByCondition(new Vertriebsmitarbeiter(), "*", $"WHERE MitarbeiterId = '{userId}'");
+        public Vertriebsmitarbeiter? ReadUserByUserId(string userId) 
+            => !string.IsNullOrEmpty(userId) ? ReadByCondition(new Vertriebsmitarbeiter(), "*", $"WHERE MitarbeiterId = '{userId}'") : null;
 
-        public void Update<T>(T dbModel, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject
+        public void Update<T>(T? dbModel, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject
         {
             if (dbModel == null)
             {
                 return;
             }
             string cmd = CreateUpdateString(dbModel, columnsToUpdate);
-            SqlParameter[] parameters = GenerateParameters(dbModel);
+            SqlParameter[]? parameters = GenerateParameters(dbModel);
 
             _conn.ConnectionWrite(cmd, parameters);
         }
@@ -102,7 +104,7 @@ namespace VTAuftragserfassung.Database.DataAccess
 
         #region Private Methods
 
-        private string CreateInsertString<T>(T dbModel) where T : IDatabaseObject
+        private string CreateInsertString<T>(T? dbModel) where T : IDatabaseObject
         {
             if (dbModel == null)
             {
@@ -118,7 +120,7 @@ namespace VTAuftragserfassung.Database.DataAccess
             return $"INSERT INTO {tableName} ({columns}) VALUES ({values});";
         }
 
-        private string CreateUpdateString<T>(T dbModel, IEnumerable<string>? columnsToUpdate) where T : IDatabaseObject
+        private string CreateUpdateString<T>(T? dbModel, IEnumerable<string>? columnsToUpdate) where T : IDatabaseObject
         {
             if (dbModel == null)
             {
@@ -142,7 +144,7 @@ namespace VTAuftragserfassung.Database.DataAccess
             return $"UPDATE {tableName} SET {setClause} WHERE PK_{modelName} = {modelPk};";
         }
 
-        private SqlParameter[]? GenerateParameters<T>(T dbModel) where T : IDatabaseObject
+        private SqlParameter[]? GenerateParameters<T>(T? dbModel) where T : IDatabaseObject
         {
             if (dbModel == null)
             {
@@ -158,7 +160,7 @@ namespace VTAuftragserfassung.Database.DataAccess
             return parameters;
         }
 
-        private Func<PropertyInfo, SqlParameter> FormatPropertyForDatabase<T>(T dbModel) where T : IDatabaseObject
+        private Func<PropertyInfo, SqlParameter> FormatPropertyForDatabase<T>(T? dbModel) where T : IDatabaseObject
         {
             return prop =>
             {
@@ -180,7 +182,7 @@ namespace VTAuftragserfassung.Database.DataAccess
             };
         }
 
-        private T? Read<T>(T dbModel, string cmd) where T : IDatabaseObject
+        private T? Read<T>(T? dbModel, string cmd) where T : IDatabaseObject
         {
             if (dbModel == null || string.IsNullOrEmpty(cmd))
             {
@@ -231,7 +233,7 @@ namespace VTAuftragserfassung.Database.DataAccess
             return default;
         }
 
-        private T? SetProperties<T>(DataRow dr, T obj)
+        private T? SetProperties<T>(DataRow? dr, T? obj)
         {
             List<PropertyInfo>? properties = obj?.GetType().GetProperties().ToList();
             if (properties == null || properties.Count == 0 || dr == null)
@@ -258,11 +260,11 @@ namespace VTAuftragserfassung.Database.DataAccess
             return obj;
         }
 
-        private T? ReadByCondition<T>(T dbModel, string getterColumn, string condition) where T : IDatabaseObject
-            => Read(dbModel, $"SELECT TOP 1 {getterColumn} FROM {dbModel.TableName} {condition}");
+        private T? ReadByCondition<T>(T? dbModel, string getterColumn, string condition) where T : IDatabaseObject
+            => dbModel != null ? Read(dbModel, $"SELECT TOP 1 {getterColumn} FROM {dbModel.TableName} {condition}") : default;
 
-        private List<T>? ReadAllByCondition<T>(T dbModel, string getterColumn, string condition) where T : IDatabaseObject
-            => ReadAll<T>($"SELECT {getterColumn} FROM {dbModel.TableName} {condition}");
+        private List<T>? ReadAllByCondition<T>(T? dbModel, string getterColumn, string condition) where T : IDatabaseObject
+            => dbModel != null ? ReadAll<T>($"SELECT {getterColumn} FROM {dbModel.TableName} {condition}") : default;
 
         #endregion Private Methods
     }

@@ -1,19 +1,19 @@
 ﻿@{
-    string jsonPriceFormat = Model.Artikel.Preis.ToString().Replace(',', '.');
-    Position position = Model.Position;
-    Artikel artikel = Model.Artikel;
+    string jsonPriceFormat = Model?.Artikel?.Preis.ToString().Replace(',', '.') ?? string.Empty;
+    Position? position = Model?.Position;
+    Artikel? artikel = Model?.Artikel;
 }
 
 @model PositionViewModel
 
 <div class="positionListRowWrapper">
     <div class="positionListRowContent" property-name="positionsListData">
-        <input property-name="positionData" name="FK_Artikel" value="@artikel.PK_Artikel" type="hidden" />
+        <input property-name="positionData" name="FK_Artikel" value="@artikel?.PK_Artikel" type="hidden" />
         <input data-row-id="hidden@(position.PositionsNummer)" property-name="positionData" name="SummePosition" value="@position.SummePosition" type="hidden" />
         <input property-name="articleData" name="Preis" value="@Model?.Artikel!.Preis" type="hidden" />
-        <div>@artikel.Artikelnummer</div>
-        <div>@artikel.Bezeichnung1</div>
-        <div>@artikel.Bezeichnung2 </div>
+        <div>@artikel?.Artikelnummer</div>
+        <div>@artikel?.Bezeichnung1</div>
+        <div>@artikel?.Bezeichnung2 </div>
         <div>@Html.DisplayFor(modelItem => (artikel.Preis), "FormatCurrency")</div>
         <div class="horizontal-group">
             <input class="decimalInput" property-name="positionData" name="Menge" value="1"

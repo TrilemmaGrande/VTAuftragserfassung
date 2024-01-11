@@ -34,6 +34,10 @@ namespace VTAuftragserfassung.Database.Repository
 
         public int SaveAssignmentVM(AssignmentViewModel avm)
         {
+            if (avm?.Auftrag == null)
+            {
+                return 0;
+            }
             int pkAssignment = _dataAccess.Create(avm.Auftrag);
             if (avm.PositionenVM != null && avm.PositionenVM.Count > 0)
             {
@@ -59,15 +63,15 @@ namespace VTAuftragserfassung.Database.Repository
 
         public Vertriebsmitarbeiter? GetUserByUserId(string userId) => _dataAccess.ReadUserByUserId(userId);
 
-        public List<Artikel> GetAllArticlesCached() => GetCachedModel(new Artikel());
+        public List<Artikel>? GetAllArticlesCached() => GetCachedModel(new Artikel());
 
-        public List<Kunde> GetAllCustomers() => _dataAccess.ReadAll(new Kunde());
+        public List<Kunde>? GetAllCustomers() => _dataAccess.ReadAll(new Kunde());
 
-        public List<Kunde> GetAllCustomersCached() => GetCachedModel(new Kunde());
+        public List<Kunde>? GetAllCustomersCached() => GetCachedModel(new Kunde());
 
-        public List<Gesellschafter> GetAllShareholdersCached() => GetCachedModel(new Gesellschafter());
+        public List<Gesellschafter>? GetAllShareholdersCached() => GetCachedModel(new Gesellschafter());
 
-        public List<AssignmentViewModel> GetAssignmentVMsByUserId(string userId)
+        public List<AssignmentViewModel>? GetAssignmentVMsByUserId(string userId)
         {
             List<Auftrag> assignments = _dataAccess.ReadAssignmentsByUserId(userId);
             List<Gesellschafter> shareholders = GetAllShareholdersCached();
@@ -86,7 +90,7 @@ namespace VTAuftragserfassung.Database.Repository
             return avms;
         }
 
-        public AssignmentFormViewModel GetAssignmentFormVMByUserId(string userId)
+        public AssignmentFormViewModel? GetAssignmentFormVMByUserId(string userId)
         {
             Vertriebsmitarbeiter salesStaff = GetUserByUserId(userId) ?? new();
             List<Gesellschafter> shareholders = GetAllShareholdersCached() ?? [];
@@ -102,7 +106,7 @@ namespace VTAuftragserfassung.Database.Repository
             return afvm;
         }
 
-        public PositionViewModel GetNewPositionVMByArticlePK(int articlePK)
+        public PositionViewModel? GetNewPositionVMByArticlePK(int articlePK)
         {
             List<Artikel> articles = GetAllArticlesCached();
             Artikel article = articles?.Find(i => i.PK_Artikel == articlePK)!;
@@ -122,7 +126,7 @@ namespace VTAuftragserfassung.Database.Repository
 
         public void Update<T>(T dbModel, string columnToUpdate) where T : IDatabaseObject => Update(dbModel, new[] { columnToUpdate });
 
-        public void Update<T>(T model, IEnumerable<string> columnsToUpdate = null) where T : IDatabaseObject
+        public void Update<T>(T model, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject
         {
             _dataAccess.Update(model, columnsToUpdate);
         }

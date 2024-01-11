@@ -4,8 +4,8 @@
     var jsonModel = System.Text.Json.JsonSerializer.Serialize(Model);
 
     IEnumerable<AssignmentViewModel> sortedModel = Model
-        .OrderByDescending(i => i.Auftrag.ErstelltAm)
-        .ThenByDescending(ii => ii.Auftrag.LetzteStatusAenderung);
+        .OrderByDescending(i => i.Auftrag?.ErstelltAm)
+        .ThenByDescending(ii => ii.Auftrag?.LetzteStatusAenderung);
 }
 @model List<AssignmentViewModel>
 
