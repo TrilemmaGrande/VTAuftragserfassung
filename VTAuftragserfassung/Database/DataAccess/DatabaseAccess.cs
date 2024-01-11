@@ -28,14 +28,24 @@ namespace VTAuftragserfassung.Database.DataAccess
 
         public int Create<T>(T dbModel) where T : IDatabaseObject
         {
+            if (dbModel == null)
+            {
+                return 0;
+            }
+
             string cmd = CreateInsertString(dbModel);
-            SqlParameter[] parameters = GenerateParameters(dbModel);
+            SqlParameter[]? parameters = GenerateParameters(dbModel);
 
             return _conn.ConnectionWriteGetPrimaryKey(cmd, parameters);
         }
 
         public void CreateAll<T>(List<T> dbModels) where T : IDatabaseObject
         {
+            if (dbModels == null || dbModels.Count == 0)
+            {
+                return;
+            }
+
             foreach (var dbModel in dbModels)
             {
                 string cmd = CreateInsertString(dbModel);
@@ -45,7 +55,7 @@ namespace VTAuftragserfassung.Database.DataAccess
             }
         }
 
-  
+
         public List<T>? ReadAll<T>(T dbModel) where T : IDatabaseObject
             => ReadAll<T>($"SELECT * FROM {dbModel.TableName}");
 
@@ -75,8 +85,12 @@ namespace VTAuftragserfassung.Database.DataAccess
 
         public Vertriebsmitarbeiter? ReadUserByUserId(string userId) => ReadByCondition(new Vertriebsmitarbeiter(), "*", $"WHERE MitarbeiterId = '{userId}'");
 
-        public void Update<T>(T dbModel, IEnumerable<string> columnsToUpdate = null) where T : IDatabaseObject
+        public void Update<T>(T dbModel, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject
         {
+            if (dbModel == null)
+            {
+                return;
+            }
             string cmd = CreateUpdateString(dbModel, columnsToUpdate);
             SqlParameter[] parameters = GenerateParameters(dbModel);
 
@@ -90,6 +104,10 @@ namespace VTAuftragserfassung.Database.DataAccess
 
         private string CreateInsertString<T>(T dbModel) where T : IDatabaseObject
         {
+            if (dbModel == null)
+            {
+                return string.Empty;
+            }
             IEnumerable<PropertyInfo> properties = typeof(T).GetProperties()
                 .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "PK_" + typeof(T).Name);
 
@@ -100,14 +118,19 @@ namespace VTAuftragserfassung.Database.DataAccess
             return $"INSERT INTO {tableName} ({columns}) VALUES ({values});";
         }
 
-        private string CreateUpdateString<T>(T dbModel, IEnumerable<string> columnsToUpdate) where T : IDatabaseObject
+        private string CreateUpdateString<T>(T dbModel, IEnumerable<string>? columnsToUpdate) where T : IDatabaseObject
         {
+            if (dbModel == null)
+            {
+                return string.Empty;
+            }
+
             string modelName = typeof(T).Name;
 
             IEnumerable<PropertyInfo> properties = typeof(T).GetProperties()
                 .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "PK_" + modelName);
 
-            int modelPk = (int)typeof(T).GetProperty("PK_" + modelName).GetValue(dbModel);
+            int modelPk = (int)(typeof(T).GetProperty("PK_" + modelName)?.GetValue(dbModel) ?? 0);
             string tableName = properties.First().GetValue(dbModel)?.ToString()?.Trim('\'') ?? "";
 
             IEnumerable<PropertyInfo> propertiesToUpdate = columnsToUpdate != null
@@ -119,8 +142,13 @@ namespace VTAuftragserfassung.Database.DataAccess
             return $"UPDATE {tableName} SET {setClause} WHERE PK_{modelName} = {modelPk};";
         }
 
-        private SqlParameter[] GenerateParameters<T>(T dbModel) where T : IDatabaseObject
+        private SqlParameter[]? GenerateParameters<T>(T dbModel) where T : IDatabaseObject
         {
+            if (dbModel == null)
+            {
+                return null;
+            }
+
             var parameters = typeof(T).GetProperties()
                 .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "PK_" + typeof(T).Name)
                 .Skip(1)
@@ -134,8 +162,8 @@ namespace VTAuftragserfassung.Database.DataAccess
         {
             return prop =>
             {
-                var paramName = $"@{prop.Name}";
-                var propValue = prop.GetValue(dbModel);
+                string paramName = $"@{prop.Name}";
+                object? propValue = prop.GetValue(dbModel);
 
                 if (prop.PropertyType == typeof(bool))
                 {
@@ -154,7 +182,11 @@ namespace VTAuftragserfassung.Database.DataAccess
 
         private T? Read<T>(T dbModel, string cmd) where T : IDatabaseObject
         {
-            DataTable dt = _conn.ConnectionRead(cmd);
+            if (dbModel == null || string.IsNullOrEmpty(cmd))
+            {
+                return default;
+            }
+            DataTable? dt = _conn.ConnectionRead(cmd);
             if (dt != null && dt.Rows.Count > 0)
             {
                 PropertyInfo[] properties = dbModel.GetType().GetProperties();
@@ -178,8 +210,12 @@ namespace VTAuftragserfassung.Database.DataAccess
 
         private List<T>? ReadAll<T>(string cmd) where T : IDatabaseObject
         {
+            if (string.IsNullOrEmpty(cmd))
+            {
+                return default;
+            }
             List<T> listOfT = [];
-            DataTable dt = _conn.ConnectionRead(cmd);
+            DataTable? dt = _conn.ConnectionRead(cmd);
             if (dt != null && dt.Rows.Count > 0)
             {
                 foreach (DataRow dr in dt.Rows)
@@ -197,8 +233,8 @@ namespace VTAuftragserfassung.Database.DataAccess
 
         private T? SetProperties<T>(DataRow dr, T obj)
         {
-            List<PropertyInfo>? properties = obj == null ? null : obj!.GetType().GetProperties().ToList();
-            if (properties == null || properties.Count == 0)
+            List<PropertyInfo>? properties = obj?.GetType().GetProperties().ToList();
+            if (properties == null || properties.Count == 0 || dr == null)
             {
                 return default;
             }

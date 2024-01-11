@@ -13,10 +13,7 @@ namespace VTAuftragserfassung.Database.Connection
 
         #region Public Constructors
 
-        public SqlConnector(string connectionString)
-        {
-            _connectionString = connectionString;
-        }
+        public SqlConnector(string connectionString) => _connectionString = connectionString;
 
         #endregion Public Constructors
 
@@ -27,15 +24,15 @@ namespace VTAuftragserfassung.Database.Connection
             try
             {
 
-                using (SqlConnection sqlConn = new SqlConnection(_connectionString))
+                using (SqlConnection sqlConn = new(_connectionString))
                 {
                     sqlConn.Open();
 
-                    using (SqlCommand cmd = new SqlCommand(command, sqlConn))
+                    using (SqlCommand cmd = new(command, sqlConn))
                     {
-                        using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                        using (SqlDataAdapter adapter = new(cmd))
                         {
-                            DataTable ds = new DataTable();
+                            DataTable ds = new();
                             adapter.Fill(ds);
 
                             return ds;
@@ -55,11 +52,11 @@ namespace VTAuftragserfassung.Database.Connection
         {
             try
             {
-                using (SqlConnection sqlConn = new SqlConnection(_connectionString))
+                using (SqlConnection sqlConn = new(_connectionString))
                 {
                     sqlConn.Open();
 
-                    using (SqlCommand cmd = new SqlCommand(command, sqlConn))
+                    using (SqlCommand cmd = new(command, sqlConn))
                     {
                         return cmd.ExecuteScalar();
                     }
@@ -72,17 +69,16 @@ namespace VTAuftragserfassung.Database.Connection
             }
         }
 
-        public int ConnectionWriteGetPrimaryKey(string command, SqlParameter[] parameters)
+        public int ConnectionWriteGetPrimaryKey(string command, SqlParameter[]? parameters)
         {
-            int dataSetPrimaryKey = -1;
-
+            int dataSetPrimaryKey = 0;
             try
             {
-                using (SqlConnection sqlConn = new SqlConnection(_connectionString))
+                using (SqlConnection sqlConn = new(_connectionString))
                 {
                     sqlConn.Open();
 
-                    using (SqlCommand cmd = new SqlCommand(command, sqlConn))
+                    using (SqlCommand cmd = new(command, sqlConn))
                     {
                         cmd.Parameters.AddRange(parameters);
                         cmd.CommandText += "; SELECT SCOPE_IDENTITY();";
@@ -100,19 +96,17 @@ namespace VTAuftragserfassung.Database.Connection
             {
                 Console.WriteLine($"Fehler beim Schreiben in Datenbank: {ex.Message}");
             }
+            return dataSetPrimaryKey == -1 ? 0 : dataSetPrimaryKey;
 
-            return dataSetPrimaryKey;
         }
-        public void ConnectionWrite(string command, SqlParameter[] parameters)
+        public void ConnectionWrite(string command, SqlParameter[]? parameters)
         {
             try
             {
-
-
-                using (SqlConnection sqlConn = new SqlConnection(_connectionString))
+                using (SqlConnection sqlConn = new(_connectionString))
                 {
                     sqlConn.Open();
-                    using (SqlCommand cmd = new SqlCommand(command, sqlConn))
+                    using (SqlCommand cmd = new(command, sqlConn))
                     {
                         cmd.Parameters.AddRange(parameters);
                         cmd.ExecuteNonQuery();

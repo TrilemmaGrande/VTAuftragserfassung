@@ -37,16 +37,22 @@ namespace VTAuftragserfassung.Database.Repository
             int pkAssignment = _dataAccess.Create(avm.Auftrag);
             if (avm.PositionenVM != null && avm.PositionenVM.Count > 0)
             {
-                List<Position> positions = [];
-                avm.PositionenVM.ForEach(i =>
-                {
-                    i.Position.FK_Auftrag = pkAssignment;
-                    positions.Add(i.Position);
-                });
-                _dataAccess.CreateAll(positions);
+                CreatePositions(avm.PositionenVM, pkAssignment);
             }
+
             UpdateCachedModel(new AssignmentViewModel());
             return pkAssignment;
+        }
+
+        private void CreatePositions(List<PositionViewModel> positions, int pkAssignment)
+        {
+            List<Position> positionList = positions.Select(i =>
+            {
+                i.Position.FK_Auftrag = pkAssignment;
+                return i.Position;
+            }).ToList();
+
+            _dataAccess.CreateAll(positionList);
         }
 
         public Auth? GetAuthByUserPk(int userPk) => _dataAccess.ReadObjectByForeignKey(new Auth(), new Vertriebsmitarbeiter(), userPk);
@@ -100,14 +106,16 @@ namespace VTAuftragserfassung.Database.Repository
         {
             List<Artikel> articles = GetAllArticlesCached();
             Artikel article = articles?.Find(i => i.PK_Artikel == articlePK)!;
-            PositionViewModel pvm = new();
-            pvm.Artikel = article;
-            pvm.Position = new()
+            PositionViewModel pvm = new()
             {
-                FK_Artikel = articlePK,
-                Menge = 1,
-                SummePosition = article.Preis,
-                TableName = "vta_Position"
+                Artikel = article,
+                Position = new()
+                {
+                    FK_Artikel = articlePK,
+                    Menge = 1,
+                    SummePosition = article.Preis,
+                    TableName = "vta_Position"
+                }
             };
             return pvm;
         }

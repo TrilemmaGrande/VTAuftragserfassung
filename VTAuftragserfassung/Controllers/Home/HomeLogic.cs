@@ -65,23 +65,30 @@ namespace VTAuftragserfassung.Controllers.Home
         }
 
         public int CreateAssignment(AssignmentViewModel avm)
-        {
-            if (avm == null)
+        {           
+            Vertriebsmitarbeiter? salesStaff = _repo.GetUserByUserId(_userId);
+            if (avm?.Auftrag == null || salesStaff == null)
             {
                 return 0;
             }
-           avm.Auftrag.FK_Vertriebsmitarbeiter = _repo.GetUserByUserId(_userId).PK_Vertriebsmitarbeiter;
-           return _repo.SaveAssignmentVM(avm);
+            int salesStaffPK = salesStaff.PK_Vertriebsmitarbeiter;
+            avm.Auftrag.FK_Vertriebsmitarbeiter = salesStaffPK;
+            int assignmentPK = _repo.SaveAssignmentVM(avm);
+            return assignmentPK;
         }
 
         public int CreateCustomer(Kunde customer)
         {
-            return _repo.SaveCustomer(customer);
+            return customer != null ? _repo.SaveCustomer(customer) : 0;
+
         }
 
         public void UpdateAssignmentStatus(int assignmentPK, string assignmentStatus)
         {
-            Enum.TryParse(assignmentStatus, out Auftragsstatus status);
+            if (!Enum.TryParse(assignmentStatus, out Auftragsstatus status) || assignmentPK <= 0)
+            {
+                return;
+            }
             Auftrag assignment = new() { PK_Auftrag = assignmentPK, Auftragsstatus = status };
             _repo.Update(assignment, "Auftragsstatus");
         }
