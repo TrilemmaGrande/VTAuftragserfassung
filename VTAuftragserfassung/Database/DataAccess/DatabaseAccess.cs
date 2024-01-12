@@ -1,7 +1,6 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
-using System.Reflection.Metadata.Ecma335;
 using VTAuftragserfassung.Database.Connection;
 using VTAuftragserfassung.Models;
 using VTAuftragserfassung.Models.ViewModels;
@@ -56,7 +55,6 @@ namespace VTAuftragserfassung.Database.DataAccess
             }
         }
 
-
         public List<T>? ReadAll<T>(T? dbModel) where T : IDatabaseObject
             => dbModel != null ? ReadAll<T>($"SELECT * FROM {dbModel.TableName}") : null;
 
@@ -73,18 +71,21 @@ namespace VTAuftragserfassung.Database.DataAccess
             where T2 : IDatabaseObject
             => dbModel != null && foreignModel != null ? ReadAllByCondition(dbModel, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}") : default;
 
-        public List<Auftrag>? ReadAssignmentsByUserId(string userId)
-            => !string.IsNullOrEmpty(userId) ? ReadAllByCondition(new Auftrag(), "*",
-                    $"INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) " +
-                    $"WHERE MitarbeiterId = '{userId}'") : null;
+        public List<Auftrag>? ReadAssignmentsPaginatedByUserId(string userId, int page, int linesPerPage)
+           => !string.IsNullOrEmpty(userId) ? ReadAllByCondition(new Auftrag(), "*",
+                  $"INNER JOIN vta_Vertriebsmitarbeiter ON (vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) " +
+                  $"WHERE MitarbeiterId = '{userId}' " +
+                  $"ORDER BY ErstelltAm DESC, LetzteStatusAenderung DESC " +
+                  $"OFFSET {(page - 1) * linesPerPage} ROWS " +
+                  $"FETCH NEXT {linesPerPage} ROWS ONLY") : null;
 
-        public List<PositionViewModel>? ReadPositionVMsByUserId(string userId)
-            => !string.IsNullOrEmpty(userId) ? ReadAllByCondition(new PositionViewModel(), "*",
+        public List<PositionViewModel>? ReadPositionVMsByAssignmentPKs(List<int>? assignmentPKs)
+            => assignmentPKs != null && assignmentPKs.Any() ? ReadAllByCondition(new PositionViewModel(), "*",
                     $"INNER JOIN vta_Auftrag ON ( vta_Position.FK_Auftrag = vta_Auftrag.PK_Auftrag)" +
                     $"INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter)" +
-                    $"WHERE MitarbeiterId = '{userId}'") : null;
+                    $"WHERE FK_Auftrag IN ({string.Join(",", assignmentPKs)})") : null;
 
-        public Vertriebsmitarbeiter? ReadUserByUserId(string userId) 
+        public Vertriebsmitarbeiter? ReadUserByUserId(string userId)
             => !string.IsNullOrEmpty(userId) ? ReadByCondition(new Vertriebsmitarbeiter(), "*", $"WHERE MitarbeiterId = '{userId}'") : null;
 
         public void Update<T>(T? dbModel, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject
@@ -98,7 +99,6 @@ namespace VTAuftragserfassung.Database.DataAccess
 
             _conn.ConnectionWrite(cmd, parameters);
         }
-
 
         #endregion Public Methods
 
@@ -167,7 +167,11 @@ namespace VTAuftragserfassung.Database.DataAccess
                 string paramName = $"@{prop.Name}";
                 object? propValue = prop.GetValue(dbModel);
 
-                if (prop.PropertyType == typeof(bool))
+                if (propValue == null || propValue == DBNull.Value)
+                {
+                    return new SqlParameter(paramName, DBNull.Value);
+                }
+                else if (prop.PropertyType == typeof(bool))
                 {
                     return new SqlParameter(paramName, (bool)propValue ? 1 : 0);
                 }
@@ -177,7 +181,7 @@ namespace VTAuftragserfassung.Database.DataAccess
                 }
                 else
                 {
-                    return new SqlParameter(paramName, propValue ?? DBNull.Value);
+                    return new SqlParameter(paramName, propValue);
                 }
             };
         }

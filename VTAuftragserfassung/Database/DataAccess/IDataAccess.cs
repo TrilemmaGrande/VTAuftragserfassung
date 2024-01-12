@@ -13,13 +13,13 @@ namespace VTAuftragserfassung.Database.DataAccess
 
         public List<T>? ReadAll<T>(T? dbModel) where T : IDatabaseObject;
 
-        List<Auftrag>? ReadAssignmentsByUserId(string userId);
+        List<Auftrag>? ReadAssignmentsPaginatedByUserId(string userId, int page, int linesPerPage);
 
-        T1? ReadObjectByForeignKey<T1, T2>(T1? model, T2? foreignModel, int fk)
+        T1? ReadObjectByForeignKey<T1, T2>(T1? dbModel, T2? foreignModel, int fk)
             where T1 : DataAccess.IDatabaseObject
             where T2 : DataAccess.IDatabaseObject;
 
-        List<PositionViewModel>? ReadPositionVMsByUserId(string userId);
+        List<PositionViewModel>? ReadPositionVMsByAssignmentPKs(List<int>? assignmentPKs);
 
         Vertriebsmitarbeiter? ReadUserByUserId(string userId);
         void Update<T>(T? dbModel, IEnumerable<string>? columnsToUpdate = null) where T : DataAccess.IDatabaseObject;

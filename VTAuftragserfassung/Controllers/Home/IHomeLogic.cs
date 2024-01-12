@@ -7,7 +7,7 @@ namespace VTAuftragserfassung.Controllers.Home
     {
         #region Public Methods
 
-        public List<AssignmentViewModel>? GetAssignmentViewModels(int page);
+        public List<AssignmentViewModel>? GetAssignmentViewModels(int page, int linesPerPage);
 
         public AssignmentFormViewModel? GetAssignmentFormViewModel();
 

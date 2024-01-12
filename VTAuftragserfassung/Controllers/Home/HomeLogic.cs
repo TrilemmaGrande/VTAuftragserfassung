@@ -29,9 +29,9 @@ namespace VTAuftragserfassung.Controllers.Home
 
         #region Public Methods
 
-        public List<AssignmentViewModel>? GetAssignmentViewModels(int page)
+        public List<AssignmentViewModel>? GetAssignmentViewModels(int page, int linesPerPage)
         {
-            return !string.IsNullOrEmpty(_userId) && page > 0 ? _repo.GetAssignmentVMsByUserId(_userId, page) : [];
+            return !string.IsNullOrEmpty(_userId) && page > 0 ? _repo.GetAssignmentVMsPaginatedByUserId(_userId, page, linesPerPage) : [];
         }
 
         public Artikel? GetArticleByPK(int articlePK)

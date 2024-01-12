@@ -22,9 +22,9 @@ namespace VTAuftragserfassung.Controllers.Home
 
         #region Public Methods
 
-        public IActionResult Assignments(int page)
+        public IActionResult Assignments(int page, int linesPerPage)
         {
-            List<AssignmentViewModel> avm = _logic.GetAssignmentViewModels(page);
+            List<AssignmentViewModel>? avm = _logic.GetAssignmentViewModels(page, linesPerPage);
             return View(avm);
         }
 
@@ -39,7 +39,7 @@ namespace VTAuftragserfassung.Controllers.Home
         [HttpGet("/Home/NewAssignment")]
         public PartialViewResult NewAssignment()
         {
-            AssignmentFormViewModel afvm = _logic.GetAssignmentFormViewModel();
+            AssignmentFormViewModel? afvm = _logic.GetAssignmentFormViewModel();
             return PartialView("Partials/AssignmentForm", afvm);
         }
 
@@ -70,28 +70,28 @@ namespace VTAuftragserfassung.Controllers.Home
         [HttpGet("/Home/ShareholderDetailsPartial/{shareholderPK}")]
         public PartialViewResult GetShareholderDetailsPartial(int shareholderPK)
         {
-            Gesellschafter shareholder = _logic.GetShareholderByPK(shareholderPK);
+            Gesellschafter? shareholder = _logic.GetShareholderByPK(shareholderPK);
             return PartialView("Partials/ShareholderDetails", shareholder);
         }
 
         [HttpGet("/Home/ShareholderFormPartial/")]
         public PartialViewResult GetShareholderFormPartial()
         {
-            List<Gesellschafter> shareholders = _logic.GetAllShareholders();
+            List<Gesellschafter>? shareholders = _logic.GetAllShareholders();
             return PartialView("Partials/ShareholderForm", shareholders);
         }
 
         [HttpGet("/Home/AddCustomerDetailsPartial/{customerPK}")]
         public PartialViewResult AddCustomerDetailsPartial(int customerPK)
         {
-            Kunde customer = _logic.GetCustomerByPK(customerPK);
+            Kunde? customer = _logic.GetCustomerByPK(customerPK);
             return PartialView("Partials/CustomerDetails", customer);
         }
 
         [HttpGet("/Home/AddPositionListRowFormPartial/{articlePK}")]
         public PartialViewResult AddPositionListRowFormPartial(int articlePK, int positionNr)
         {
-            PositionViewModel pvm = _logic.GetPositionViewModel(articlePK);
+            PositionViewModel? pvm = _logic.GetPositionViewModel(articlePK);
             pvm.Position!.PositionsNummer = positionNr;
             return PartialView("Partials/PositionListRowForm", pvm);
         }

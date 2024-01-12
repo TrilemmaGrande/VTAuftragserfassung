@@ -25,6 +25,7 @@ namespace VTAuftragserfassung.Database.Repository
         #endregion Public Constructors
 
         #region Public Methods
+
         public int SaveCustomer(Kunde? customer)
         {
             if (customer == null)
@@ -58,11 +59,13 @@ namespace VTAuftragserfassung.Database.Repository
             {
                 return;
             }
-            List<Position>? positionList = positions.Select(i =>
-            {
-                i.Position.FK_Auftrag = pkAssignment;
-                return i.Position;
-            }).ToList();
+            List<Position>? positionList = positions
+                .Where(i => i.Position != null)
+                .Select(i =>
+                {
+                    i.Position!.FK_Auftrag = pkAssignment;
+                    return i.Position;
+                }).ToList();
 
             _dataAccess.CreateAll(positionList);
         }
@@ -79,19 +82,24 @@ namespace VTAuftragserfassung.Database.Repository
 
         public List<Gesellschafter>? GetAllShareholdersCached() => GetCachedModel(new Gesellschafter());
 
-        public List<AssignmentViewModel>? GetAssignmentVMsByUserId(string userId)
+        public List<AssignmentViewModel>? GetAssignmentVMsPaginatedByUserId(string userId, int page, int linesPerPage)
         {
-            List<Auftrag> assignments = _dataAccess.ReadAssignmentsByUserId(userId);
-            List<Gesellschafter> shareholders = GetAllShareholdersCached();
-            List<Artikel> articles = GetAllArticlesCached();
-            List<Kunde> customers = GetAllCustomersCached();
-            List<PositionViewModel> pvms = _dataAccess.ReadPositionVMsByUserId(userId);
+            List<Auftrag>? assignments = _dataAccess.ReadAssignmentsPaginatedByUserId(userId, page, linesPerPage);
+            List<int>? assignmentPKs = assignments?.Select(i => i.PK_Auftrag).ToList();
+            List<Gesellschafter>? shareholders = GetAllShareholdersCached();
+            List<Artikel>? articles = GetAllArticlesCached();
+            List<Kunde>? customers = GetAllCustomersCached();
+            List<PositionViewModel>? pvms = _dataAccess.ReadPositionVMsByAssignmentPKs(assignmentPKs);
 
-            List<AssignmentViewModel> avms = assignments.Select(i => new AssignmentViewModel() { Auftrag = i }).ToList();
+            List<AssignmentViewModel>? avms = assignments?.Select(i => new AssignmentViewModel() { Auftrag = i }).ToList();
+            if (avms == null || articles == null || customers == null || shareholders == null)
+            {
+                return null;
+            }
             foreach (var avm in avms)
             {
-                avm.PositionenVM!.AddRange(pvms.Where(i => i.Position?.FK_Auftrag == avm.Auftrag?.PK_Auftrag));
-                avm.PositionenVM!.ForEach(item => item.Artikel = articles.Find(i => i.PK_Artikel == item.Position?.FK_Artikel));
+                avm.PositionenVM!.AddRange(pvms!.Where(i => i.Position?.FK_Auftrag == avm.Auftrag?.PK_Auftrag));
+                avm.PositionenVM!.ForEach(item => item.Artikel = articles?.Find(i => i.PK_Artikel == item.Position?.FK_Artikel));
                 avm.Kunde = customers.Find(i => i.PK_Kunde == avm.Auftrag?.FK_Kunde);
                 avm.Gesellschafter = shareholders.Find(i => i.PK_Gesellschafter == avm.Kunde?.FK_Gesellschafter);
             }
