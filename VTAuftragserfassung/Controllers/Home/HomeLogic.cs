@@ -29,7 +29,7 @@ namespace VTAuftragserfassung.Controllers.Home
 
         #region Public Methods
 
-        public List<AssignmentViewModel> GetAssignmentViewModels()
+        public List<AssignmentViewModel> GetAssignmentViewModels(int page)
         {
             return !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentVMsByUserId(_userId) : [];
         }

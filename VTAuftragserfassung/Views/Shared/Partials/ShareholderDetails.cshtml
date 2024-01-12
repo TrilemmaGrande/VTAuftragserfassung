@@ -1,9 +1,9 @@
-﻿@model Gesellschafter
+﻿@model Gesellschafter?
 
 <div  class="form" id="shareholderDetails">
     <label>Gesellschafter</label>
     <select property-name="shareholderData" name="PK_Gesellschafter" class="form-control" disabled>
-        @if (Model != null && Model.PK_Gesellschafter != 0)
+        @if (Model?.PK_Gesellschafter != null)
         {
             <option value="@Model.PK_Gesellschafter">@Model.Firmenname</option>
         }

@@ -1,8 +1,8 @@
 ﻿
 @{
-    var jsonModel = System.Text.Json.JsonSerializer.Serialize(Model.Kunden);
+    var jsonModel = System.Text.Json.JsonSerializer.Serialize(Model?.Kunden) ?? string.Empty;
 }
-@model AssignmentFormViewModel
+@model AssignmentFormViewModel?
 
 <input data-name="assigmentCustomerFK" value="" type="hidden" />
 <input data-row-id="hiddenAssignmentSum" property-name="assignmentData" name="SummeAuftrag" value="" type="hidden" />
@@ -32,7 +32,7 @@
         </div>
     </div>
     <div class="ModuleWrapper">
-        @await Html.PartialAsync("Partials/PositionListForm", Model.Artikel)     
+        @await Html.PartialAsync("Partials/PositionListForm", Model!.Artikel)     
         @await Html.PartialAsync("Partials/AssignmentSumForm")
     </div>
     <div class="ModuleWrapper">
@@ -44,7 +44,7 @@
     <div class="ModuleWrapper">
         <div class="gridContentContainer gridListContent2 ">
             <div>
-                @Html.DisplayFor(modelItem => Model.Vertriebsmitarbeiter, "SalesStaffInformation")
+                @Html.DisplayFor(modelItem => Model!.Vertriebsmitarbeiter, "SalesStaffInformation")
             </div>
             <div class="alignContentEndContainer">
                 <a class="btn btn-primary" onclick="saveNewAssignment()">Auftrag anlegen</a>

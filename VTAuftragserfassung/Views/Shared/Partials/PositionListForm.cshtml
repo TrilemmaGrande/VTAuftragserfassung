@@ -1,7 +1,7 @@
 ﻿@{
-    var jsonModel = System.Text.Json.JsonSerializer.Serialize(Model);
+    var jsonModel = System.Text.Json.JsonSerializer.Serialize(Model) ?? string.Empty;
 }
-@model List<Artikel>
+@model List<Artikel>?
 
 <div>
     <label id="searchBarLabel">Artikel auswählen:</label><br />

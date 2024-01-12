@@ -1,12 +1,15 @@
-﻿@model List<Gesellschafter>
+﻿@model List<Gesellschafter>?
 
 <div class="form" id="shareholderForm">
     <label>Gesellschafter</label>
     <select property-name="customerData" name="FK_Gesellschafter" class="form-control" id="selectedShareholder" required>
-       <option value="0">...</option>           
-        @foreach (var item in Model)
+        <option value="0">...</option>
+        @if (Model != null)
         {
-            <option value="@item.PK_Gesellschafter">@item.Firmenname</option>
+            @foreach (var item in Model)
+            {
+                <option value="@item.PK_Gesellschafter">@item.Firmenname</option>
+            }
         }
     </select>
 </div>

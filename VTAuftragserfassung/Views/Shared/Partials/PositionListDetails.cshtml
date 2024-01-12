@@ -1,4 +1,4 @@
-﻿@model List<PositionViewModel>
+﻿@model List<PositionViewModel>?
 
 <div class="headerListWrapper">
     <div class="gridListContentContainer gridListContent8">
@@ -13,9 +13,12 @@
 </div>
 <div>
     <div>
-        @foreach (var pvm in Model)
+        @if (Model != null)
         {
-            @await Html.PartialAsync("Partials/PositionListRowDetails", pvm)
+            @foreach (var pvm in Model)
+            {
+                @await Html.PartialAsync("Partials/PositionListRowDetails", pvm)
+            }
         }
     </div>
 </div>

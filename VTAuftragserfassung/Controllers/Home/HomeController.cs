@@ -22,9 +22,9 @@ namespace VTAuftragserfassung.Controllers.Home
 
         #region Public Methods
 
-        public IActionResult Assignments()
+        public IActionResult Assignments(int page)
         {
-            List<AssignmentViewModel> avm = _logic.GetAssignmentViewModels();
+            List<AssignmentViewModel> avm = _logic.GetAssignmentViewModels(page);
             return View(avm);
         }
 

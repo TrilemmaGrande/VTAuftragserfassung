@@ -29,7 +29,7 @@
                             <div class="btn btnNav" asp-controller="Home" onclick="openAssignmentForm()">Neuer Auftrag</div>
                         </li>
                     </ul>
-                    <label class="txtNav align-self-end">Benutzer: @User.Identity?.Name</label>
+                    <label class="txtNav align-self-end">Benutzer: @User?.Identity?.Name</label>
                     <a class="btn btnLogout" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
                 </div>
             </div>
