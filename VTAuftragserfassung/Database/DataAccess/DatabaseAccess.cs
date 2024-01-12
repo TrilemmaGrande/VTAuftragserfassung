@@ -72,7 +72,7 @@ namespace VTAuftragserfassung.Database.DataAccess
             => dbModel != null && foreignModel != null ? ReadAllByCondition(dbModel, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}") : default;
 
         public List<Auftrag>? ReadAssignmentsPaginatedByUserId(string userId, int page, int linesPerPage)
-           => !string.IsNullOrEmpty(userId) ? ReadAllByCondition(new Auftrag(), "*",
+           => !string.IsNullOrEmpty(userId) && page > 0 && linesPerPage > 0 ? ReadAllByCondition(new Auftrag(), "*",
                   $"INNER JOIN vta_Vertriebsmitarbeiter ON (vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) " +
                   $"WHERE MitarbeiterId = '{userId}' " +
                   $"ORDER BY ErstelltAm DESC, LetzteStatusAenderung DESC " +
