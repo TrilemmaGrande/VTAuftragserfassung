@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using VTAuftragserfassung.Database.DataAccess;
 
-namespace VTAuftragserfassung.Models
+namespace VTAuftragserfassung.Models.DBO
 {
     public class Artikel : IDatabaseObject
     {

@@ -1,7 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 using VTAuftragserfassung.Database.DataAccess;
+using VTAuftragserfassung.Models.Enum;
 
-namespace VTAuftragserfassung.Models
+namespace VTAuftragserfassung.Models.DBO
 {
     public class Auftrag : IDatabaseObject
     {

@@ -1,4 +1,4 @@
-﻿using VTAuftragserfassung.Models.ViewModels;
+﻿using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Controllers.Login
 {

@@ -1,4 +1,4 @@
-﻿namespace VTAuftragserfassung.Models.ViewModels
+﻿namespace VTAuftragserfassung.Models.ViewModel
 {
     public class LoginViewModel
     {

@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using VTAuftragserfassung.Models;
-using VTAuftragserfassung.Models.ViewModels;
+using VTAuftragserfassung.Models.DBO;
+using VTAuftragserfassung.Models.Shared;
+using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Controllers.Home
 {
@@ -22,18 +23,25 @@ namespace VTAuftragserfassung.Controllers.Home
 
         #region Public Methods
 
-        public IActionResult Assignments(int page, int linesPerPage)
-        {
-            List<AssignmentViewModel>? avm = _logic.GetAssignmentViewModels(page, linesPerPage);
-            return View(avm);
-        }
-
         public IActionResult Dashboard() => View();
 
         public IActionResult Logout()
         {
             _logic.Logout();
             return RedirectToAction("Index", "Login");
+        }
+
+        [HttpPost("/Home/AssignmentsPartial/")]
+        public PartialViewResult Assignments([FromBody] Pagination pagination )
+        {
+            List<AssignmentViewModel>? avm = _logic.GetAssignmentViewModels(pagination);
+            return avm?.Count > 0 ? PartialView("Partials/Assignments", avm) : PartialView("Partials/Assignments", null);
+        }
+
+        [HttpPost("/Home/PaginationMenuPartial")]
+        public PartialViewResult GetPaginationMenuPartial([FromBody] Pagination pagination)
+        {
+            return PartialView("Partials/PaginationMenu", pagination);
         }
 
         [HttpGet("/Home/NewAssignment")]

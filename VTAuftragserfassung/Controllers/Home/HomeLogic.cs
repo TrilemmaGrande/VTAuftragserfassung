@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using VTAuftragserfassung.Database.Repository;
-using VTAuftragserfassung.Models;
-using VTAuftragserfassung.Models.ViewModels;
+using VTAuftragserfassung.Models.DBO;
+using VTAuftragserfassung.Models.Enum;
+using VTAuftragserfassung.Models.Shared;
+using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Controllers.Home
 {
@@ -29,35 +31,22 @@ namespace VTAuftragserfassung.Controllers.Home
 
         #region Public Methods
 
-        public List<AssignmentViewModel>? GetAssignmentViewModels(int page, int linesPerPage)
+        public List<AssignmentViewModel>? GetAssignmentViewModels(Pagination? pagination)
         {
-            return !string.IsNullOrEmpty(_userId) && page > 0 ? _repo.GetAssignmentVMsPaginatedByUserId(_userId, page, linesPerPage) : [];
+            return (!string.IsNullOrEmpty(_userId) && pagination != null && pagination.Page > 0)
+                ? _repo.GetAssignmentVMsPaginatedByUserId(_userId, pagination)
+                : null;
         }
 
-        public Artikel? GetArticleByPK(int articlePK)
-        {
-            return _repo.GetAllArticlesCached()?.Find(i => i.PK_Artikel == articlePK);
-        }
+        public Artikel? GetArticleByPK(int articlePK) => _repo.GetAllArticlesCached()?.Find(i => i.PK_Artikel == articlePK);
 
-        public Kunde? GetCustomerByPK(int customerPK)
-        {
-            return _repo.GetAllCustomersCached()?.Find(i => i.PK_Kunde == customerPK);
-        }
+        public Kunde? GetCustomerByPK(int customerPK) => _repo.GetAllCustomersCached()?.Find(i => i.PK_Kunde == customerPK);
 
-        public AssignmentFormViewModel? GetAssignmentFormViewModel()
-        {
-            return !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentFormVMByUserId(_userId) : new();
-        }
+        public AssignmentFormViewModel? GetAssignmentFormViewModel() => !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentFormVMByUserId(_userId) : new();
 
-        public List<Gesellschafter>? GetAllShareholders()
-        {
-            return _repo.GetAllShareholdersCached();
-        }
+        public List<Gesellschafter>? GetAllShareholders() => _repo.GetAllShareholdersCached();
 
-        public Gesellschafter? GetShareholderByPK(int shareholderPK)
-        {
-            return _repo.GetAllShareholdersCached()?.Find(i => i.PK_Gesellschafter == shareholderPK)!;
-        }
+        public Gesellschafter? GetShareholderByPK(int shareholderPK) => _repo.GetAllShareholdersCached()?.Find(i => i.PK_Gesellschafter == shareholderPK)!;
 
         public PositionViewModel? GetPositionViewModel(int articlePK, int positionNr)
         {
@@ -83,11 +72,7 @@ namespace VTAuftragserfassung.Controllers.Home
             return assignmentPK;
         }
 
-        public int CreateCustomer(Kunde? customer)
-        {
-            return customer != null ? _repo.SaveCustomer(customer) : 0;
-
-        }
+        public int CreateCustomer(Kunde? customer) => customer != null ? _repo.SaveCustomer(customer) : 0;
 
         public void UpdateAssignmentStatus(int assignmentPK, string assignmentStatus)
         {
@@ -99,10 +84,8 @@ namespace VTAuftragserfassung.Controllers.Home
             _repo.Update(assignment, "Auftragsstatus");
         }
 
-        public void Logout()
-        {
+        public void Logout() =>
             _httpContextAccessor.HttpContext?.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        }
 
         #endregion Public Methods
     }

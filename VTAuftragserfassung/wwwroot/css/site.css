@@ -334,7 +334,19 @@ label {
         font-size: 14px;
     }
 
-/*Assignment List*/
+/* Pagination */
+
+.paginationMenu {
+    display: grid;
+    height: 1rem;
+    width: 12rem;
+    grid-template-columns: repeat(4, minmax(0px, 2fr));
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+}
+
+/* Assignment List*/
 
 .assignmentListRowWrapper {
     background-color: #f9f9f9;
@@ -391,29 +403,6 @@ label {
     width: 100%;
 }
 
-
-/* Position List */
-
-.positionListRowWrapper {
-    background-color: #f2f2f2;
-    cursor: pointer;
-}
-
-.positionListRowContent {
-    display: grid;
-    grid-template-columns: repeat(8, minmax(100px, 1fr));
-    background-color: #f2f2f2;
-    border-bottom: dotted 1px #165b9e6b;
-    padding: 2.5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.decimalInput {
-    width: 50px;
-    margin: 0;
-    padding: 0 2px;
-}
 /* New Assignment */
 .assignmentModalContainer {
     position: fixed;
@@ -445,6 +434,29 @@ label {
     border-radius: 4px;
     background-color: #f8f8f8;
     resize: none;
+}
+
+/* Position List */
+
+.positionListRowWrapper {
+    background-color: #f2f2f2;
+    cursor: pointer;
+}
+
+.positionListRowContent {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(100px, 1fr));
+    background-color: #f2f2f2;
+    border-bottom: dotted 1px #165b9e6b;
+    padding: 2.5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.decimalInput {
+    width: 50px;
+    margin: 0;
+    padding: 0 2px;
 }
 
 /* Shareholder */

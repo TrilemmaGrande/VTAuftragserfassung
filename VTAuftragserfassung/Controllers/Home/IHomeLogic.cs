@@ -1,5 +1,6 @@
-﻿using VTAuftragserfassung.Models;
-using VTAuftragserfassung.Models.ViewModels;
+﻿using VTAuftragserfassung.Models.DBO;
+using VTAuftragserfassung.Models.Shared;
+using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Controllers.Home
 {
@@ -7,7 +8,7 @@ namespace VTAuftragserfassung.Controllers.Home
     {
         #region Public Methods
 
-        public List<AssignmentViewModel>? GetAssignmentViewModels(int page, int linesPerPage);
+        public List<AssignmentViewModel>? GetAssignmentViewModels(Pagination pagination);
 
         public AssignmentFormViewModel? GetAssignmentFormViewModel();
 

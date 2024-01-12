@@ -1,7 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 using VTAuftragserfassung.Database.DataAccess;
+using VTAuftragserfassung.Models.DBO;
 
-namespace VTAuftragserfassung.Models.ViewModels
+namespace VTAuftragserfassung.Models.ViewModel
 {
     public class AssignmentFormViewModel : IDatabaseObject
     {

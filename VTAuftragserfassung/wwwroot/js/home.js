@@ -13,8 +13,61 @@ function checkboxCheckedToInt(checked) {
     return checked ? "1" : "0";
 }
 
+// Main
+
+function setMainPage(view) {
+    let main = document.querySelector('main');
+    if (main && view) {
+        main.innerHTML = '';
+        main.appendChild(view);
+    }
+}
+
+// Pagination
+
+function getPagination(viewName) {
+    let paginationModel = { page: 1, linesPerPage: 20 };
+    let localStoragePage = localStorage.getItem(viewName + 'paginationSettings');
+    if (localStoragePage != null) {
+        paginationModel = JSON.parse(localStoragePage);
+    }
+    else {
+        setPaginationToDefault(viewName);
+    }
+    return paginationModel;
+}
+
+function setPagination(viewName, pagination) {
+    localStorage.setItem(viewName + 'paginationSettings', JSON.stringify(pagination));
+}
+
+function setPaginationToDefault(viewName) {
+    localStorage.setItem(viewName + 'paginationSettings', JSON.stringify({ page: 1, linesPerPage: 20 }));
+}
+
 // Assignment List
 
+function changePageAssignmentList(page, linesPerPage)
+{
+    let paginationModel = getPagination('assignment');
+    paginationModel.page = page ?? paginationModel.page;
+    paginationModel.linesPerPage = linesPerPage ?? paginationModel.linesPerPage;
+    setPagination('assignment',paginationModel);
+    setAssignmentList(paginationModel);
+}
+
+function openAssignmentList() {
+    let paginationModel = getPagination('assignment');
+    setAssignmentList(paginationModel);
+}
+
+function setAssignmentList(paginationModel) {
+    let view = document.createElement('div')
+    view.innerHTML = backendRequestPOST("/Home/AssignmentsPartial/", paginationModel);
+    let paginationEle = view.querySelector('#paginationMenu');
+    paginationEle.innerHTML = backendRequestPOST("/Home/PaginationMenuPartial", paginationModel);
+    setMainPage(view);
+}
 function toggleAssignmentDetails(ele) {
     let openEle = ele.parentElement.querySelector('.assignmentListRowWrapper.show');
     if (openEle) { openEle.classList.remove('show') };
@@ -32,8 +85,10 @@ function openAssignmentForm() {
     let main = document.querySelector('main');
     if (main) {
         main.parentNode.insertBefore(modalDiv, main.nextSibling);
-    }
+    };
 }
+
+
 
 function removeOldAssignmentForm() {
     let oldAssignment = document.getElementsByClassName('assignmentModalContainer');
@@ -71,7 +126,7 @@ function saveNewAssignment() {
             positionViewObj.Artikel[obj3.getAttribute('name')] = obj3.value;
         });
 
-        positionList.push(positionViewObj);        
+        positionList.push(positionViewObj);
     });
 
     assignmentData.forEach((obj4, idx4) => {
@@ -260,7 +315,7 @@ function searchResultSelected(modelPK, targetElementId) {
     else if (targetElementId == "selectedCustomer") {
         selectedCustomer(modelPK, targetElementId);
     }
-    
+
     document.getElementById("searchTable").remove();
     document.getElementsByClassName("searchResult")[0].remove();
     let searchBarElement = document.getElementsByClassName("searchBar");

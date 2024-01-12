@@ -1,5 +1,6 @@
-﻿using VTAuftragserfassung.Models;
-using VTAuftragserfassung.Models.ViewModels;
+﻿using VTAuftragserfassung.Models.DBO;
+using VTAuftragserfassung.Models.Shared;
+using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Database.DataAccess
 {
@@ -13,7 +14,7 @@ namespace VTAuftragserfassung.Database.DataAccess
 
         public List<T>? ReadAll<T>(T? dbModel) where T : IDatabaseObject;
 
-        List<Auftrag>? ReadAssignmentsPaginatedByUserId(string userId, int page, int linesPerPage);
+        List<Auftrag>? ReadAssignmentsPaginatedByUserId(string userId,Pagination? pagination);
 
         T1? ReadObjectByForeignKey<T1, T2>(T1? dbModel, T2? foreignModel, int fk)
             where T1 : DataAccess.IDatabaseObject

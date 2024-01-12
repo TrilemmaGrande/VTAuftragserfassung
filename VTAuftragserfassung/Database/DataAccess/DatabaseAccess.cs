@@ -2,8 +2,9 @@
 using System.Data.SqlClient;
 using System.Reflection;
 using VTAuftragserfassung.Database.Connection;
-using VTAuftragserfassung.Models;
-using VTAuftragserfassung.Models.ViewModels;
+using VTAuftragserfassung.Models.DBO;
+using VTAuftragserfassung.Models.Shared;
+using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Database.DataAccess
 {
@@ -71,13 +72,13 @@ namespace VTAuftragserfassung.Database.DataAccess
             where T2 : IDatabaseObject
             => dbModel != null && foreignModel != null ? ReadAllByCondition(dbModel, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}") : default;
 
-        public List<Auftrag>? ReadAssignmentsPaginatedByUserId(string userId, int page, int linesPerPage)
-           => !string.IsNullOrEmpty(userId) && page > 0 && linesPerPage > 0 ? ReadAllByCondition(new Auftrag(), "*",
+        public List<Auftrag>? ReadAssignmentsPaginatedByUserId(string userId, Pagination? pagination)
+           => !string.IsNullOrEmpty(userId) && pagination != null && pagination.Page > 0 ? ReadAllByCondition(new Auftrag(), "*",
                   $"INNER JOIN vta_Vertriebsmitarbeiter ON (vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) " +
                   $"WHERE MitarbeiterId = '{userId}' " +
                   $"ORDER BY ErstelltAm DESC, LetzteStatusAenderung DESC " +
-                  $"OFFSET {(page - 1) * linesPerPage} ROWS " +
-                  $"FETCH NEXT {linesPerPage} ROWS ONLY") : null;
+                  $"OFFSET {pagination.Offset} ROWS " +
+                  $"FETCH NEXT {pagination.LinesPerPage} ROWS ONLY") : null;
 
         public List<PositionViewModel>? ReadPositionVMsByAssignmentPKs(List<int>? assignmentPKs)
             => assignmentPKs != null && assignmentPKs.Any() ? ReadAllByCondition(new PositionViewModel(), "*",

@@ -1,6 +1,7 @@
 ﻿using VTAuftragserfassung.Database.DataAccess;
-using VTAuftragserfassung.Models;
-using VTAuftragserfassung.Models.ViewModels;
+using VTAuftragserfassung.Models.DBO;
+using VTAuftragserfassung.Models.Shared;
+using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Database.Repository
 {
@@ -18,7 +19,7 @@ namespace VTAuftragserfassung.Database.Repository
 
         public Auth? GetAuthByUserPk(int userPk);
 
-        public List<AssignmentViewModel>? GetAssignmentVMsPaginatedByUserId(string userId, int page, int linesPerPage);
+        public List<AssignmentViewModel>? GetAssignmentVMsPaginatedByUserId(string userId, Pagination? pagination);
 
         public AssignmentFormViewModel? GetAssignmentFormVMByUserId(string userId);
 

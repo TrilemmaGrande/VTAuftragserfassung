@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using VTAuftragserfassung.Database.DataAccess;
-using VTAuftragserfassung.Models;
-using VTAuftragserfassung.Models.ViewModels;
+using VTAuftragserfassung.Models.DBO;
+using VTAuftragserfassung.Models.Shared;
+using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Database.Repository
 {
@@ -82,9 +83,9 @@ namespace VTAuftragserfassung.Database.Repository
 
         public List<Gesellschafter>? GetAllShareholdersCached() => GetCachedModel(new Gesellschafter());
 
-        public List<AssignmentViewModel>? GetAssignmentVMsPaginatedByUserId(string userId, int page, int linesPerPage)
+        public List<AssignmentViewModel>? GetAssignmentVMsPaginatedByUserId(string userId, Pagination? pagination)
         {
-            List<Auftrag>? assignments = _dataAccess.ReadAssignmentsPaginatedByUserId(userId, page, linesPerPage);
+            List<Auftrag>? assignments = _dataAccess.ReadAssignmentsPaginatedByUserId(userId, pagination);
             List<int>? assignmentPKs = assignments?.Select(i => i.PK_Auftrag).ToList();
             List<Gesellschafter>? shareholders = GetAllShareholdersCached();
             List<Artikel>? articles = GetAllArticlesCached();
@@ -98,10 +99,19 @@ namespace VTAuftragserfassung.Database.Repository
             }
             foreach (var avm in avms)
             {
-                avm.PositionenVM!.AddRange(pvms!.Where(i => i.Position?.FK_Auftrag == avm.Auftrag?.PK_Auftrag));
-                avm.PositionenVM!.ForEach(item => item.Artikel = articles?.Find(i => i.PK_Artikel == item.Position?.FK_Artikel));
-                avm.Kunde = customers.Find(i => i.PK_Kunde == avm.Auftrag?.FK_Kunde);
-                avm.Gesellschafter = shareholders.Find(i => i.PK_Gesellschafter == avm.Kunde?.FK_Gesellschafter);
+                if (avm.PositionenVM != null && avm?.Auftrag != null && pvms != null)
+                {
+                    avm.PositionenVM.AddRange(pvms.Where(i => i.Position?.FK_Auftrag == avm.Auftrag.PK_Auftrag));
+                    avm.PositionenVM.ForEach(item => item.Artikel = articles.Find(i => i.PK_Artikel == item.Position?.FK_Artikel));
+                }
+                if (avm?.Kunde != null && avm?.Auftrag != null)
+                {
+                    avm.Kunde = customers.Find(i => i.PK_Kunde == avm.Auftrag.FK_Kunde);
+                }
+                if (avm?.Gesellschafter != null && avm.Kunde != null)
+                {
+                    avm.Gesellschafter = shareholders.Find(i => i.PK_Gesellschafter == avm.Kunde.FK_Gesellschafter);
+                }
             }
             return avms;
         }

@@ -1,6 +1,6 @@
 ﻿using VTAuftragserfassung.Database.DataAccess;
 
-namespace VTAuftragserfassung.Models
+namespace VTAuftragserfassung.Models.DBO
 {
     public class Vertriebsmitarbeiter : IDatabaseObject
     {

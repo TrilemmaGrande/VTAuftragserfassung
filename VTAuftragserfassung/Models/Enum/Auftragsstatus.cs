@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace VTAuftragserfassung.Models
+namespace VTAuftragserfassung.Models.Enum
 {
     public enum Auftragsstatus
     {

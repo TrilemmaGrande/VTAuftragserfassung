@@ -1,0 +1,18 @@
+﻿
+@model Pagination 
+<a class="btn btn-small btn-secondary" onclick="changePageAssignmentList((@Model.Page - 1), null)"><</a>
+<div class="value">@Model.Page</div>
+<a class="btn btn-small btn-secondary"  onclick="changePageAssignmentList((@Model.Page + 1), null)">></a>
+<select onchange="changePageAssignmentList(null, this.value)" class="form-control" id="linesPerPage">
+    @foreach (var pageAmount in Model.LinesPerPageOptions)
+    {
+        @if (pageAmount == Model.LinesPerPage)
+        {
+            @:<option value="@pageAmount" selected>@pageAmount</option>
+        }
+        else
+        {
+            @:<option value="@pageAmount">@pageAmount</option>
+        }
+    }
+</select>

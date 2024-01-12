@@ -1,10 +1,10 @@
 ﻿using System.Security.Claims;
 using VTAuftragserfassung.Database.Repository;
-using VTAuftragserfassung.Models.ViewModels;
-using VTAuftragserfassung.Models;
+using VTAuftragserfassung.Models.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using VTAuftragserfassung.Models.DBO;
 
 namespace VTAuftragserfassung.Controllers.Login
 {
