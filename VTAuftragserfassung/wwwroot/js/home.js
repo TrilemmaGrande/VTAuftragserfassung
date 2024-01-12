@@ -52,12 +52,19 @@ function changePageAssignmentList(page, linesPerPage)
     let paginationModel = getPagination('assignment');
     paginationModel.page = page ?? paginationModel.page;
     paginationModel.linesPerPage = linesPerPage ?? paginationModel.linesPerPage;
+    if (paginationModel.page < 1) {
+        return;
+    }
     setPagination('assignment',paginationModel);
     setAssignmentList(paginationModel);
 }
 
 function openAssignmentList() {
     let paginationModel = getPagination('assignment');
+    if (paginationModel.page == null || paginationModel.linesPerPage == null) {
+        setPaginationToDefault('assignment');
+        paginationModel = getPagination('assignment');
+    }
     setAssignmentList(paginationModel);
 }
 
@@ -137,6 +144,7 @@ function saveNewAssignment() {
     backendRequestPOST("/Home/CreateNewAssignment/", assignmentViewObj);
 
     closeNewAssignment();
+    changePageAssignmentList(1, null);
 }
 
 

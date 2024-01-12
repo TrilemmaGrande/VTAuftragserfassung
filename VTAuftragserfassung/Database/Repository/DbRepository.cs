@@ -99,16 +99,16 @@ namespace VTAuftragserfassung.Database.Repository
             }
             foreach (var avm in avms)
             {
-                if (avm.PositionenVM != null && avm?.Auftrag != null && pvms != null)
+                if (avm?.Auftrag != null && pvms != null)
                 {
                     avm.PositionenVM.AddRange(pvms.Where(i => i.Position?.FK_Auftrag == avm.Auftrag.PK_Auftrag));
                     avm.PositionenVM.ForEach(item => item.Artikel = articles.Find(i => i.PK_Artikel == item.Position?.FK_Artikel));
                 }
-                if (avm?.Kunde != null && avm?.Auftrag != null)
+                if (avm?.Auftrag != null)
                 {
                     avm.Kunde = customers.Find(i => i.PK_Kunde == avm.Auftrag.FK_Kunde);
                 }
-                if (avm?.Gesellschafter != null && avm.Kunde != null)
+                if (avm.Kunde != null)
                 {
                     avm.Gesellschafter = shareholders.Find(i => i.PK_Gesellschafter == avm.Kunde.FK_Gesellschafter);
                 }
