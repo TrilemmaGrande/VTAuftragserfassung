@@ -29,42 +29,42 @@ namespace VTAuftragserfassung.Controllers.Home
 
         #region Public Methods
 
-        public List<AssignmentViewModel> GetAssignmentViewModels(int page)
+        public List<AssignmentViewModel>? GetAssignmentViewModels(int page)
         {
-            return !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentVMsByUserId(_userId) : [];
+            return !string.IsNullOrEmpty(_userId) && page > 0 ? _repo.GetAssignmentVMsByUserId(_userId, page) : [];
         }
 
-        public Artikel GetArticleByPK(int articlePK)
+        public Artikel? GetArticleByPK(int articlePK)
         {
-            return _repo.GetAllArticlesCached().Find(i => i.PK_Artikel == articlePK)!;
+            return _repo.GetAllArticlesCached()?.Find(i => i.PK_Artikel == articlePK);
         }
 
-        public Kunde GetCustomerByPK(int customerPK)
+        public Kunde? GetCustomerByPK(int customerPK)
         {
-            return _repo.GetAllCustomersCached().Find(i => i.PK_Kunde == customerPK)!;
+            return _repo.GetAllCustomersCached()?.Find(i => i.PK_Kunde == customerPK);
         }
 
-        public AssignmentFormViewModel GetAssignmentFormViewModel()
+        public AssignmentFormViewModel? GetAssignmentFormViewModel()
         {
             return !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentFormVMByUserId(_userId) : new();
         }
 
-        public List<Gesellschafter> GetAllShareholders()
+        public List<Gesellschafter>? GetAllShareholders()
         {
             return _repo.GetAllShareholdersCached();
         }
 
-        public Gesellschafter GetShareholderByPK(int shareholderPK)
+        public Gesellschafter? GetShareholderByPK(int shareholderPK)
         {
-            return _repo.GetAllShareholdersCached().Find(i => i.PK_Gesellschafter == shareholderPK)!;
+            return _repo.GetAllShareholdersCached()?.Find(i => i.PK_Gesellschafter == shareholderPK)!;
         }
 
-        public PositionViewModel GetPositionViewModel(int articlePK)
+        public PositionViewModel? GetPositionViewModel(int articlePK)
         {
             return _repo.GetNewPositionVMByArticlePK(articlePK);
         }
 
-        public int CreateAssignment(AssignmentViewModel avm)
+        public int CreateAssignment(AssignmentViewModel? avm)
         {           
             Vertriebsmitarbeiter? salesStaff = _repo.GetUserByUserId(_userId);
             if (avm?.Auftrag == null || salesStaff == null)
@@ -77,7 +77,7 @@ namespace VTAuftragserfassung.Controllers.Home
             return assignmentPK;
         }
 
-        public int CreateCustomer(Kunde customer)
+        public int CreateCustomer(Kunde? customer)
         {
             return customer != null ? _repo.SaveCustomer(customer) : 0;
 
@@ -89,7 +89,7 @@ namespace VTAuftragserfassung.Controllers.Home
             {
                 return;
             }
-            Auftrag assignment = new() { PK_Auftrag = assignmentPK, Auftragsstatus = status };
+            Auftrag? assignment = new() { PK_Auftrag = assignmentPK, Auftragsstatus = status };
             _repo.Update(assignment, "Auftragsstatus");
         }
 
