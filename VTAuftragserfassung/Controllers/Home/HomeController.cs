@@ -91,8 +91,11 @@ namespace VTAuftragserfassung.Controllers.Home
         [HttpGet("/Home/AddPositionListRowFormPartial/{articlePK}")]
         public PartialViewResult AddPositionListRowFormPartial(int articlePK, int positionNr)
         {
-            PositionViewModel? pvm = _logic.GetPositionViewModel(articlePK);
-            pvm.Position!.PositionsNummer = positionNr;
+            PositionViewModel? pvm = _logic.GetPositionViewModel(articlePK, positionNr);
+            if (pvm?.Position != null)
+            {
+                pvm.Position.PositionsNummer = positionNr;
+            }            
             return PartialView("Partials/PositionListRowForm", pvm);
         }
 

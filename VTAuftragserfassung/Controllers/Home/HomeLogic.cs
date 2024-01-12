@@ -59,13 +59,19 @@ namespace VTAuftragserfassung.Controllers.Home
             return _repo.GetAllShareholdersCached()?.Find(i => i.PK_Gesellschafter == shareholderPK)!;
         }
 
-        public PositionViewModel? GetPositionViewModel(int articlePK)
+        public PositionViewModel? GetPositionViewModel(int articlePK, int positionNr)
         {
-            return _repo.GetNewPositionVMByArticlePK(articlePK);
+            PositionViewModel? pvm = _repo.GetNewPositionVMByArticlePK(articlePK);
+            if (pvm?.Position == null)
+            {
+                return null;
+            }
+            pvm.Position.PositionsNummer = positionNr;
+            return pvm;
         }
 
         public int CreateAssignment(AssignmentViewModel? avm)
-        {           
+        {
             Vertriebsmitarbeiter? salesStaff = _repo.GetUserByUserId(_userId);
             if (avm?.Auftrag == null || salesStaff == null)
             {
