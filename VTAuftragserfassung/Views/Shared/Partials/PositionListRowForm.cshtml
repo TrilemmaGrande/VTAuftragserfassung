@@ -10,11 +10,16 @@
     <div class="positionListRowContent" property-name="positionsListData">
         <input property-name="positionData" name="FK_Artikel" value="@artikel?.PK_Artikel" type="hidden" />
         <input data-row-id="hidden@(position?.PositionsNummer)" property-name="positionData" name="SummePosition" value="@position?.SummePosition" type="hidden" />
-        <input property-name="articleData" name="Preis" value="@Model?.Artikel?.Preis" type="hidden" />
+        <input property-name="articleData" name="Preis" value="@jsonPriceFormat" type="hidden" />
         <div>@artikel?.Artikelnummer</div>
         <div>@artikel?.Bezeichnung1</div>
         <div>@artikel?.Bezeichnung2 </div>
-        <div>@Html.DisplayFor(modelItem => (artikel!.Preis), "FormatCurrency")</div>
+        <div>
+            @if (artikel?.Preis != null)
+            {
+                @Html.DisplayFor(modelItem => (artikel.Preis), "FormatCurrency")
+            }
+        </div>
         <div class="horizontal-group">
             <input class="decimalInput" property-name="positionData" name="Menge" value="1"
                    oninput="changePositionAmount(this, @jsonPriceFormat, @position?.PositionsNummer)" />
@@ -23,7 +28,10 @@
         </div>
         <div>@artikel?.Verpackungseinheit</div>
         <div data-row-id="@position?.PositionsNummer">
-            @Html.DisplayFor(modelItem => (position!.SummePosition), "FormatCurrency")
+            @if (position?.SummePosition != null)
+            {
+                @Html.DisplayFor(modelItem => (position.SummePosition), "FormatCurrency")
+            }
         </div>
         <div>
             <a class="btn btn-small btn-secondary" onclick="removePosition(this.parentNode.parentNode.parentNode)">x</a>

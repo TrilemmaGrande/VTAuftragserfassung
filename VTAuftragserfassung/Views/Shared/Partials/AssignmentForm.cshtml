@@ -32,7 +32,7 @@
         </div>
     </div>
     <div class="ModuleWrapper">
-        @await Html.PartialAsync("Partials/PositionListForm", Model!.Artikel)     
+        @await Html.PartialAsync("Partials/PositionListForm", Model?.Artikel)
         @await Html.PartialAsync("Partials/AssignmentSumForm")
     </div>
     <div class="ModuleWrapper">
@@ -44,7 +44,10 @@
     <div class="ModuleWrapper">
         <div class="gridContentContainer gridListContent2 ">
             <div>
-                @Html.DisplayFor(modelItem => Model!.Vertriebsmitarbeiter, "SalesStaffInformation")
+                @if (Model?.Vertriebsmitarbeiter != null)
+                {
+                    @Html.DisplayFor(modelItem => Model.Vertriebsmitarbeiter, "SalesStaffInformation")
+                }
             </div>
             <div class="alignContentEndContainer">
                 <a class="btn btn-primary" onclick="saveNewAssignment()">Auftrag anlegen</a>

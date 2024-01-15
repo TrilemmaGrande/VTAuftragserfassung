@@ -4,28 +4,29 @@
     var jsonModel = System.Text.Json.JsonSerializer.Serialize(Model) ?? string.Empty;
 }
 @model List<AssignmentViewModel>?
-
-<div class="headerListWrapper">
-    <div class="gridListContentContainer gridListContent9">
-        <div>Auftrag ID</div>
-        <div>Kunde</div>
-        <div>Firma</div>
-        <div>Gesellschafter</div>
-        <div>Summe Auftrag</div>
-        <div>Hat Zugabe</div>
-        <div>Erstellt Am</div>
-        <div>Letzte Statusänderung</div>
-        <div>Status</div>
+    <div class="alignContentEndContainer">
+        <div class="paginationMenu" id="paginationMenu">
+        </div>
     </div>
-</div>
-<div class="gridContainer">
-    @if (Model != null)
-    {
-        @foreach (var row in Model)
+    <div class="headerListWrapper">
+        <div class="gridListContentContainer gridListContent9">
+            <div>Auftrag ID</div>
+            <div>Kunde</div>
+            <div>Firma</div>
+            <div>Gesellschafter</div>
+            <div>Summe Auftrag</div>
+            <div>Hat Zugabe</div>
+            <div>Erstellt Am</div>
+            <div>Letzte Statusänderung</div>
+            <div>Status</div>
+        </div>
+    </div>
+    <div class="gridContainer">
+        @if (Model != null)
         {
-            @await Html.PartialAsync("Partials/AssignmentListRow", row)
+            @foreach (var row in Model)
+            {
+                @await Html.PartialAsync("Partials/AssignmentListRow", row)
+            }
         }
-    }
-</div>
-<div class="paginationMenu" id="paginationMenu">
-</div>
+    </div>

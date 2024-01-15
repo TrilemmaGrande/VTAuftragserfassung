@@ -7,7 +7,7 @@ namespace VTAuftragserfassung.Controllers.Home
     public interface IHomeLogic
     {
         #region Public Methods
-
+        public string GetUserId();
         public List<AssignmentViewModel>? GetAssignmentViewModels(Pagination pagination);
 
         public AssignmentFormViewModel? GetAssignmentFormViewModel();

@@ -86,32 +86,26 @@ namespace VTAuftragserfassung.Database.Repository
         public List<AssignmentViewModel>? GetAssignmentVMsPaginatedByUserId(string userId, Pagination? pagination)
         {
             List<Auftrag>? assignments = _dataAccess.ReadAssignmentsPaginatedByUserId(userId, pagination);
-            List<int>? assignmentPKs = assignments?.Select(i => i.PK_Auftrag).ToList();
+            if (assignments == null)
+            {
+                return null;
+            }
+            List<int>? assignmentPKs = assignments.Select(i => i.PK_Auftrag).ToList();
             List<Gesellschafter>? shareholders = GetAllShareholdersCached();
             List<Artikel>? articles = GetAllArticlesCached();
             List<Kunde>? customers = GetAllCustomersCached();
-            List<PositionViewModel>? pvms = _dataAccess.ReadPositionVMsByAssignmentPKs(assignmentPKs);
-
-            List<AssignmentViewModel>? avms = assignments?.Select(i => new AssignmentViewModel() { Auftrag = i }).ToList();
-            if (avms == null || articles == null || customers == null || shareholders == null)
+            List<PositionViewModel>? pvms = _dataAccess.ReadPositionVMsByAssignmentPKs(assignmentPKs) ?? [];
+            List<AssignmentViewModel>? avms = assignments.Select(i => new AssignmentViewModel() { Auftrag = i }).ToList();
+            if (articles == null || customers == null || shareholders == null)
             {
                 return null;
             }
             foreach (var avm in avms)
             {
-                if (avm?.Auftrag != null && pvms != null)
-                {
-                    avm.PositionenVM.AddRange(pvms.Where(i => i.Position?.FK_Auftrag == avm.Auftrag.PK_Auftrag));
-                    avm.PositionenVM.ForEach(item => item.Artikel = articles.Find(i => i.PK_Artikel == item.Position?.FK_Artikel));
-                }
-                if (avm?.Auftrag != null)
-                {
-                    avm.Kunde = customers.Find(i => i.PK_Kunde == avm.Auftrag.FK_Kunde);
-                }
-                if (avm.Kunde != null)
-                {
-                    avm.Gesellschafter = shareholders.Find(i => i.PK_Gesellschafter == avm.Kunde.FK_Gesellschafter);
-                }
+                avm.PositionenVM = [.. pvms.Where(i => i.Position?.FK_Auftrag == avm.Auftrag?.PK_Auftrag)];
+                avm.PositionenVM.ForEach(item => item.Artikel = articles.Find(i => i.PK_Artikel == item.Position?.FK_Artikel));
+                avm.Kunde = customers.Find(i => i.PK_Kunde == avm.Auftrag?.FK_Kunde);
+                avm.Gesellschafter = shareholders.Find(i => i.PK_Gesellschafter == avm.Kunde?.FK_Gesellschafter);
             }
             return avms;
         }
@@ -154,9 +148,9 @@ namespace VTAuftragserfassung.Database.Repository
             return pvm;
         }
 
-        public void Update<T>(T model, string columnToUpdate) where T : IDatabaseObject => Update(model, new[] { columnToUpdate });
+        public void Update<T>(T? model, string columnToUpdate) where T : IDatabaseObject => Update(model, new[] { columnToUpdate });
 
-        public void Update<T>(T model, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject
+        public void Update<T>(T? model, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject
         {
             _dataAccess.Update(model, columnsToUpdate);
         }

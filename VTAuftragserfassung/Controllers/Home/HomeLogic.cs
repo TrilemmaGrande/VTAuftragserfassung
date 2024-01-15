@@ -38,6 +38,8 @@ namespace VTAuftragserfassung.Controllers.Home
                 : null;
         }
 
+        public string GetUserId() => !string.IsNullOrEmpty(_userId) ? _userId : string.Empty;
+
         public Artikel? GetArticleByPK(int articlePK) => _repo.GetAllArticlesCached()?.Find(i => i.PK_Artikel == articlePK);
 
         public Kunde? GetCustomerByPK(int customerPK) => _repo.GetAllCustomersCached()?.Find(i => i.PK_Kunde == customerPK);

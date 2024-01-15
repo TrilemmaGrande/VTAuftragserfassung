@@ -25,55 +25,68 @@ function setMainPage(view) {
 
 // Pagination
 
-function getPagination(viewName) {
+function getPagination(userId, viewName) {
     let paginationModel = { page: 1, linesPerPage: 20 };
-    let localStoragePage = localStorage.getItem(viewName + 'paginationSettings');
+    let localStoragePage = localStorage.getItem(userId + viewName + 'paginationSettings');
     if (localStoragePage != null) {
         paginationModel = JSON.parse(localStoragePage);
     }
     else {
-        setPaginationToDefault(viewName);
+        setPaginationToDefault(userId, viewName);
     }
     return paginationModel;
 }
 
-function setPagination(viewName, pagination) {
-    localStorage.setItem(viewName + 'paginationSettings', JSON.stringify(pagination));
+function setPagination(userId, viewName, pagination) {
+    if (pagination == null) {
+        setPaginationToDefault(userId, viewName);
+    }
+    else {
+        localStorage.setItem(userId + viewName + 'paginationSettings', JSON.stringify(pagination));
+    }
 }
 
-function setPaginationToDefault(viewName) {
-    localStorage.setItem(viewName + 'paginationSettings', JSON.stringify({ page: 1, linesPerPage: 20 }));
+function setPaginationToDefault(userId, viewName) {
+    localStorage.setItem(userId + viewName + 'paginationSettings', JSON.stringify({ page: 1, linesPerPage: 20 }));
 }
 
 // Assignment List
 
-function changePageAssignmentList(page, linesPerPage)
-{
-    let paginationModel = getPagination('assignment');
+function changePageAssignmentList(page, linesPerPage) {
+    let userId = backendRequestGET("/Home/GetUserId");
+    let paginationModel = getPagination(userId, 'assignment');
     paginationModel.page = page ?? paginationModel.page;
     paginationModel.linesPerPage = linesPerPage ?? paginationModel.linesPerPage;
     if (paginationModel.page < 1) {
         return;
     }
-    setPagination('assignment',paginationModel);
-    setAssignmentList(paginationModel);
+    let assignmentList = setAssignmentList(paginationModel);
+    if (assignmentList == null) {
+        return;
+    }
+    setPagination(userId, 'assignment', paginationModel);
 }
 
 function openAssignmentList() {
-    let paginationModel = getPagination('assignment');
+    let userId = backendRequestGET("/Home/GetUserId")
+    let paginationModel = getPagination(userId, 'assignment');
     if (paginationModel.page == null || paginationModel.linesPerPage == null) {
-        setPaginationToDefault('assignment');
-        paginationModel = getPagination('assignment');
+        setPaginationToDefault(userId, 'assignment');
+        paginationModel = getPagination(userId, 'assignment');
     }
     setAssignmentList(paginationModel);
 }
 
 function setAssignmentList(paginationModel) {
     let view = document.createElement('div')
-    view.innerHTML = backendRequestPOST("/Home/AssignmentsPartial/", paginationModel);
+    view.innerHTML = (backendRequestPOST("/Home/AssignmentsPartial/", paginationModel) ?? "");
+    if (view.innerHTML.length <= 0) {
+        return null;
+    }
     let paginationEle = view.querySelector('#paginationMenu');
-    paginationEle.innerHTML = backendRequestPOST("/Home/PaginationMenuPartial", paginationModel);
+    paginationEle.innerHTML = (backendRequestPOST("/Home/PaginationMenuPartial", paginationModel));
     setMainPage(view);
+    return 1;
 }
 function toggleAssignmentDetails(ele) {
     let openEle = ele.parentElement.querySelector('.assignmentListRowWrapper.show');

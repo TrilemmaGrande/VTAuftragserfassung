@@ -76,7 +76,7 @@ namespace VTAuftragserfassung.Database.DataAccess
            => !string.IsNullOrEmpty(userId) && pagination != null && pagination.Page > 0 ? ReadAllByCondition(new Auftrag(), "*",
                   $"INNER JOIN vta_Vertriebsmitarbeiter ON (vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) " +
                   $"WHERE MitarbeiterId = '{userId}' " +
-                  $"ORDER BY ErstelltAm DESC, LetzteStatusAenderung DESC " +
+                  $"ORDER BY ErstelltAm DESC, LetzteStatusAenderung DESC, PK_Auftrag DESC " +
                   $"OFFSET {pagination.Offset} ROWS " +
                   $"FETCH NEXT {pagination.LinesPerPage} ROWS ONLY") : null;
 

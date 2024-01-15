@@ -338,12 +338,20 @@ label {
 
 .paginationMenu {
     display: grid;
-    height: 1rem;
     width: 12rem;
     grid-template-columns: repeat(4, minmax(0px, 2fr));
     justify-content: center;
     align-items: center;
     gap: 2px;
+}
+
+.pageValue {
+    padding: 0 2.5px;
+    width: 2rem;
+    text-align: end;
+    overflow: hidden;
+    background-color: #f2f2f2;
+    white-space: nowrap;
 }
 
 /* Assignment List*/

@@ -31,11 +31,17 @@ namespace VTAuftragserfassung.Controllers.Home
             return RedirectToAction("Index", "Login");
         }
 
+        [HttpGet("Home/GetUserId")]
+        public string GetUserId()
+        {
+            return _logic.GetUserId();
+        }
+
         [HttpPost("/Home/AssignmentsPartial/")]
-        public PartialViewResult Assignments([FromBody] Pagination pagination )
+        public PartialViewResult Assignments([FromBody] Pagination pagination)
         {
             List<AssignmentViewModel>? avm = _logic.GetAssignmentViewModels(pagination);
-            return avm?.Count > 0 ? PartialView("Partials/Assignments", avm) : PartialView("Partials/Assignments", null);
+            return PartialView("Partials/Assignments", avm);
         }
 
         [HttpPost("/Home/PaginationMenuPartial")]
@@ -103,7 +109,7 @@ namespace VTAuftragserfassung.Controllers.Home
             if (pvm?.Position != null)
             {
                 pvm.Position.PositionsNummer = positionNr;
-            }            
+            }
             return PartialView("Partials/PositionListRowForm", pvm);
         }
 
