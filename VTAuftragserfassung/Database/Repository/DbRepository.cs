@@ -180,7 +180,11 @@ namespace VTAuftragserfassung.Database.Repository
             }
             List<T>? modelData = _dataAccess.ReadAll(model);
             _memoryCache.Remove(model.GetType().Name);
-            _memoryCache.Set(model.GetType().Name, modelData, TimeSpan.FromMinutes(10));
+            _memoryCache.Set(model.GetType().Name, modelData, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(12),
+                SlidingExpiration = TimeSpan.FromMinutes(60)
+            });
             return modelData;
         }
 
