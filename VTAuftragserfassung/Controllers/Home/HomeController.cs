@@ -27,6 +27,7 @@ namespace VTAuftragserfassung.Controllers.Home
 
         public IActionResult Logout()
         {
+            
             _logic.Logout();
             return RedirectToAction("Index", "Login");
         }
@@ -40,7 +41,7 @@ namespace VTAuftragserfassung.Controllers.Home
         [HttpPost("/Home/AssignmentsPartial/")]
         public PartialViewResult Assignments([FromBody] Pagination pagination)
         {
-            List<AssignmentViewModel>? avm = _logic.GetAssignmentViewModels(pagination);
+            List<AssignmentViewModel>? avm = _logic.GetAssignmentViewModels(pagination);          
             return PartialView("Partials/Assignments", avm);
         }
 
@@ -85,6 +86,7 @@ namespace VTAuftragserfassung.Controllers.Home
         public PartialViewResult GetShareholderDetailsPartial(int shareholderPK)
         {
             Gesellschafter? shareholder = _logic.GetShareholderByPK(shareholderPK);
+     
             return PartialView("Partials/ShareholderDetails", shareholder);
         }
 

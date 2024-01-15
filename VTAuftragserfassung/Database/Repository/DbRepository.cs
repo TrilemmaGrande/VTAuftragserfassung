@@ -112,16 +112,16 @@ namespace VTAuftragserfassung.Database.Repository
 
         public AssignmentFormViewModel? GetAssignmentFormVMByUserId(string userId)
         {
-            Vertriebsmitarbeiter salesStaff = GetUserByUserId(userId) ?? new();
-            List<Gesellschafter> shareholders = GetAllShareholdersCached() ?? [];
-            List<Artikel> articles = GetAllArticlesCached() ?? [];
-            List<Kunde> customers = GetAllCustomers() ?? [];
-            AssignmentFormViewModel afvm = new()
+            Vertriebsmitarbeiter? salesStaff = GetUserByUserId(userId);
+            List<Gesellschafter>? shareholders = GetAllShareholdersCached();
+            List<Artikel>? articles = GetAllArticlesCached();
+            List<Kunde>? customers = GetAllCustomersCached();
+            AssignmentFormViewModel? afvm = new()
             {
                 Vertriebsmitarbeiter = salesStaff,
-                Gesellschafter = shareholders,
-                Artikel = articles,
-                Kunden = customers
+                Gesellschafter = shareholders ?? [],
+                Artikel = articles ?? [],
+                Kunden = customers ?? []
             };
             return afvm;
         }
@@ -133,7 +133,11 @@ namespace VTAuftragserfassung.Database.Repository
             {
                 return null;
             }
-            Artikel article = articles.Find(i => i.PK_Artikel == articlePK)!;
+            Artikel? article = articles.Find(i => i.PK_Artikel == articlePK);
+            if (article == null)
+            {
+                return null;
+            }
             PositionViewModel pvm = new()
             {
                 Artikel = article,
@@ -180,11 +184,13 @@ namespace VTAuftragserfassung.Database.Repository
             }
             List<T>? modelData = _dataAccess.ReadAll(model);
             _memoryCache.Remove(model.GetType().Name);
+
             _memoryCache.Set(model.GetType().Name, modelData, new MemoryCacheEntryOptions
             {
                 AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(12),
                 SlidingExpiration = TimeSpan.FromMinutes(60)
             });
+      
             return modelData;
         }
 
