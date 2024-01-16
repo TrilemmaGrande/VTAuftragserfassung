@@ -13,6 +13,7 @@ namespace VTAuftragserfassung.Database.Repository
 
         private readonly IDataAccess<IDatabaseObject> _dataAccess;
         private readonly IMemoryCache _memoryCache;
+        private readonly MemoryCacheEntryOptions _cacheEntryOptions;
 
         #endregion Private Fields
 
@@ -22,6 +23,11 @@ namespace VTAuftragserfassung.Database.Repository
         {
             _dataAccess = dataAccess;
             _memoryCache = memoryCache;
+            _cacheEntryOptions = new MemoryCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1),
+                SlidingExpiration = TimeSpan.FromMinutes(10)
+            };
         }
 
         #endregion Public Constructors
@@ -166,11 +172,8 @@ namespace VTAuftragserfassung.Database.Repository
 
         private List<T>? GetCachedModel<T>(T? model) where T : IDatabaseObject
         {
-            if (model == null)
-            {
-                return null;
-            }
-            if (_memoryCache.TryGetValue(model.GetType().Name, out string? cachedModelJson))
+            
+            if (model != null && _memoryCache.TryGetValue(model.GetType().Name, out string? cachedModelJson))
             {
                 return JsonSerializer.Deserialize<List<T>?>(cachedModelJson!);
             }
@@ -186,11 +189,7 @@ namespace VTAuftragserfassung.Database.Repository
             List<T>? modelData = _dataAccess.ReadAll(model);
             _memoryCache.Remove(model.GetType().Name);
 
-            _memoryCache.Set(model.GetType().Name, JsonSerializer.Serialize(modelData), new MemoryCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(12),
-                SlidingExpiration = TimeSpan.FromMinutes(60)
-            });
+            _memoryCache.Set(model.GetType().Name, JsonSerializer.Serialize(modelData), _cacheEntryOptions);
 
             return modelData;
         }
