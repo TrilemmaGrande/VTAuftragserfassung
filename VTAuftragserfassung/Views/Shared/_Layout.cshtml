@@ -29,7 +29,10 @@
                             <div class="btn btnNav" onclick="openAssignmentForm()">Neuer Auftrag</div>
                         </li>
                     </ul>
-                    <label class="txtNav align-self-end">Benutzer: @User?.Identity?.Name</label>
+                    <div class="horizontal-group align-self-end" style="margin:2rem;">
+                        <img src="~/Resources/img/person-circle-outline.svg" width="40" style="margin: 0.2rem"/>
+                        <label style="font-size:16px; font-weight:bold"> @User?.Identity?.Name</label>
+                    </div>
                     <a class="btn btnLogout" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
                 </div>
             </div>

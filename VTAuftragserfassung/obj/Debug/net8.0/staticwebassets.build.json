@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "oH4ArSWQ7V9QB4DVnvEEAqvDdAJjoovNGqNamCw1ZvY=",
+  "Hash": "MYonkkQ2eUZL0pajNM9q/JsR0D5o517Fh3vPLc1HeBo=",
   "Source": "VTAuftragserfassung",
   "BasePath": "_content/VTAuftragserfassung",
   "Mode": "Default",
@@ -1269,6 +1269,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Resources\\img\\GAS_Logo_Balken.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\nils.reinshagen\\source\\repos\\VTAuftragserfassung\\VTAuftragserfassung\\wwwroot\\Resources\\img\\person-circle-outline.svg",
+      "SourceId": "VTAuftragserfassung",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\nils.reinshagen\\source\\repos\\VTAuftragserfassung\\VTAuftragserfassung\\wwwroot\\",
+      "BasePath": "_content/VTAuftragserfassung",
+      "RelativePath": "Resources/img/person-circle-outline.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Resources\\img\\person-circle-outline.svg"
     }
   ]
 }

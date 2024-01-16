@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using System.Text.Json;
 using VTAuftragserfassung.Database.DataAccess;
 using VTAuftragserfassung.Models.DBO;
 using VTAuftragserfassung.Models.Shared;
@@ -169,9 +170,9 @@ namespace VTAuftragserfassung.Database.Repository
             {
                 return null;
             }
-            if (_memoryCache.TryGetValue(model.GetType().Name, out List<T>? cachedModel))
+            if (_memoryCache.TryGetValue(model.GetType().Name, out string? cachedModelJson))
             {
-                return cachedModel ?? null;
+                return JsonSerializer.Deserialize<List<T>?>(cachedModelJson!);
             }
             return UpdateCachedModel(model);
         }
@@ -185,7 +186,7 @@ namespace VTAuftragserfassung.Database.Repository
             List<T>? modelData = _dataAccess.ReadAll(model);
             _memoryCache.Remove(model.GetType().Name);
 
-            _memoryCache.Set(model.GetType().Name, modelData, new MemoryCacheEntryOptions
+            _memoryCache.Set(model.GetType().Name, JsonSerializer.Serialize(modelData), new MemoryCacheEntryOptions
             {
                 AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(12),
                 SlidingExpiration = TimeSpan.FromMinutes(60)

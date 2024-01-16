@@ -80,10 +80,10 @@ function openAssignmentList() {
 function setAssignmentList(paginationModel) {
     let view = document.createElement('div')
     view.innerHTML = (backendRequestPOST("/Home/AssignmentsPartial/", paginationModel) ?? "");
-    if (view.innerHTML.length <= 0) {
+    let paginationEle = view.querySelector('#paginationMenu');
+    if (paginationEle == null) {
         return null;
     }
-    let paginationEle = view.querySelector('#paginationMenu');
     paginationEle.innerHTML = (backendRequestPOST("/Home/PaginationMenuPartial", paginationModel));
     setMainPage(view);
     return 1;
