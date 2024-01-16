@@ -1,0 +1,15 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">FEHLER!</h1>
+<h2 class="text-danger">Es liegt nicht an Ihnen. Wirklich. Aber scheinbar ist hier was schief gelaufen und <span style="text-size-adjust:110%">ich</span> hab nichts gemacht.</h2>
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>Anfrage ID:</strong> <code>@Model.RequestId</code>
+    </p>
+}
+

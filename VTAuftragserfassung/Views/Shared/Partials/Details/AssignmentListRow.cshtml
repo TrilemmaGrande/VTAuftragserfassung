@@ -16,6 +16,6 @@
         <div>@Html.DisplayFor(modelItem => (@Model!.Auftrag!.Auftragsstatus), "AssignmentStatus")</div>
     </div>
     <div class="assignmentDetailsPartial">
-        @await Html.PartialAsync("Partials/AssignmentDetails", Model)
+        @await Html.PartialAsync("AssignmentDetails", Model)
     </div>
 </div>

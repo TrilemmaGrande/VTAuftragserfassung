@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.Extensions.DependencyInjection;
 using System.IO.Compression;
 using VTAuftragserfassung.Controllers.Home;
 using VTAuftragserfassung.Controllers.Login;
@@ -27,14 +28,23 @@ namespace VTAuftragserfassung
             builder.Services.AddScoped<ILoginLogic, LoginLogic>();
             builder.Services.AddScoped<IHomeLogic, HomeLogic>();
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages().AddRazorOptions(
+                options =>
+                {
+                    options.ViewLocationFormats.Add("/Views/Shared/Partials/{0}.cshtml");
+                    options.ViewLocationFormats.Add("/Views/Shared/Partials/Details/{0}.cshtml");
+                    options.ViewLocationFormats.Add("/Views/Shared/Partials/Forms/{0}.cshtml");
+                });
             builder.Services.AddMemoryCache();
             builder.Services.AddResponseCompression();
             builder.Services.AddHttpContextAccessor();
+
             builder.Services.Configure<GzipCompressionProviderOptions>(
                 options =>
                 {
                     options.Level = CompressionLevel.Fastest;
                 });
+
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
                 options =>
                 {
@@ -47,6 +57,10 @@ namespace VTAuftragserfassung
 
             var app = builder.Build();
 
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
             app.UseHsts();
             app.UseHttpsRedirection();
             app.UseStaticFiles();

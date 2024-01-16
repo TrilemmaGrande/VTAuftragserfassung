@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using VTAuftragserfassung.Models;
 using VTAuftragserfassung.Models.DBO;
 using VTAuftragserfassung.Models.Shared;
 using VTAuftragserfassung.Models.ViewModel;
@@ -48,45 +50,45 @@ namespace VTAuftragserfassung.Controllers.Home
             }
             else
             {
-                return PartialView("Partials/Assignments", avm);
+                return PartialView("Assignments", avm);
             }
         }
 
         [HttpPost("/Home/PaginationMenuPartial")]
         public PartialViewResult GetPaginationMenuPartial([FromBody] Pagination pagination)
         {
-            return PartialView("Partials/PaginationMenu", pagination);
+            return PartialView("PaginationMenu", pagination);
         }
 
         [HttpGet("/Home/NewAssignment")]
         public PartialViewResult NewAssignment()
         {
             AssignmentFormViewModel? afvm = _logic.GetAssignmentFormViewModel();
-            return PartialView("Partials/AssignmentForm", afvm);
+            return PartialView("AssignmentForm", afvm);
         }
 
         [HttpPost("/Home/SearchResultPartialArticle/")]
         public PartialViewResult SearchResultPartialArticle([FromBody] List<Artikel> modelList)
         {
-            return PartialView("Partials/SearchResultArticle", modelList);
+            return PartialView("SearchResultArticle", modelList);
         }
 
         [HttpPost("/Home/SearchResultPartialCustomer/")]
         public PartialViewResult SearchResultPartialCustomer([FromBody] List<Kunde> modelList)
         {
-            return PartialView("Partials/SearchResultCustomer", modelList);
+            return PartialView("SearchResultCustomer", modelList);
         }
 
         [HttpPost("/Home/SearchResultPartialAssignment/")]
         public PartialViewResult SearchResultPartialAssignment([FromBody] List<AssignmentViewModel> modelList)
         {
-            return PartialView("Partials/SearchResultAssignment", modelList);
+            return PartialView("SearchResultAssignment", modelList);
         }
 
         [HttpGet("/Home/AddCustomerForm/")]
         public PartialViewResult AddCustomerForm()
         {
-            return PartialView("Partials/CustomerForm");
+            return PartialView("CustomerForm");
         }
 
         [HttpGet("/Home/ShareholderDetailsPartial/{shareholderPK}")]
@@ -94,21 +96,21 @@ namespace VTAuftragserfassung.Controllers.Home
         {
             Gesellschafter? shareholder = _logic.GetShareholderByPK(shareholderPK);
 
-            return PartialView("Partials/ShareholderDetails", shareholder);
+            return PartialView("ShareholderDetails", shareholder);
         }
 
         [HttpGet("/Home/ShareholderFormPartial/")]
         public PartialViewResult GetShareholderFormPartial()
         {
             List<Gesellschafter>? shareholders = _logic.GetAllShareholders();
-            return PartialView("Partials/ShareholderForm", shareholders);
+            return PartialView("ShareholderForm", shareholders);
         }
 
         [HttpGet("/Home/AddCustomerDetailsPartial/{customerPK}")]
         public PartialViewResult AddCustomerDetailsPartial(int customerPK)
         {
             Kunde? customer = _logic.GetCustomerByPK(customerPK);
-            return PartialView("Partials/CustomerDetails", customer);
+            return PartialView("CustomerDetails", customer);
         }
 
         [HttpGet("/Home/AddPositionListRowFormPartial/{articlePK}")]
@@ -119,7 +121,7 @@ namespace VTAuftragserfassung.Controllers.Home
             {
                 pvm.Position.PositionsNummer = positionNr;
             }
-            return PartialView("Partials/PositionListRowForm", pvm);
+            return PartialView("PositionListRowForm", pvm);
         }
 
         [HttpPost("/Home/CreateNewAssignment/")]
@@ -138,6 +140,12 @@ namespace VTAuftragserfassung.Controllers.Home
         public void UpdateAssignmentStatus(int assignmentPK, string assignmentStatus)
         {
             _logic.UpdateAssignmentStatus(assignmentPK, assignmentStatus);
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         #endregion Public Methods

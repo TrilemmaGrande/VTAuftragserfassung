@@ -59,8 +59,16 @@ namespace VTAuftragserfassung.Database.DataAccess
         public List<T>? ReadAll<T>(T? dbModel) where T : IDatabaseObject
             => dbModel != null ? ReadAll<T>($"SELECT * FROM {dbModel.TableName}") : null;
 
+        public List<Auftrag>? ReadAssignmentsPaginatedByUserId(string userId, Pagination? pagination)
+           => !string.IsNullOrEmpty(userId) && pagination != null && pagination.Page > 0 ? ReadAllByCondition(new Auftrag(), "*",
+                  $"INNER JOIN vta_Vertriebsmitarbeiter ON (vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) " +
+                  $"WHERE MitarbeiterId = '{userId}' " +
+                  $"ORDER BY ErstelltAm DESC, LetzteStatusAenderung DESC, PK_Auftrag DESC " +
+                  $"OFFSET {pagination.Offset} ROWS " +
+                  $"FETCH NEXT {pagination.LinesPerPage} ROWS ONLY") : null;
+
         public T1? ReadObjectByForeignKey<T1, T2>(T1? dbModel, T2? foreignModel, int fk)
-            where T1 : IDatabaseObject
+                    where T1 : IDatabaseObject
             where T2 : IDatabaseObject
             => dbModel != null && foreignModel != null ? ReadByCondition(dbModel, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}") : default;
 
@@ -71,14 +79,6 @@ namespace VTAuftragserfassung.Database.DataAccess
             where T1 : IDatabaseObject
             where T2 : IDatabaseObject
             => dbModel != null && foreignModel != null ? ReadAllByCondition(dbModel, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}") : default;
-
-        public List<Auftrag>? ReadAssignmentsPaginatedByUserId(string userId, Pagination? pagination)
-           => !string.IsNullOrEmpty(userId) && pagination != null && pagination.Page > 0 ? ReadAllByCondition(new Auftrag(), "*",
-                  $"INNER JOIN vta_Vertriebsmitarbeiter ON (vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) " +
-                  $"WHERE MitarbeiterId = '{userId}' " +
-                  $"ORDER BY ErstelltAm DESC, LetzteStatusAenderung DESC, PK_Auftrag DESC " +
-                  $"OFFSET {pagination.Offset} ROWS " +
-                  $"FETCH NEXT {pagination.LinesPerPage} ROWS ONLY") : null;
 
         public List<PositionViewModel>? ReadPositionVMsByAssignmentPKs(List<int>? assignmentPKs)
             => assignmentPKs != null && assignmentPKs.Any() ? ReadAllByCondition(new PositionViewModel(), "*",
@@ -145,22 +145,6 @@ namespace VTAuftragserfassung.Database.DataAccess
             return $"UPDATE {tableName} SET {setClause} WHERE PK_{modelName} = {modelPk};";
         }
 
-        private SqlParameter[]? GenerateParameters<T>(T? dbModel) where T : IDatabaseObject
-        {
-            if (dbModel == null)
-            {
-                return null;
-            }
-
-            var parameters = typeof(T).GetProperties()
-                .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "PK_" + typeof(T).Name)
-                .Skip(1)
-                .Select(FormatPropertyForDatabase(dbModel))
-                .ToArray();
-
-            return parameters;
-        }
-
         private Func<PropertyInfo, SqlParameter> FormatPropertyForDatabase<T>(T? dbModel) where T : IDatabaseObject
         {
             return prop =>
@@ -185,6 +169,22 @@ namespace VTAuftragserfassung.Database.DataAccess
                     return new SqlParameter(paramName, propValue);
                 }
             };
+        }
+
+        private SqlParameter[]? GenerateParameters<T>(T? dbModel) where T : IDatabaseObject
+        {
+            if (dbModel == null)
+            {
+                return null;
+            }
+
+            var parameters = typeof(T).GetProperties()
+                .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "PK_" + typeof(T).Name)
+                .Skip(1)
+                .Select(FormatPropertyForDatabase(dbModel))
+                .ToArray();
+
+            return parameters;
         }
 
         private T? Read<T>(T? dbModel, string cmd) where T : IDatabaseObject
@@ -238,6 +238,12 @@ namespace VTAuftragserfassung.Database.DataAccess
             return default;
         }
 
+        private List<T>? ReadAllByCondition<T>(T? dbModel, string getterColumn, string condition) where T : IDatabaseObject
+            => dbModel != null ? ReadAll<T>($"SELECT {getterColumn} FROM {dbModel.TableName} {condition}") : default;
+
+        private T? ReadByCondition<T>(T? dbModel, string getterColumn, string condition) where T : IDatabaseObject
+            => dbModel != null ? Read(dbModel, $"SELECT TOP 1 {getterColumn} FROM {dbModel.TableName} {condition}") : default;
+
         private T? SetProperties<T>(DataRow? dr, T? obj)
         {
             List<PropertyInfo>? properties = obj?.GetType().GetProperties().ToList();
@@ -264,12 +270,6 @@ namespace VTAuftragserfassung.Database.DataAccess
             });
             return obj;
         }
-
-        private T? ReadByCondition<T>(T? dbModel, string getterColumn, string condition) where T : IDatabaseObject
-            => dbModel != null ? Read(dbModel, $"SELECT TOP 1 {getterColumn} FROM {dbModel.TableName} {condition}") : default;
-
-        private List<T>? ReadAllByCondition<T>(T? dbModel, string getterColumn, string condition) where T : IDatabaseObject
-            => dbModel != null ? ReadAll<T>($"SELECT {getterColumn} FROM {dbModel.TableName} {condition}") : default;
 
         #endregion Private Methods
     }

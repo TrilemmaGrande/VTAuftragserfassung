@@ -3,21 +3,21 @@
 <div class="assignmentDetailsWrapper">
     <div class="gridListContentContainer gridListContent3">
         <div class="customerDetailsContainer">
-            @await Html.PartialAsync("Partials/CustomerDetails", @Model?.Kunde)
+            @await Html.PartialAsync("CustomerDetails", @Model?.Kunde)
         </div>
         <div class="shareholderDetailsContainer">
-            @await Html.PartialAsync("Partials/ShareholderDetails", @Model?.Gesellschafter)
+            @await Html.PartialAsync("ShareholderDetails", @Model?.Gesellschafter)
         </div>
     </div>
     <div class="gridListContentContainer">
-        @await Html.PartialAsync("Partials/PositionListDetails", @Model?.PositionenVM)
-        @await Html.PartialAsync("Partials/AssignmentSumDetails", @Model?.Auftrag?.SummeAuftrag)
+        @await Html.PartialAsync("PositionListDetails", @Model?.PositionenVM)
+        @await Html.PartialAsync("AssignmentSumDetails", @Model?.Auftrag?.SummeAuftrag)
     </div>
     <div class="gridListContent gridListContent2">
-        @await Html.PartialAsync("Partials/BonusDetails", @Model?.Auftrag?.HatZugabe)
+        @await Html.PartialAsync("BonusDetails", @Model?.Auftrag?.HatZugabe)
     </div>
     <div class="gridListContentContainer">
-        @await Html.PartialAsync("Partials/NoticeDetails", @Model?.Auftrag?.Hinweis)
+        @await Html.PartialAsync("NoticeDetails", @Model?.Auftrag?.Hinweis)
     </div>
     <div class="alignContentEndContainer">
         <a class="btn btn-primary" onclick="cancelAssignment(@Model?.Auftrag?.PK_Auftrag)">stornieren</a>
