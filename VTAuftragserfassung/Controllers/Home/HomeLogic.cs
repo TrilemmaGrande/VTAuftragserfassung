@@ -14,7 +14,10 @@ namespace VTAuftragserfassung.Controllers.Home
 
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IDbRepository _repo;
-        private readonly string _userId = string.Empty;
+        private string _userId
+        {
+            get { return _httpContextAccessor.HttpContext?.User.Identity?.Name ?? string.Empty; }
+        }
 
         #endregion Private Fields
 
@@ -24,7 +27,6 @@ namespace VTAuftragserfassung.Controllers.Home
         {
             _repo = repo;
             _httpContextAccessor = httpContextAccessor;
-            _userId = _httpContextAccessor.HttpContext?.User.Identity?.Name ?? string.Empty;
         }
 
         #endregion Public Constructors
@@ -38,7 +40,7 @@ namespace VTAuftragserfassung.Controllers.Home
                 : null;
         }
 
-        public string GetUserId() => !string.IsNullOrEmpty(_userId) ? _userId : string.Empty;
+        public string GetUserId() => _userId;
 
         public Artikel? GetArticleByPK(int articlePK) => _repo.GetAllArticlesCached()?.Find(i => i.PK_Artikel == articlePK);
 
@@ -48,7 +50,7 @@ namespace VTAuftragserfassung.Controllers.Home
 
         public List<Gesellschafter>? GetAllShareholders() => _repo.GetAllShareholdersCached();
 
-        public Gesellschafter? GetShareholderByPK(int shareholderPK) => _repo.GetAllShareholdersCached()?.Find(i => i.PK_Gesellschafter == shareholderPK)!;
+        public Gesellschafter? GetShareholderByPK(int shareholderPK) => _repo.GetAllShareholdersCached()?.Find(i => i.PK_Gesellschafter == shareholderPK);
 
         public PositionViewModel? GetPositionViewModel(int articlePK, int positionNr)
         {
