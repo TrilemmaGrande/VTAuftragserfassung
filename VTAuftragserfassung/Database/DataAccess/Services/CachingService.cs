@@ -40,7 +40,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
                 && cachedModelJson != null)
             {
                 return CompressorExtension.DecompressAndDeserialize<List<T>>(cachedModelJson);
-            }
+            }        
             return null;
         }
 

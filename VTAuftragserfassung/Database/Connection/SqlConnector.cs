@@ -27,10 +27,12 @@ namespace VTAuftragserfassung.Database.Connection
             }
             try
             {
-
                 using (SqlConnection sqlConn = new(_connectionString))
                 {
-                    sqlConn.Open();
+                    if (sqlConn.State != ConnectionState.Open)
+                    {
+                        sqlConn.Open();
+                    }
 
                     using (SqlCommand cmd = new(command, sqlConn))
                     {
@@ -62,7 +64,10 @@ namespace VTAuftragserfassung.Database.Connection
             {
                 using (SqlConnection sqlConn = new(_connectionString))
                 {
-                    sqlConn.Open();
+                    if (sqlConn.State != ConnectionState.Open)
+                    {
+                        sqlConn.Open();
+                    }
 
                     using (SqlCommand cmd = new(command, sqlConn))
                     {
@@ -88,7 +93,10 @@ namespace VTAuftragserfassung.Database.Connection
             {
                 using (SqlConnection sqlConn = new(_connectionString))
                 {
-                    sqlConn.Open();
+                    if (sqlConn.State != ConnectionState.Open)
+                    {
+                        sqlConn.Open();
+                    }
 
                     using (SqlCommand cmd = new(command, sqlConn))
                     {
@@ -102,6 +110,7 @@ namespace VTAuftragserfassung.Database.Connection
                             dataSetPrimaryKey = Convert.ToInt32(result);
                         }
                     }
+                    sqlConn.Close();
                 }
             }
             catch (Exception ex)
@@ -121,7 +130,10 @@ namespace VTAuftragserfassung.Database.Connection
             {
                 using (SqlConnection sqlConn = new(_connectionString))
                 {
-                    sqlConn.Open();
+                    if (sqlConn.State != ConnectionState.Open)
+                    {
+                        sqlConn.Open();
+                    }
                     using (SqlCommand cmd = new(command, sqlConn))
                     {
                         cmd.Parameters.AddRange(parameters);
@@ -133,6 +145,48 @@ namespace VTAuftragserfassung.Database.Connection
             catch (Exception ex)
             {
                 Console.WriteLine($"Fehler beim Schreiben in Datenbank: {ex.Message}");
+            }
+        }
+
+        public void ConnectionWrite(List<Tuple<string, SqlParameter[]?>> queryList)
+        {
+            using (SqlConnection sqlConn = new(_connectionString))
+            {
+                if (sqlConn.State != ConnectionState.Open)
+                {
+                    sqlConn.Open();
+                }
+                SqlCommand cmd = sqlConn.CreateCommand();
+                SqlTransaction transaction;
+                transaction = sqlConn.BeginTransaction();
+                cmd.Transaction = transaction;
+                try
+                {
+                    foreach (var cmdWithParameters in queryList)
+                    {
+                        string command = cmdWithParameters.Item1;
+                        SqlParameter[]? parameters = cmdWithParameters.Item2;
+                        if (!string.IsNullOrEmpty(command) && parameters != null)
+                        {
+                            cmd.CommandText = command;
+                            cmd.Parameters.AddRange(parameters);
+                            cmd.ExecuteNonQuery();
+                        }
+                        else
+                        {
+                            transaction.Rollback();
+                            sqlConn.Close();
+                            return;
+                        }
+                    }
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Console.WriteLine($"Fehler beim Schreiben in Datenbank: {ex.Message}");
+                }
+                sqlConn.Close();
             }
         }
 

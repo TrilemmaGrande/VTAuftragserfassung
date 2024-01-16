@@ -8,6 +8,7 @@ namespace VTAuftragserfassung.Database.Connection
         DataTable? ConnectionRead(string command);
         object? ConnectionReadScalar(string command);
         void ConnectionWrite(string command, SqlParameter[]? parameters);
+        void ConnectionWrite(List<Tuple<string, SqlParameter[]?>> queryList);
         int ConnectionWriteGetPrimaryKey(string command, SqlParameter[]? parameters);
     }
 }

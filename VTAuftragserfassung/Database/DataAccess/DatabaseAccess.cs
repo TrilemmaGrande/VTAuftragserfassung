@@ -22,7 +22,7 @@ namespace VTAuftragserfassung.Database.DataAccess
 
         public int Create<T>(T? dbModel) where T : IDatabaseObject
         {
-            return _dbAccess.Create(dbModel);
+            return _dbAccess.CreateSingle(dbModel);
         }
 
         public void CreateAll<T>(List<T>? dbModels) where T : IDatabaseObject

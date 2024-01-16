@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Text;
@@ -25,7 +26,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
 
         #region Public Methods
 
-        public int Create<T>(T? dbModel) where T : IDatabaseObject
+        public int CreateSingle<T>(T? dbModel) where T : IDatabaseObject
         {
             if (dbModel == null)
             {
@@ -45,13 +46,14 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
                 return;
             }
 
+            List<Tuple<string, SqlParameter[]?>> queryList = new();
             foreach (var dbModel in dbModels)
             {
                 string cmd = CreateInsertString(dbModel);
                 SqlParameter[]? parameters = GenerateParameters(dbModel);
-
-                _conn.ConnectionWrite(cmd, parameters);
+                queryList.Add(new Tuple<string, SqlParameter[]?>(cmd, parameters));
             }
+            _conn.ConnectionWrite(queryList);
         }
 
         public List<T>? ReadAll<T>(string cmd) where T : IDatabaseObject

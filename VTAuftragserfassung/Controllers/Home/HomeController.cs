@@ -43,6 +43,7 @@ namespace VTAuftragserfassung.Controllers.Home
         [HttpPost("/Home/AssignmentsPartial/")]
         public PartialViewResult Assignments([FromBody] Pagination pagination)
         {
+        
             List<AssignmentViewModel>? avm = _logic.GetAssignmentViewModels(pagination);
             if (avm == null)
             {
