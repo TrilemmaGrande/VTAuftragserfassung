@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
+using System.Text;
 using VTAuftragserfassung.Database.Connection;
 using VTAuftragserfassung.Models.DBO;
 using VTAuftragserfassung.Models.Shared;
@@ -111,6 +112,9 @@ namespace VTAuftragserfassung.Database.DataAccess
             {
                 return string.Empty;
             }
+
+            StringBuilder queryBuilder = new();
+
             IEnumerable<PropertyInfo> properties = typeof(T).GetProperties()
                 .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "PK_" + typeof(T).Name);
 
@@ -118,7 +122,16 @@ namespace VTAuftragserfassung.Database.DataAccess
             string columns = string.Join(", ", properties.Skip(1).Select(prop => prop.Name));
             string values = string.Join(", ", properties.Skip(1).Select(prop => $"@{prop.Name}"));
 
-            return $"INSERT INTO {tableName} ({columns}) VALUES ({values});";
+            queryBuilder.Append("INSERT INTO ")
+                .Append(tableName)
+                .Append(" (")
+                .Append(columns)
+                .Append(") VALUES (")
+                .Append(values)
+                .Append(");");
+
+
+            return queryBuilder.ToString();
         }
 
         private string CreateUpdateString<T>(T? dbModel, IEnumerable<string>? columnsToUpdate) where T : IDatabaseObject
@@ -129,6 +142,7 @@ namespace VTAuftragserfassung.Database.DataAccess
             }
 
             string modelName = typeof(T).Name;
+            StringBuilder queryBuilder = new();
 
             IEnumerable<PropertyInfo> properties = typeof(T).GetProperties()
                 .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "PK_" + modelName);
@@ -142,7 +156,16 @@ namespace VTAuftragserfassung.Database.DataAccess
 
             string setClause = string.Join(", ", propertiesToUpdate.Select(prop => $"{prop.Name} = @{prop.Name}"));
 
-            return $"UPDATE {tableName} SET {setClause} WHERE PK_{modelName} = {modelPk};";
+            queryBuilder.Append("UPDATE ")
+              .Append(tableName)
+              .Append(" SET ")
+              .Append(setClause)
+              .Append(" WHERE PK_")
+              .Append(modelName)
+              .Append(" = ")
+              .Append(modelPk);
+
+            return queryBuilder.ToString();
         }
 
         private Func<PropertyInfo, SqlParameter> FormatPropertyForDatabase<T>(T? dbModel) where T : IDatabaseObject
@@ -187,7 +210,7 @@ namespace VTAuftragserfassung.Database.DataAccess
             return parameters;
         }
 
-        private T? Read<T>(T? dbModel, string cmd) where T : IDatabaseObject
+        private T? ReadSingle<T>(T? dbModel, string cmd) where T : IDatabaseObject
         {
             if (dbModel == null || string.IsNullOrEmpty(cmd))
             {
@@ -242,7 +265,7 @@ namespace VTAuftragserfassung.Database.DataAccess
             => dbModel != null ? ReadAll<T>($"SELECT {getterColumn} FROM {dbModel.TableName} {condition}") : default;
 
         private T? ReadByCondition<T>(T? dbModel, string getterColumn, string condition) where T : IDatabaseObject
-            => dbModel != null ? Read(dbModel, $"SELECT TOP 1 {getterColumn} FROM {dbModel.TableName} {condition}") : default;
+            => dbModel != null ? ReadSingle(dbModel, $"SELECT TOP 1 {getterColumn} FROM {dbModel.TableName} {condition}") : default;
 
         private T? SetProperties<T>(DataRow? dr, T? obj)
         {

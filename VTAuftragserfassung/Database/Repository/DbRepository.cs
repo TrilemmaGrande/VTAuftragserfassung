@@ -155,7 +155,7 @@ namespace VTAuftragserfassung.Database.Repository
 
         private void CreatePositions(List<PositionViewModel>? positions, int pkAssignment)
         {
-            if (positions == null || !positions.Any())
+            if (positions == null || positions.Count == 0)
             {
                 return;
             }
