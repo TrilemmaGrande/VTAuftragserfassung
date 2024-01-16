@@ -6,6 +6,7 @@ using VTAuftragserfassung.Controllers.Home;
 using VTAuftragserfassung.Controllers.Login;
 using VTAuftragserfassung.Database.Connection;
 using VTAuftragserfassung.Database.DataAccess;
+using VTAuftragserfassung.Database.DataAccess.Services;
 using VTAuftragserfassung.Database.Repository;
 
 namespace VTAuftragserfassung
@@ -23,6 +24,8 @@ namespace VTAuftragserfassung
 
             // Add services to the container.
             builder.Services.AddSingleton<ISqlConnector>(conn => new SqlConnector(connectionString));
+            builder.Services.AddScoped<ICachingService, CachingService>();
+            builder.Services.AddScoped<IDataAccessService, DataAccessService>();
             builder.Services.AddScoped<IDataAccess<IDatabaseObject>, DatabaseAccess>();
             builder.Services.AddScoped<IDbRepository, DbRepository>();
             builder.Services.AddScoped<ILoginLogic, LoginLogic>();

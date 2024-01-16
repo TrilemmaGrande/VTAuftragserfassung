@@ -1,6 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using System.Text.Json;
-using VTAuftragserfassung.Database.DataAccess;
+﻿using VTAuftragserfassung.Database.DataAccess;
+using VTAuftragserfassung.Database.DataAccess.Services;
 using VTAuftragserfassung.Models.DBO;
 using VTAuftragserfassung.Models.Shared;
 using VTAuftragserfassung.Models.ViewModel;
@@ -11,23 +10,17 @@ namespace VTAuftragserfassung.Database.Repository
     {
         #region Private Fields
 
+        private readonly ICachingService _caching;
         private readonly IDataAccess<IDatabaseObject> _dataAccess;
-        private readonly IMemoryCache _memoryCache;
-        private readonly MemoryCacheEntryOptions _cacheEntryOptions;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public DbRepository(IDataAccess<IDatabaseObject> dataAccess, IMemoryCache memoryCache)
+        public DbRepository(IDataAccess<IDatabaseObject> dataAccess, ICachingService caching)
         {
             _dataAccess = dataAccess;
-            _memoryCache = memoryCache;
-            _cacheEntryOptions = new MemoryCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1),
-                SlidingExpiration = TimeSpan.FromMinutes(10)
-            };
+            _caching = caching;
         }
 
         #endregion Public Constructors
@@ -41,6 +34,11 @@ namespace VTAuftragserfassung.Database.Repository
         public List<Kunde>? GetAllCustomersCached() => GetCachedModel(new Kunde());
 
         public List<Gesellschafter>? GetAllShareholdersCached() => GetCachedModel(new Gesellschafter());
+
+        public Vertriebsmitarbeiter? GetUserByUserId(string userId) => _dataAccess.ReadUserByUserId(userId);
+
+        public Auth? GetAuthByUserPk(int userPk) => _dataAccess.ReadObjectByForeignKey(new Auth(), new Vertriebsmitarbeiter(), userPk);
+
 
         public AssignmentFormViewModel? GetAssignmentFormVMByUserId(string userId)
         {
@@ -85,7 +83,6 @@ namespace VTAuftragserfassung.Database.Repository
             return avms;
         }
 
-        public Auth? GetAuthByUserPk(int userPk) => _dataAccess.ReadObjectByForeignKey(new Auth(), new Vertriebsmitarbeiter(), userPk);
 
         public PositionViewModel? GetNewPositionVMByArticlePK(int articlePK)
         {
@@ -113,7 +110,7 @@ namespace VTAuftragserfassung.Database.Repository
             return pvm;
         }
 
-        public Vertriebsmitarbeiter? GetUserByUserId(string userId) => _dataAccess.ReadUserByUserId(userId);
+
 
         public int SaveAssignmentVM(AssignmentViewModel? avm)
         {
@@ -124,10 +121,9 @@ namespace VTAuftragserfassung.Database.Repository
             int pkAssignment = _dataAccess.Create(avm.Auftrag);
             if (avm.PositionenVM != null && avm.PositionenVM.Count > 0)
             {
-                CreatePositions(avm.PositionenVM, pkAssignment);
+                MatchPositions(avm.PositionenVM, pkAssignment);
             }
-
-            UpdateCachedModel(new AssignmentViewModel());
+            _caching.UpdateCachedModel(_dataAccess.ReadAll(new AssignmentViewModel()));
             return pkAssignment;
         }
 
@@ -138,7 +134,7 @@ namespace VTAuftragserfassung.Database.Repository
                 return 0;
             }
             int pk = _dataAccess.Create(customer);
-            UpdateCachedModel(new Kunde());
+            _caching.UpdateCachedModel(_dataAccess.ReadAll(new Kunde()));
             return pk;
         }
 
@@ -153,7 +149,7 @@ namespace VTAuftragserfassung.Database.Repository
 
         #region Private Methods
 
-        private void CreatePositions(List<PositionViewModel>? positions, int pkAssignment)
+        private void MatchPositions(List<PositionViewModel>? positions, int pkAssignment)
         {
             if (positions == null || positions.Count == 0)
             {
@@ -170,28 +166,9 @@ namespace VTAuftragserfassung.Database.Repository
             _dataAccess.CreateAll(positionList);
         }
 
-        private List<T>? GetCachedModel<T>(T? model) where T : IDatabaseObject
+        private List<T>? GetCachedModel<T>(T model) where T : IDatabaseObject
         {
-            
-            if (model != null && _memoryCache.TryGetValue(model.GetType().Name, out string? cachedModelJson))
-            {
-                return JsonSerializer.Deserialize<List<T>?>(cachedModelJson!);
-            }
-            return UpdateCachedModel(model);
-        }
-
-        private List<T>? UpdateCachedModel<T>(T? model) where T : IDatabaseObject
-        {
-            if (model == null)
-            {
-                return null;
-            }
-            List<T>? modelData = _dataAccess.ReadAll(model);
-            _memoryCache.Remove(model.GetType().Name);
-
-            _memoryCache.Set(model.GetType().Name, JsonSerializer.Serialize(modelData), _cacheEntryOptions);
-
-            return modelData;
+            return _caching.GetCachedModel(model) ?? _caching.UpdateCachedModel(_dataAccess.ReadAll(model));
         }
 
         #endregion Private Methods
