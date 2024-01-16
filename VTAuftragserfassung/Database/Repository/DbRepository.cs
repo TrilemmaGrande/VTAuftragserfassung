@@ -9,12 +9,12 @@ namespace VTAuftragserfassung.Database.Repository
 {
     public class DbRepository : IDbRepository
     {
-        #region Public Fields
+        #region Private Fields
 
-        public readonly IDataAccess<IDatabaseObject> _dataAccess;
-        public readonly IMemoryCache _memoryCache;
+        private readonly IDataAccess<IDatabaseObject> _dataAccess;
+        private readonly IMemoryCache _memoryCache;
 
-        #endregion Public Fields
+        #endregion Private Fields
 
         #region Public Constructors
 
@@ -28,54 +28,6 @@ namespace VTAuftragserfassung.Database.Repository
 
         #region Public Methods
 
-        public int SaveCustomer(Kunde? customer)
-        {
-            if (customer == null)
-            {
-                return 0;
-            }
-            int pk = _dataAccess.Create(customer);
-            UpdateCachedModel(new Kunde());
-            return pk;
-        }
-
-        public int SaveAssignmentVM(AssignmentViewModel? avm)
-        {
-            if (avm?.Auftrag == null)
-            {
-                return 0;
-            }
-            int pkAssignment = _dataAccess.Create(avm.Auftrag);
-            if (avm.PositionenVM != null && avm.PositionenVM.Count > 0)
-            {
-                CreatePositions(avm.PositionenVM, pkAssignment);
-            }
-
-            UpdateCachedModel(new AssignmentViewModel());
-            return pkAssignment;
-        }
-
-        private void CreatePositions(List<PositionViewModel>? positions, int pkAssignment)
-        {
-            if (positions == null || !positions.Any())
-            {
-                return;
-            }
-            List<Position>? positionList = positions
-                .Where(i => i.Position != null)
-                .Select(i =>
-                {
-                    i.Position!.FK_Auftrag = pkAssignment;
-                    return i.Position;
-                }).ToList();
-
-            _dataAccess.CreateAll(positionList);
-        }
-
-        public Auth? GetAuthByUserPk(int userPk) => _dataAccess.ReadObjectByForeignKey(new Auth(), new Vertriebsmitarbeiter(), userPk);
-
-        public Vertriebsmitarbeiter? GetUserByUserId(string userId) => _dataAccess.ReadUserByUserId(userId);
-
         public List<Artikel>? GetAllArticlesCached() => GetCachedModel(new Artikel());
 
         public List<Kunde>? GetAllCustomers() => _dataAccess.ReadAll(new Kunde());
@@ -83,6 +35,22 @@ namespace VTAuftragserfassung.Database.Repository
         public List<Kunde>? GetAllCustomersCached() => GetCachedModel(new Kunde());
 
         public List<Gesellschafter>? GetAllShareholdersCached() => GetCachedModel(new Gesellschafter());
+
+        public AssignmentFormViewModel? GetAssignmentFormVMByUserId(string userId)
+        {
+            Vertriebsmitarbeiter? salesStaff = GetUserByUserId(userId);
+            List<Gesellschafter>? shareholders = GetAllShareholdersCached();
+            List<Artikel>? articles = GetAllArticlesCached();
+            List<Kunde>? customers = GetAllCustomersCached();
+            AssignmentFormViewModel? afvm = new()
+            {
+                Vertriebsmitarbeiter = salesStaff,
+                Gesellschafter = shareholders ?? [],
+                Artikel = articles ?? [],
+                Kunden = customers ?? []
+            };
+            return afvm;
+        }
 
         public List<AssignmentViewModel>? GetAssignmentVMsPaginatedByUserId(string userId, Pagination? pagination)
         {
@@ -111,21 +79,7 @@ namespace VTAuftragserfassung.Database.Repository
             return avms;
         }
 
-        public AssignmentFormViewModel? GetAssignmentFormVMByUserId(string userId)
-        {
-            Vertriebsmitarbeiter? salesStaff = GetUserByUserId(userId);
-            List<Gesellschafter>? shareholders = GetAllShareholdersCached();
-            List<Artikel>? articles = GetAllArticlesCached();
-            List<Kunde>? customers = GetAllCustomersCached();
-            AssignmentFormViewModel? afvm = new()
-            {
-                Vertriebsmitarbeiter = salesStaff,
-                Gesellschafter = shareholders ?? [],
-                Artikel = articles ?? [],
-                Kunden = customers ?? []
-            };
-            return afvm;
-        }
+        public Auth? GetAuthByUserPk(int userPk) => _dataAccess.ReadObjectByForeignKey(new Auth(), new Vertriebsmitarbeiter(), userPk);
 
         public PositionViewModel? GetNewPositionVMByArticlePK(int articlePK)
         {
@@ -153,6 +107,35 @@ namespace VTAuftragserfassung.Database.Repository
             return pvm;
         }
 
+        public Vertriebsmitarbeiter? GetUserByUserId(string userId) => _dataAccess.ReadUserByUserId(userId);
+
+        public int SaveAssignmentVM(AssignmentViewModel? avm)
+        {
+            if (avm?.Auftrag == null)
+            {
+                return 0;
+            }
+            int pkAssignment = _dataAccess.Create(avm.Auftrag);
+            if (avm.PositionenVM != null && avm.PositionenVM.Count > 0)
+            {
+                CreatePositions(avm.PositionenVM, pkAssignment);
+            }
+
+            UpdateCachedModel(new AssignmentViewModel());
+            return pkAssignment;
+        }
+
+        public int SaveCustomer(Kunde? customer)
+        {
+            if (customer == null)
+            {
+                return 0;
+            }
+            int pk = _dataAccess.Create(customer);
+            UpdateCachedModel(new Kunde());
+            return pk;
+        }
+
         public void Update<T>(T? model, string columnToUpdate) where T : IDatabaseObject => Update(model, new[] { columnToUpdate });
 
         public void Update<T>(T? model, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject
@@ -163,6 +146,23 @@ namespace VTAuftragserfassung.Database.Repository
         #endregion Public Methods
 
         #region Private Methods
+
+        private void CreatePositions(List<PositionViewModel>? positions, int pkAssignment)
+        {
+            if (positions == null || !positions.Any())
+            {
+                return;
+            }
+            List<Position>? positionList = positions
+                .Where(i => i.Position != null)
+                .Select(i =>
+                {
+                    i.Position!.FK_Auftrag = pkAssignment;
+                    return i.Position;
+                }).ToList();
+
+            _dataAccess.CreateAll(positionList);
+        }
 
         private List<T>? GetCachedModel<T>(T? model) where T : IDatabaseObject
         {
@@ -191,7 +191,7 @@ namespace VTAuftragserfassung.Database.Repository
                 AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(12),
                 SlidingExpiration = TimeSpan.FromMinutes(60)
             });
-      
+
             return modelData;
         }
 
