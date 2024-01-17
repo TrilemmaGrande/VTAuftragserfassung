@@ -67,7 +67,8 @@ namespace VTAuftragserfassung.Database.Repository
             List<Gesellschafter>? shareholders = GetAllShareholdersCached();
             List<Artikel>? articles = GetAllArticlesCached();
             List<Kunde>? customers = GetAllCustomersCached();
-            List<PositionViewModel>? pvms = _dataAccess.ReadPositionVMsByAssignmentPKs(assignmentPKs) ?? [];
+            List<Position>? positions = _dataAccess.ReadPositionsByAssignmentPKs(assignmentPKs) ?? [];
+            List<PositionViewModel>? pvms = positions?.Select(p => new PositionViewModel() { Position = p }).ToList() ?? [];
             List<AssignmentViewModel>? avms = assignments.Select(i => new AssignmentViewModel() { Auftrag = i }).ToList();
             if (articles == null || customers == null || shareholders == null)
             {
@@ -104,7 +105,6 @@ namespace VTAuftragserfassung.Database.Repository
                     FK_Artikel = articlePK,
                     Menge = 1,
                     SummePosition = article.Preis,
-                    TableName = "vta_Position"
                 }
             };
             return pvm;
@@ -123,7 +123,6 @@ namespace VTAuftragserfassung.Database.Repository
             {
                 MatchPositions(avm.PositionenVM, pkAssignment);
             }
-            _caching.UpdateCachedModel(_dataAccess.ReadAll(new AssignmentViewModel()));
             return pkAssignment;
         }
 

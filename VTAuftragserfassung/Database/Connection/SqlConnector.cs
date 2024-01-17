@@ -82,7 +82,7 @@ namespace VTAuftragserfassung.Database.Connection
             }
         }
 
-        public int ConnectionWriteGetPrimaryKey(string command, SqlParameter[]? parameters)
+        public int ConnectionWrite(string command, SqlParameter[]? parameters)
         {
             int dataSetPrimaryKey = 0;
             if (string.IsNullOrEmpty(command) || parameters == null)
@@ -118,35 +118,7 @@ namespace VTAuftragserfassung.Database.Connection
                 Console.WriteLine($"Fehler beim Schreiben in Datenbank: {ex.Message}");
             }
             return dataSetPrimaryKey == -1 ? 0 : dataSetPrimaryKey;
-
-        }
-        public void ConnectionWrite(string command, SqlParameter[]? parameters)
-        {
-            if (string.IsNullOrEmpty(command) || parameters == null)
-            {
-                return;
-            }
-            try
-            {
-                using (SqlConnection sqlConn = new(_connectionString))
-                {
-                    if (sqlConn.State != ConnectionState.Open)
-                    {
-                        sqlConn.Open();
-                    }
-                    using (SqlCommand cmd = new(command, sqlConn))
-                    {
-                        cmd.Parameters.AddRange(parameters);
-                        cmd.ExecuteNonQuery();
-                    }
-                    sqlConn.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Fehler beim Schreiben in Datenbank: {ex.Message}");
-            }
-        }
+        }        
 
         public void ConnectionWrite(List<Tuple<string, SqlParameter[]?>> queryList)
         {

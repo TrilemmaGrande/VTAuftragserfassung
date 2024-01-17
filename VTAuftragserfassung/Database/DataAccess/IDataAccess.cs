@@ -1,6 +1,5 @@
 ﻿using VTAuftragserfassung.Models.DBO;
 using VTAuftragserfassung.Models.Shared;
-using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Database.DataAccess
 {
@@ -20,7 +19,7 @@ namespace VTAuftragserfassung.Database.DataAccess
             where T1 : DataAccess.IDatabaseObject
             where T2 : DataAccess.IDatabaseObject;
 
-        List<PositionViewModel>? ReadPositionVMsByAssignmentPKs(List<int>? assignmentPKs);
+        List<Position>? ReadPositionsByAssignmentPKs(List<int>? assignmentPKs);
 
         Vertriebsmitarbeiter? ReadUserByUserId(string userId);
         void Update<T>(T? dbModel, IEnumerable<string>? columnsToUpdate = null) where T : DataAccess.IDatabaseObject;

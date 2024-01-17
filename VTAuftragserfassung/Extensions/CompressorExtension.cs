@@ -14,8 +14,7 @@ namespace VTAuftragserfassung.Extensions
                     JsonSerializer.Serialize(zs, obj);
                 }
                 return ms.ToArray();
-            }
-
+            }            
         }
         public static T? DecompressAndDeserialize<T>(this byte[] data)
         {

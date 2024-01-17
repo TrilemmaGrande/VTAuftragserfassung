@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Extensions.DependencyInjection;
 using System.IO.Compression;
 using VTAuftragserfassung.Controllers.Home;
 using VTAuftragserfassung.Controllers.Login;

@@ -18,7 +18,7 @@ namespace VTAuftragserfassung.Controllers.Home
 
         public PositionViewModel? GetPositionViewModel(int articlePK, int positionNr);
 
-        public int CreateAssignment(AssignmentViewModel? avm);
+        public int CreateAssignment(AssignmentViewModel avm);
 
         int CreateCustomer(Kunde? customer);
 

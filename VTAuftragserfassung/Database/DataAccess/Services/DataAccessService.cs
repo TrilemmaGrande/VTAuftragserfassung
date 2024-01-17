@@ -36,7 +36,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
             string cmd = CreateInsertString(dbModel);
             SqlParameter[]? parameters = GenerateParameters(dbModel);
 
-            return _conn.ConnectionWriteGetPrimaryKey(cmd, parameters!);
+            return _conn.ConnectionWrite(cmd, parameters!);
         }
 
         public void CreateAll<T>(List<T>? dbModels) where T : IDatabaseObject

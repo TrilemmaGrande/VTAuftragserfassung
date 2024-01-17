@@ -63,10 +63,10 @@ namespace VTAuftragserfassung.Controllers.Home
             return pvm;
         }
 
-        public int CreateAssignment(AssignmentViewModel? avm)
+        public int CreateAssignment(AssignmentViewModel avm)
         {
             Vertriebsmitarbeiter? salesStaff = _repo.GetUserByUserId(_userId);
-            if (avm?.Auftrag == null || salesStaff == null)
+            if (avm?.Auftrag == null || salesStaff?.PK_Vertriebsmitarbeiter == null)
             {
                 return 0;
             }

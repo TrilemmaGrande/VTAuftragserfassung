@@ -1,7 +1,6 @@
 ﻿using VTAuftragserfassung.Database.DataAccess.Services;
 using VTAuftragserfassung.Models.DBO;
 using VTAuftragserfassung.Models.Shared;
-using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Database.DataAccess
 {
@@ -53,15 +52,15 @@ namespace VTAuftragserfassung.Database.DataAccess
             => dbModel != null && foreignModel != null ? ReadByCondition(dbModel, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}") : default;
 
         public T? ReadObjectByPrimaryKey<T>(T? dbModel, int pk) where T : IDatabaseObject
-            => dbModel != null ? ReadByCondition(dbModel, "*", $"WHERE PK_{dbModel.GetType().Name} = {pk}") : default;
+            => dbModel != null ? ReadByCondition(dbModel, "*", $"WHERE {dbModel.PrimaryKeyColumn} = {pk}") : default;
 
         public List<T1>? ReadObjectListByForeignKey<T1, T2>(T1? dbModel, T2? foreignModel, int fk)
             where T1 : IDatabaseObject
             where T2 : IDatabaseObject
             => dbModel != null && foreignModel != null ? ReadAllByCondition(dbModel, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}") : default;
 
-        public List<PositionViewModel>? ReadPositionVMsByAssignmentPKs(List<int>? assignmentPKs)
-            => assignmentPKs != null && assignmentPKs.Any() ? ReadAllByCondition(new PositionViewModel(), "*",
+        public List<Position>? ReadPositionsByAssignmentPKs(List<int>? assignmentPKs)
+            => assignmentPKs != null && assignmentPKs.Any() ? ReadAllByCondition(new Position(), "*",
                     $"INNER JOIN vta_Auftrag ON ( vta_Position.FK_Auftrag = vta_Auftrag.PK_Auftrag)" +
                     $"INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter)" +
                     $"WHERE FK_Auftrag IN ({string.Join(",", assignmentPKs)})") : null;
