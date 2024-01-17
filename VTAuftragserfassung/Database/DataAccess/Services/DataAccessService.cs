@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Text;
@@ -133,11 +132,11 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
             StringBuilder queryBuilder = new();
 
             IEnumerable<PropertyInfo> properties = typeof(T).GetProperties()
-                .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "PK_" + typeof(T).Name);
+                .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "TableName" && prop.Name != dbModel.PrimaryKeyColumn);
 
-            string tableName = properties.First().GetValue(dbModel)?.ToString()?.Trim('\'') ?? "";
-            string columns = string.Join(", ", properties.Skip(1).Select(prop => prop.Name));
-            string values = string.Join(", ", properties.Skip(1).Select(prop => $"@{prop.Name}"));
+            string tableName = dbModel.TableName;
+            string columns = string.Join(", ", properties.Where(prop => prop.Name != "PrimaryKeyColumn").Select(prop => prop.Name));
+            string values = string.Join(", ", properties.Where(prop => prop.Name != "PrimaryKeyColumn").Select(prop => $"@{prop.Name}"));
 
             queryBuilder.Append("INSERT INTO ")
                 .Append(tableName)
@@ -157,14 +156,14 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
                 return string.Empty;
             }
 
-            string modelName = typeof(T).Name;
+            
             StringBuilder queryBuilder = new();
 
             IEnumerable<PropertyInfo> properties = typeof(T).GetProperties()
-                .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "PK_" + modelName);
+                .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "TableName" && prop.Name != dbModel.PrimaryKeyColumn);
 
-            int modelPk = (int)(typeof(T).GetProperty("PK_" + modelName)?.GetValue(dbModel) ?? 0);
-            string tableName = properties.First().GetValue(dbModel)?.ToString()?.Trim('\'') ?? "";
+            int modelPk = (int)(typeof(T).GetProperty(dbModel.PrimaryKeyColumn)?.GetValue(dbModel) ?? 0);
+            string tableName = dbModel.TableName;
 
             IEnumerable<PropertyInfo> propertiesToUpdate = columnsToUpdate != null
                 ? properties.Where(prop => columnsToUpdate.Contains(prop.Name))
@@ -176,8 +175,8 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
               .Append(tableName)
               .Append(" SET ")
               .Append(setClause)
-              .Append(" WHERE PK_")
-              .Append(modelName)
+              .Append(" WHERE ")
+              .Append(dbModel.PrimaryKeyColumn)
               .Append(" = ")
               .Append(modelPk);
 
@@ -218,8 +217,8 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
             }
 
             var parameters = typeof(T).GetProperties()
-                .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "PK_" + typeof(T).Name)
-                .Skip(1)
+                .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "PrimaryKeyColumn" && prop.Name != "TableName" && prop.Name != dbModel.PrimaryKeyColumn)
+                .Where(prop => prop.Name != dbModel.TableName)
                 .Select(FormatPropertyForDatabase(dbModel))
                 .ToArray();
 

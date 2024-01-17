@@ -1,13 +1,9 @@
-﻿using System.Text.Json.Serialization;
-using VTAuftragserfassung.Database.DataAccess;
-using VTAuftragserfassung.Models.DBO;
+﻿using VTAuftragserfassung.Models.DBO;
 
 namespace VTAuftragserfassung.Models.ViewModel
 {
-    public class AssignmentFormViewModel : IDatabaseObject
+    public class AssignmentFormViewModel
     {
-        [JsonIgnore]
-        public string TableName => "vta_Auftrag";
         public Vertriebsmitarbeiter? Vertriebsmitarbeiter { get; set; } 
         public List<Artikel> Artikel { get; set; } = [];
         public List<Kunde> Kunden { get; set; } = [];
