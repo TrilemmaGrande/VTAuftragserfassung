@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
+using System.Reflection;
+using System.Resources;
 using VTAuftragserfassung.Controllers.Home;
 using VTAuftragserfassung.Controllers.Login;
 using VTAuftragserfassung.Database.Connection;
@@ -23,6 +25,7 @@ namespace VTAuftragserfassung
 
             // Add services to the container.
             builder.Services.AddSingleton<ISqlConnector>(conn => new SqlConnector(connectionString));
+            builder.Services.AddSingleton<ResourceManager>(resM => new("VTAuftragserfassung.Database.DataAccess.MSSqlQueries", Assembly.GetExecutingAssembly()));
             builder.Services.AddScoped<ICachingService, CachingService>();
             builder.Services.AddScoped<IDataAccessService, DataAccessService>();
             builder.Services.AddScoped<IDataAccess<IDatabaseObject>, DatabaseAccess>();

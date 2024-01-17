@@ -1,4 +1,6 @@
-﻿using VTAuftragserfassung.Database.DataAccess.Services;
+﻿using Microsoft.Extensions.Localization;
+using System.Resources;
+using VTAuftragserfassung.Database.DataAccess.Services;
 using VTAuftragserfassung.Models.DBO;
 using VTAuftragserfassung.Models.Shared;
 
@@ -9,13 +11,15 @@ namespace VTAuftragserfassung.Database.DataAccess
         #region Private Fields
 
         private readonly IDataAccessService _dbAccess;
+        private readonly ResourceManager _resM;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public DatabaseAccess(IDataAccessService dbAccess)
+        public DatabaseAccess(IDataAccessService dbAccess, ResourceManager resM)
         {
+            _resM = resM;
             _dbAccess = dbAccess;
         }
 
@@ -34,22 +38,17 @@ namespace VTAuftragserfassung.Database.DataAccess
         #region Public Methods
 
         public List<T>? ReadAll<T>(T? dbModel) where T : IDatabaseObject
-            => dbModel != null ? _dbAccess.ReadAll<T>($"SELECT * FROM {dbModel.TableName}") : null;
+            => dbModel != null ? _dbAccess.ReadAll<T>(string.Format(_resM.GetString("SELECT_*") ?? string.Empty, dbModel.TableName)) : null;
 
         public List<Auftrag>? ReadAssignmentsPaginatedByUserId(string userId, Pagination? pagination)
-           => !string.IsNullOrEmpty(userId) && pagination != null && pagination.Page > 0 
-            ? _dbAccess.ReadAll<Auftrag>($"SELECT * FROM vta_Auftrag " +
-                  $"INNER JOIN vta_Vertriebsmitarbeiter ON (vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) " +
-                  $"WHERE MitarbeiterId = '{userId}' " +
-                  $"ORDER BY ErstelltAm DESC, LetzteStatusAenderung DESC, PK_Auftrag DESC " +
-                  $"OFFSET {pagination.Offset} ROWS " +
-                  $"FETCH NEXT {pagination.LinesPerPage} ROWS ONLY") 
+           => !string.IsNullOrEmpty(userId) && pagination != null && pagination.Page > 0
+            ? _dbAccess.ReadAll<Auftrag>(string.Format(_resM.GetString("SelectAssignmentsPaginatedByUserId") ?? string.Empty, userId, pagination.Offset, pagination.LinesPerPage))
             : null;
 
         public T1? ReadObjectByForeignKey<T1, T2>(T1? dbModel, T2? foreignModel, int fk)
                     where T1 : IDatabaseObject
             where T2 : IDatabaseObject
-            => dbModel != null && foreignModel != null ? ReadByCondition(dbModel, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}") : default;
+            => dbModel != null && foreignModel != null ? ReadByCondition(dbModel, "*", string.Format(_resM.GetString("WHERE_FK") ?? string.Empty, foreignModel.GetType().Name, fk)) : default;
 
         public T? ReadObjectByPrimaryKey<T>(T? dbModel, int pk) where T : IDatabaseObject
             => dbModel != null ? ReadByCondition(dbModel, "*", $"WHERE {dbModel.PrimaryKeyColumn} = {pk}") : default;
@@ -57,16 +56,14 @@ namespace VTAuftragserfassung.Database.DataAccess
         public List<T1>? ReadObjectListByForeignKey<T1, T2>(T1? dbModel, T2? foreignModel, int fk)
             where T1 : IDatabaseObject
             where T2 : IDatabaseObject
-            => dbModel != null && foreignModel != null ? ReadAllByCondition(dbModel, "*", $"Where FK_{foreignModel!.GetType().Name} = {fk}") : default;
+            => dbModel != null && foreignModel != null ? ReadAllByCondition(dbModel, "*", string.Format(_resM.GetString("WHERE_FK") ?? string.Empty, foreignModel.GetType().Name, fk)) : default;
 
         public List<Position>? ReadPositionsByAssignmentPKs(List<int>? assignmentPKs)
             => assignmentPKs != null && assignmentPKs.Any() ? ReadAllByCondition(new Position(), "*",
-                    $"INNER JOIN vta_Auftrag ON ( vta_Position.FK_Auftrag = vta_Auftrag.PK_Auftrag)" +
-                    $"INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter)" +
-                    $"WHERE FK_Auftrag IN ({string.Join(",", assignmentPKs)})") : null;
+                string.Format(_resM.GetString("SelectPositionsByAssignmentPKs") ?? string.Empty, string.Join(",", assignmentPKs))) : null;
 
         public Vertriebsmitarbeiter? ReadUserByUserId(string userId)
-            => !string.IsNullOrEmpty(userId) ? ReadByCondition(new Vertriebsmitarbeiter(), "*", $"WHERE MitarbeiterId = '{userId}'") : null;
+            => !string.IsNullOrEmpty(userId) ? ReadByCondition(new Vertriebsmitarbeiter(), "*", string.Format(_resM.GetString("WHERE_MitarbeiterId") ?? string.Empty, userId)) : null;
 
         public void Update<T>(T? dbModel, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject
         {
@@ -78,10 +75,10 @@ namespace VTAuftragserfassung.Database.DataAccess
         #region Private Methods
 
         private List<T>? ReadAllByCondition<T>(T? dbModel, string getterColumn, string condition) where T : IDatabaseObject
-            => dbModel != null ? _dbAccess.ReadAll<T>($"SELECT {getterColumn} FROM {dbModel.TableName} {condition}") : default;
+            => dbModel != null ? _dbAccess.ReadAll<T>(string.Format(_resM.GetString("SELECT") ?? string.Empty, getterColumn, dbModel.TableName, condition.Trim('"'))) : default;
 
         private T? ReadByCondition<T>(T? dbModel, string getterColumn, string condition) where T : IDatabaseObject
-            => dbModel != null ? _dbAccess.ReadSingle(dbModel, $"SELECT TOP 1 {getterColumn} FROM {dbModel.TableName} {condition}") : default;
+            => dbModel != null ? _dbAccess.ReadSingle(dbModel, string.Format(_resM.GetString("SELECT_TOP_1") ?? string.Empty, getterColumn, dbModel.TableName, condition.Trim('"'))) : default;
 
        
 

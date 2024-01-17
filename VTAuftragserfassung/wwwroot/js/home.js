@@ -1,5 +1,4 @@
 ﻿
-
 // Global Variables
 let positionNr = 0;
 

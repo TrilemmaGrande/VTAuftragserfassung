@@ -36,3 +36,5 @@ C:\Users\nils.reinshagen\source\repos\VTAuftragserfassung\VTAuftragserfassung\ob
 C:\Users\nils.reinshagen\source\repos\VTAuftragserfassung\VTAuftragserfassung\obj\Debug\net8.0\VTAuftragserfassung.pdb
 C:\Users\nils.reinshagen\source\repos\VTAuftragserfassung\VTAuftragserfassung\obj\Debug\net8.0\VTAuftragserfassung.genruntimeconfig.cache
 C:\Users\nils.reinshagen\source\repos\VTAuftragserfassung\VTAuftragserfassung\obj\Debug\net8.0\ref\VTAuftragserfassung.dll
+C:\Users\nils.reinshagen\source\repos\VTAuftragserfassung\VTAuftragserfassung\obj\Debug\net8.0\VTAuftragserfassung.Database.DataAccess.MSSqlQueries.resources
+C:\Users\nils.reinshagen\source\repos\VTAuftragserfassung\VTAuftragserfassung\obj\Debug\net8.0\VTAuftragserfassung.csproj.GenerateResource.cache
