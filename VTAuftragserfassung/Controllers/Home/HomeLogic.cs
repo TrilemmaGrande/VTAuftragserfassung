@@ -34,12 +34,11 @@ namespace VTAuftragserfassung.Controllers.Home
 
         #region Public Methods
 
-        public List<AssignmentViewModel>? GetAssignmentViewModels(Pagination? pagination)
-        {
-            return (!string.IsNullOrEmpty(_userId) && pagination != null && pagination.Page > 0)
+        public List<AssignmentViewModel>? GetAssignmentViewModels(Pagination? pagination) =>
+            (!string.IsNullOrEmpty(_userId) && pagination != null && pagination.Page > 0)
                 ? _repo.GetAssignmentVMsPaginatedByUserId(_userId, pagination)
                 : null;
-        }
+
 
         public string GetUserId() => _userId;
 
