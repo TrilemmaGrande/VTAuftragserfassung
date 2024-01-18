@@ -30,7 +30,6 @@ namespace VTAuftragserfassung
             string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
             ResourceManager resM = new("VTAuftragserfassung.Database.DataAccess.MSSqlQueries", Assembly.GetExecutingAssembly());
 
-            // Add services to the container.
             builder.Services.AddSingleton(resM);
             builder.Services.AddSingleton<ISqlConnector>(conn => new SqlConnector(connectionString, resM));
             builder.Services.AddScoped<ICachingService, CachingService>();
@@ -41,6 +40,7 @@ namespace VTAuftragserfassung
             builder.Services.AddScoped<IHomeRepository, HomeRepository>();
             builder.Services.AddScoped<ILoginLogic, LoginLogic>();
             builder.Services.AddScoped<IHomeLogic, HomeLogic>();
+
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages().AddRazorOptions(
                 options =>
@@ -76,7 +76,7 @@ namespace VTAuftragserfassung
                     options.AccessDeniedPath = new PathString("/Login");
                 });
 
-            #endregion Builder
+            #endregion Services
 
             var app = builder.Build();
 
