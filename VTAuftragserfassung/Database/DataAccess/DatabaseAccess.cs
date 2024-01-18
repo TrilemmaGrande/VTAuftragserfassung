@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Localization;
-using System.Resources;
-using VTAuftragserfassung.Database.DataAccess.Services;
+﻿using System.Resources;
+using VTAuftragserfassung.Database.DataAccess.Interfaces;
+using VTAuftragserfassung.Database.DataAccess.Services.Interfaces;
 using VTAuftragserfassung.Models.DBO;
 using VTAuftragserfassung.Models.Shared;
 

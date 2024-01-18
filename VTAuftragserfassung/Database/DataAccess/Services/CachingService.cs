@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using VTAuftragserfassung.Database.DataAccess.Interfaces;
+using VTAuftragserfassung.Database.DataAccess.Services.Interfaces;
 using VTAuftragserfassung.Extensions;
 
 namespace VTAuftragserfassung.Database.DataAccess.Services
@@ -32,7 +34,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
         {
             return model != null ? model.GetType().Name : string.Empty;
         }
-        public List<T>? GetCachedModel<T>(T? model) where T : IDatabaseObject
+        public List<T>? GetCachedModels<T>(T? model) where T : IDatabaseObject
         {
             string cKey = GenerateCacheKey(model);
             if (!string.IsNullOrEmpty(cKey)
@@ -44,7 +46,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
             return null;
         }
 
-        public List<T>? UpdateCachedModel<T>(List<T>? newModelData) where T : IDatabaseObject
+        public List<T>? UpdateCachedModels<T>(List<T>? newModelData) where T : IDatabaseObject
         {
             T? model = newModelData != null ? newModelData.FirstOrDefault() : default;
             string cKey = GenerateCacheKey(model);

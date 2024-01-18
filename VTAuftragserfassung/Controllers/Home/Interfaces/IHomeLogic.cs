@@ -2,7 +2,7 @@
 using VTAuftragserfassung.Models.Shared;
 using VTAuftragserfassung.Models.ViewModel;
 
-namespace VTAuftragserfassung.Controllers.Home
+namespace VTAuftragserfassung.Controllers.Home.Interfaces
 {
     public interface IHomeLogic
     {

@@ -1,5 +1,6 @@
-﻿
-namespace VTAuftragserfassung.Database.DataAccess.Services
+﻿using VTAuftragserfassung.Database.DataAccess.Interfaces;
+
+namespace VTAuftragserfassung.Database.DataAccess.Services.Interfaces
 {
     public interface IDataAccessService
     {

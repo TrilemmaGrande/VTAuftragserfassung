@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using VTAuftragserfassung.Database.DataAccess;
+using VTAuftragserfassung.Database.DataAccess.Interfaces;
 
 namespace VTAuftragserfassung.Models.DBO
 {

@@ -2,7 +2,9 @@
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Text;
-using VTAuftragserfassung.Database.Connection;
+using VTAuftragserfassung.Database.Connection.Interfaces;
+using VTAuftragserfassung.Database.DataAccess.Interfaces;
+using VTAuftragserfassung.Database.DataAccess.Services.Interfaces;
 
 namespace VTAuftragserfassung.Database.DataAccess.Services
 {

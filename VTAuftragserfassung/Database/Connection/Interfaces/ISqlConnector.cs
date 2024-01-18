@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 
-namespace VTAuftragserfassung.Database.Connection
+namespace VTAuftragserfassung.Database.Connection.Interfaces
 {
     public interface ISqlConnector
     {

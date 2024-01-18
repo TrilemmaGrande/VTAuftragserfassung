@@ -1,11 +1,11 @@
-﻿using VTAuftragserfassung.Database.DataAccess;
+﻿using VTAuftragserfassung.Database.DataAccess.Interfaces;
 using VTAuftragserfassung.Models.DBO;
 using VTAuftragserfassung.Models.Shared;
 using VTAuftragserfassung.Models.ViewModel;
 
-namespace VTAuftragserfassung.Database.Repository
+namespace VTAuftragserfassung.Database.Repository.Interfaces
 {
-    public interface IDbRepository
+    public interface IHomeRepository
     {
         public List<Gesellschafter>? GetAllShareholdersCached();
 
@@ -15,9 +15,7 @@ namespace VTAuftragserfassung.Database.Repository
 
         public List<Kunde>? GetAllCustomersCached();
 
-        public Vertriebsmitarbeiter? GetUserByUserId(string userId);
-
-        public Auth? GetAuthByUserPk(int userPk);
+        public Vertriebsmitarbeiter? GetUserFromSession(string userId);
 
         public List<AssignmentViewModel>? GetAssignmentVMsPaginatedByUserId(string userId, Pagination? pagination);
 
@@ -28,7 +26,9 @@ namespace VTAuftragserfassung.Database.Repository
         int SaveAssignmentVM(AssignmentViewModel? avm);
 
         int SaveCustomer(Kunde? customer);
+
         void Update<T>(T? model, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject;
+
         void Update<T>(T? model, string columnToUpdate) where T : IDatabaseObject;
     }
 }

@@ -1,48 +1,57 @@
 ﻿using VTAuftragserfassung.Database.DataAccess;
-using VTAuftragserfassung.Database.DataAccess.Services;
+using VTAuftragserfassung.Database.DataAccess.Interfaces;
+using VTAuftragserfassung.Database.DataAccess.Services.Interfaces;
+using VTAuftragserfassung.Database.Repository.Interfaces;
 using VTAuftragserfassung.Models.DBO;
 using VTAuftragserfassung.Models.Shared;
 using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Database.Repository
 {
-    public class DbRepository : IDbRepository
+    public class HomeRepository : IHomeRepository
     {
         #region Private Fields
 
         private readonly ICachingService _caching;
+        private readonly ISessionService _session;
         private readonly IDataAccess<IDatabaseObject> _dataAccess;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public DbRepository(IDataAccess<IDatabaseObject> dataAccess, ICachingService caching)
+        public HomeRepository(IDataAccess<IDatabaseObject> dataAccess, ICachingService caching, ISessionService session)
         {
             _dataAccess = dataAccess;
             _caching = caching;
+            _session = session;
         }
 
         #endregion Public Constructors
 
         #region Public Methods
 
-        public List<Artikel>? GetAllArticlesCached() => GetCachedModel(new Artikel());
+        public List<Artikel>? GetAllArticlesCached() => GetCachedModels(new Artikel());
 
         public List<Kunde>? GetAllCustomers() => _dataAccess.ReadAll(new Kunde());
 
-        public List<Kunde>? GetAllCustomersCached() => GetCachedModel(new Kunde());
+        public List<Kunde>? GetAllCustomersCached() => GetCachedModels(new Kunde());
 
-        public List<Gesellschafter>? GetAllShareholdersCached() => GetCachedModel(new Gesellschafter());
+        public List<Gesellschafter>? GetAllShareholdersCached() => GetCachedModels(new Gesellschafter());
 
-        public Vertriebsmitarbeiter? GetUserByUserId(string userId) => _dataAccess.ReadUserByUserId(userId);
-
-        public Auth? GetAuthByUserPk(int userPk) => _dataAccess.ReadObjectByForeignKey(new Auth(), new Vertriebsmitarbeiter(), userPk);
-
+        public Vertriebsmitarbeiter? GetUserFromSession(string userId)
+        {
+            Vertriebsmitarbeiter? user = GetSessionModels(new Vertriebsmitarbeiter(), userId)?.FirstOrDefault() ?? _dataAccess.ReadUserByUserId(userId);
+            if (user != null)
+            {
+                _session.SetSessionModels(userId, new List<Vertriebsmitarbeiter>() { user });
+            }
+            return user;
+        }
 
         public AssignmentFormViewModel? GetAssignmentFormVMByUserId(string userId)
         {
-            Vertriebsmitarbeiter? salesStaff = GetUserByUserId(userId);
+            Vertriebsmitarbeiter? salesStaff = GetUserFromSession(userId);
             List<Gesellschafter>? shareholders = GetAllShareholdersCached();
             List<Artikel>? articles = GetAllArticlesCached();
             List<Kunde>? customers = GetAllCustomersCached();
@@ -84,7 +93,6 @@ namespace VTAuftragserfassung.Database.Repository
             return avms;
         }
 
-
         public PositionViewModel? GetNewPositionVMByArticlePK(int articlePK)
         {
             List<Artikel>? articles = GetAllArticlesCached();
@@ -110,7 +118,7 @@ namespace VTAuftragserfassung.Database.Repository
             return pvm;
         }
 
-
+      
 
         public int SaveAssignmentVM(AssignmentViewModel? avm)
         {
@@ -133,7 +141,7 @@ namespace VTAuftragserfassung.Database.Repository
                 return 0;
             }
             int pk = _dataAccess.Create(customer);
-            _caching.UpdateCachedModel(_dataAccess.ReadAll(new Kunde()));
+            _caching.UpdateCachedModels(_dataAccess.ReadAll(new Kunde()));
             return pk;
         }
 
@@ -165,9 +173,14 @@ namespace VTAuftragserfassung.Database.Repository
             _dataAccess.CreateAll(positionList);
         }
 
-        private List<T>? GetCachedModel<T>(T model) where T : IDatabaseObject
+        private List<T>? GetCachedModels<T>(T model) where T : IDatabaseObject
         {
-            return _caching.GetCachedModel(model) ?? _caching.UpdateCachedModel(_dataAccess.ReadAll(model));
+            return _caching.GetCachedModels(model) ?? _caching.UpdateCachedModels(_dataAccess.ReadAll(model));
+        }
+
+        private List<T>? GetSessionModels<T>(T model, string sKey) where T : IDatabaseObject
+        {
+            return _session.GetSessionModels(model, sKey);
         }
 
         #endregion Private Methods

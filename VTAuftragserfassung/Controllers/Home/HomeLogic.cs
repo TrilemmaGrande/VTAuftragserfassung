@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using VTAuftragserfassung.Database.Repository;
+using VTAuftragserfassung.Controllers.Home.Interfaces;
+using VTAuftragserfassung.Database.Repository.Interfaces;
 using VTAuftragserfassung.Models.DBO;
 using VTAuftragserfassung.Models.Enum;
 using VTAuftragserfassung.Models.Shared;
@@ -13,7 +14,7 @@ namespace VTAuftragserfassung.Controllers.Home
         #region Private Fields
 
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IDbRepository _repo;
+        private readonly IHomeRepository _repo;
         private string _userId
         {
             get { return _httpContextAccessor.HttpContext?.User.Identity?.Name ?? string.Empty; }
@@ -23,7 +24,7 @@ namespace VTAuftragserfassung.Controllers.Home
 
         #region Public Constructors
 
-        public HomeLogic(IDbRepository repo, IHttpContextAccessor httpContextAccessor)
+        public HomeLogic(IHomeRepository repo, IHttpContextAccessor httpContextAccessor)
         {
             _repo = repo;
             _httpContextAccessor = httpContextAccessor;
@@ -65,7 +66,7 @@ namespace VTAuftragserfassung.Controllers.Home
 
         public int CreateAssignment(AssignmentViewModel avm)
         {
-            Vertriebsmitarbeiter? salesStaff = _repo.GetUserByUserId(_userId);
+            Vertriebsmitarbeiter? salesStaff = _repo.GetUserFromSession(_userId);
             if (avm?.Auftrag == null || salesStaff?.PK_Vertriebsmitarbeiter == null)
             {
                 return 0;

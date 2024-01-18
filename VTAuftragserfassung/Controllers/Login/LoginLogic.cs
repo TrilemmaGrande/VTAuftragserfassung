@@ -1,19 +1,20 @@
 ﻿using System.Security.Claims;
-using VTAuftragserfassung.Database.Repository;
 using VTAuftragserfassung.Models.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using VTAuftragserfassung.Models.DBO;
+using VTAuftragserfassung.Database.Repository.Interfaces;
+using VTAuftragserfassung.Controllers.Login.Interfaces;
 
 namespace VTAuftragserfassung.Controllers.Login
 {
     public class LoginLogic : ILoginLogic
     {
-        private readonly IDbRepository _repo;
+        private readonly ILoginRepository _repo;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public LoginLogic(IDbRepository repo, IHttpContextAccessor httpContextAccessor)
+        public LoginLogic(ILoginRepository repo, IHttpContextAccessor httpContextAccessor)
         {
             _repo = repo;
             _httpContextAccessor = httpContextAccessor;

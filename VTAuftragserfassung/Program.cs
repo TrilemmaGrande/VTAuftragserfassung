@@ -4,11 +4,17 @@ using System.IO.Compression;
 using System.Reflection;
 using System.Resources;
 using VTAuftragserfassung.Controllers.Home;
+using VTAuftragserfassung.Controllers.Home.Interfaces;
 using VTAuftragserfassung.Controllers.Login;
+using VTAuftragserfassung.Controllers.Login.Interfaces;
 using VTAuftragserfassung.Database.Connection;
+using VTAuftragserfassung.Database.Connection.Interfaces;
 using VTAuftragserfassung.Database.DataAccess;
+using VTAuftragserfassung.Database.DataAccess.Interfaces;
 using VTAuftragserfassung.Database.DataAccess.Services;
+using VTAuftragserfassung.Database.DataAccess.Services.Interfaces;
 using VTAuftragserfassung.Database.Repository;
+using VTAuftragserfassung.Database.Repository.Interfaces;
 
 namespace VTAuftragserfassung
 {
@@ -27,9 +33,11 @@ namespace VTAuftragserfassung
             builder.Services.AddSingleton<ISqlConnector>(conn => new SqlConnector(connectionString));
             builder.Services.AddSingleton<ResourceManager>(resM => new("VTAuftragserfassung.Database.DataAccess.MSSqlQueries", Assembly.GetExecutingAssembly()));
             builder.Services.AddScoped<ICachingService, CachingService>();
+            builder.Services.AddScoped<ISessionService, SessionService>();
             builder.Services.AddScoped<IDataAccessService, DataAccessService>();
             builder.Services.AddScoped<IDataAccess<IDatabaseObject>, DatabaseAccess>();
-            builder.Services.AddScoped<IDbRepository, DbRepository>();
+            builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+            builder.Services.AddScoped<IHomeRepository, HomeRepository>();
             builder.Services.AddScoped<ILoginLogic, LoginLogic>();
             builder.Services.AddScoped<IHomeLogic, HomeLogic>();
             builder.Services.AddControllersWithViews();
@@ -40,9 +48,18 @@ namespace VTAuftragserfassung
                     options.ViewLocationFormats.Add("/Views/Shared/Partials/Details/{0}.cshtml");
                     options.ViewLocationFormats.Add("/Views/Shared/Partials/Forms/{0}.cshtml");
                 });
+
             builder.Services.AddMemoryCache();
+            builder.Services.AddDistributedMemoryCache();
             builder.Services.AddResponseCompression();
             builder.Services.AddHttpContextAccessor();
+
+            builder.Services.AddSession(options =>
+            {
+                options.Cookie.Name = "VTA.Session";
+                options.IdleTimeout = TimeSpan.FromMinutes(1);
+                options.Cookie.IsEssential = true;
+            });
 
             builder.Services.Configure<GzipCompressionProviderOptions>(
                 options =>
@@ -71,6 +88,7 @@ namespace VTAuftragserfassung
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
 

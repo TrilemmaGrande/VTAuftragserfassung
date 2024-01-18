@@ -1,4 +1,4 @@
-﻿namespace VTAuftragserfassung.Database.DataAccess
+﻿namespace VTAuftragserfassung.Database.DataAccess.Interfaces
 {
     public interface IDatabaseObject
     {
