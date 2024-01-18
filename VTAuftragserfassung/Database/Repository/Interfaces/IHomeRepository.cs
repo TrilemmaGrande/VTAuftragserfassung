@@ -7,21 +7,23 @@ namespace VTAuftragserfassung.Database.Repository.Interfaces
 {
     public interface IHomeRepository
     {
-        public List<Gesellschafter>? GetAllShareholdersCached();
+        #region Public Methods
 
-        public List<Artikel>? GetAllArticlesCached();
+        List<Artikel>? GetAllArticlesCached();
 
-        public List<Kunde>? GetAllCustomers();
+        List<Kunde>? GetAllCustomers();
 
-        public List<Kunde>? GetAllCustomersCached();
+        List<Kunde>? GetAllCustomersCached();
 
-        public Vertriebsmitarbeiter? GetUserFromSession(string userId);
+        List<Gesellschafter>? GetAllShareholdersCached();
 
-        public List<AssignmentViewModel>? GetAssignmentVMsPaginatedByUserId(string userId, Pagination? pagination);
+        AssignmentFormViewModel? GetAssignmentFormVMByUserId(string userId);
 
-        public AssignmentFormViewModel? GetAssignmentFormVMByUserId(string userId);
+        List<AssignmentViewModel>? GetAssignmentVMsPaginatedByUserId(string userId, Pagination? pagination);
 
-        public PositionViewModel? GetNewPositionVMByArticlePK(int articlePK);
+        PositionViewModel? GetNewPositionVMByArticlePK(int articlePK);
+
+        Vertriebsmitarbeiter? GetUserFromSession(string userId);
 
         int SaveAssignmentVM(AssignmentViewModel? avm);
 
@@ -30,5 +32,7 @@ namespace VTAuftragserfassung.Database.Repository.Interfaces
         void Update<T>(T? model, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject;
 
         void Update<T>(T? model, string columnToUpdate) where T : IDatabaseObject;
+
+        #endregion Public Methods
     }
 }

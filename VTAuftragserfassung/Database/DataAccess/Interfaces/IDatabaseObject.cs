@@ -2,7 +2,11 @@
 {
     public interface IDatabaseObject
     {
-        public string TableName { get; }
-        public string PrimaryKeyColumn { get; set; }
+        #region Public Properties
+
+        string PrimaryKeyColumn { get; set; }
+        string TableName { get; }
+
+        #endregion Public Properties
     }
 }

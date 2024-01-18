@@ -13,7 +13,7 @@ namespace VTAuftragserfassung.Database.DataAccess
 
         public List<T>? ReadAll<T>(T? dbModel) where T : IDatabaseObject;
 
-        List<Auftrag>? ReadAssignmentsPaginatedByUserId(string userId,Pagination? pagination);
+        List<Auftrag>? ReadAssignmentsPaginatedByUserId(string userId, Pagination? pagination);
 
         T1? ReadObjectByForeignKey<T1, T2>(T1? dbModel, T2? foreignModel, int fk)
             where T1 : Interfaces.IDatabaseObject
@@ -22,6 +22,7 @@ namespace VTAuftragserfassung.Database.DataAccess
         List<Position>? ReadPositionsByAssignmentPKs(List<int>? assignmentPKs);
 
         Vertriebsmitarbeiter? ReadUserByUserId(string userId);
+
         void Update<T>(T? dbModel, IEnumerable<string>? columnsToUpdate = null) where T : Interfaces.IDatabaseObject;
 
         #endregion Public Methods

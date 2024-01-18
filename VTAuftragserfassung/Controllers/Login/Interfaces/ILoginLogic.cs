@@ -4,7 +4,10 @@ namespace VTAuftragserfassung.Controllers.Login.Interfaces
 {
     public interface ILoginLogic
     {
-        public bool VerifyLogin(LoginViewModel loginViewModel);
+        #region Public Methods
 
+        bool VerifyLogin(LoginViewModel loginViewModel);
+
+        #endregion Public Methods
     }
 }

@@ -7,26 +7,29 @@ namespace VTAuftragserfassung.Controllers.Home.Interfaces
     public interface IHomeLogic
     {
         #region Public Methods
-        public string GetUserId();
-        public List<AssignmentViewModel>? GetAssignmentViewModels(Pagination pagination);
 
-        public AssignmentFormViewModel? GetAssignmentFormViewModel();
+        string GetUserId();
 
-        public Artikel? GetArticleByPK(int articlePK);
+        List<AssignmentViewModel>? GetAssignmentViewModels(Pagination pagination);
 
-        public Kunde? GetCustomerByPK(int customerPK);
+        AssignmentFormViewModel? GetAssignmentFormViewModel();
 
-        public PositionViewModel? GetPositionViewModel(int articlePK, int positionNr);
+        Artikel? GetArticleByPK(int articlePK);
 
-        public int CreateAssignment(AssignmentViewModel avm);
+        Kunde? GetCustomerByPK(int customerPK);
+
+        PositionViewModel? GetPositionViewModel(int articlePK, int positionNr);
+
+        int CreateAssignment(AssignmentViewModel avm);
 
         int CreateCustomer(Kunde? customer);
 
-        public void Logout();
+        void Logout();
 
         Gesellschafter? GetShareholderByPK(int shareholderPK);
 
         List<Gesellschafter>? GetAllShareholders();
+
         void UpdateAssignmentStatus(int assignmentPK, string assignmentStatus);
 
         #endregion Public Methods
