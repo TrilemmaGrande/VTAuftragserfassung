@@ -292,9 +292,9 @@ function saveNewCustomer() {
     });
     customer.IstWerkstatt = checkboxCheckedToInt(isWorkshopData);
     customer.IstHandel = checkboxCheckedToInt(isSaleData);
-    let customerPK = parseInt(backendRequestPOST("/Home/CreateNewCustomer/", customer));
+    backendRequestPOST("/Home/CreateNewCustomer/", customer);
     closeCustomerForm(document.getElementById("btnAddCustomer"));
-    selectedCustomer(customerPK, "selectedCustomer");
+    setSelectedCustomerPartialByCustomer(customer, "selectedCustomer");
 }
 
 
@@ -330,10 +330,10 @@ function search(ele, searchTerm, model, backendMethod) {
 
 function searchResultSelected(modelPK, targetElementId) {
     if (targetElementId == "selectedArticle") {
-        selectedArticle(modelPK, targetElementId);
+        setSelectedArticlePartialByPk(modelPK, targetElementId);
     }
     else if (targetElementId == "selectedCustomer") {
-        selectedCustomer(modelPK, targetElementId);
+        setSelectedCustomerPartialByPk(modelPK, targetElementId);
     }
 
     document.getElementById("searchTable").remove();
@@ -344,20 +344,32 @@ function searchResultSelected(modelPK, targetElementId) {
     }
 }
 
-
-function selectedCustomer(modelPK, targetElementId) {
+function setSelectedCustomerPartialByPk(modelPK, targetElementId) {
     let targetPartial = backendRequestGET("/Home/AddCustomerDetailsPartial/" + modelPK);
     let targetElement = document.getElementById(targetElementId);
     targetElement.innerHTML = targetPartial;
 
-    document.querySelector(`[data-name="assigmentCustomerFK"]`).value = modelPK;
-
     let shareholderFK = targetElement.querySelector(`[data-name="shareholderFK"]`).dataset.fk_shareholder;
-    let shareholderPartial = backendRequestGET("/Home/ShareholderDetailsPartial/" + shareholderFK);
+    setShareholderPartialByPk(shareholderFK);
+}
+
+function setSelectedCustomerPartialByCustomer(customer, targetElementId) {
+    let targetPartial = backendRequestPOST("/Home/AddCreatedCustomerDetailsPartial/", customer);
+    let targetElement = document.getElementById(targetElementId);
+    targetElement.innerHTML = targetPartial;
+
+    let shareholderFK = customer.FK_Gesellschafter;
+    setShareholderPartialByPk(shareholderFK);
+}
+
+function setShareholderPartialByPk(modelPK) {
+    document.querySelector(`[data-name="assigmentCustomerFK"]`).value = modelPK;
+    
+    let shareholderPartial = backendRequestGET("/Home/ShareholderDetailsPartial/" + modelPK);
     document.getElementById("selectedShareholder").innerHTML = shareholderPartial;
 }
 
-function selectedArticle(modelPK, targetElementId) {
+function setSelectedArticlePartialByPk(modelPK, targetElementId) {
     let incrementArticleButton = document.getElementById("increment_" + modelPK)
     if (incrementArticleButton) {
         incrementArticleButton.click();
@@ -368,6 +380,10 @@ function selectedArticle(modelPK, targetElementId) {
     let targetElement = document.getElementById(targetElementId);
     targetElement.innerHTML = targetElement.innerHTML + targetPartial;
     updateAssignmentSum();
+}
+
+function IntToBool(i) {
+    return i !== 0;
 }
 
 

@@ -141,7 +141,7 @@ namespace VTAuftragserfassung.Database.Repository
                 return 0;
             }
             int pk = _dataAccess.Create(customer);
-            _caching.UpdateCachedModels(_dataAccess.ReadAll(new Kunde()));
+            _caching.InvalidateCacheModels(new Kunde());
             return pk;
         }
 

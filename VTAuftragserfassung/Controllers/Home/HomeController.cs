@@ -115,6 +115,12 @@ namespace VTAuftragserfassung.Controllers.Home
             return PartialView("CustomerDetails", customer);
         }
 
+        [HttpPost("/Home/AddCreatedCustomerDetailsPartial/")]
+        public PartialViewResult AddCreatedCustomerDetailsPartial([FromBody] Kunde customer)
+        {
+            return PartialView("CustomerDetails", customer);
+        }
+
         [HttpGet("/Home/AddPositionListRowFormPartial/{articlePK}")]
         public PartialViewResult AddPositionListRowFormPartial(int articlePK, int positionNr)
         {
