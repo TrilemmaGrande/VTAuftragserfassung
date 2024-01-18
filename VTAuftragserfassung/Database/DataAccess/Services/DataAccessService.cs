@@ -1,10 +1,12 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
+using System.Resources;
 using System.Text;
 using VTAuftragserfassung.Database.Connection.Interfaces;
 using VTAuftragserfassung.Database.DataAccess.Interfaces;
 using VTAuftragserfassung.Database.DataAccess.Services.Interfaces;
+using VTAuftragserfassung.Extensions;
 
 namespace VTAuftragserfassung.Database.DataAccess.Services
 {
@@ -13,14 +15,17 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
         #region Private Fields
 
         private readonly ISqlConnector _conn;
+        private readonly ResourceManager _resM;
+
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public DataAccessService(ISqlConnector conn)
+        public DataAccessService(ISqlConnector conn, ResourceManager resM)
         {
             _conn = conn;
+            _resM = resM;
         }
 
         #endregion Public Constructors
@@ -131,8 +136,6 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
                 return string.Empty;
             }
 
-            StringBuilder queryBuilder = new();
-
             IEnumerable<PropertyInfo> properties = typeof(T).GetProperties()
                 .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "TableName" && prop.Name != dbModel.PrimaryKeyColumn);
 
@@ -140,15 +143,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
             string columns = string.Join(", ", properties.Where(prop => prop.Name != "PrimaryKeyColumn").Select(prop => prop.Name));
             string values = string.Join(", ", properties.Where(prop => prop.Name != "PrimaryKeyColumn").Select(prop => $"@{prop.Name}"));
 
-            queryBuilder.Append("INSERT INTO ")
-                .Append(tableName)
-                .Append(" (")
-                .Append(columns)
-                .Append(") VALUES (")
-                .Append(values)
-                .Append(");");
-
-            return queryBuilder.ToString();
+            return _resM.GetQuery("INSERT", tableName, columns, values) ?? string.Empty;
         }
 
         private string CreateUpdateString<T>(T? dbModel, IEnumerable<string>? columnsToUpdate) where T : IDatabaseObject
@@ -157,9 +152,6 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
             {
                 return string.Empty;
             }
-
-            
-            StringBuilder queryBuilder = new();
 
             IEnumerable<PropertyInfo> properties = typeof(T).GetProperties()
                 .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "TableName" && prop.Name != dbModel.PrimaryKeyColumn);
@@ -173,16 +165,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
 
             string setClause = string.Join(", ", propertiesToUpdate.Select(prop => $"{prop.Name} = @{prop.Name}"));
 
-            queryBuilder.Append("UPDATE ")
-              .Append(tableName)
-              .Append(" SET ")
-              .Append(setClause)
-              .Append(" WHERE ")
-              .Append(dbModel.PrimaryKeyColumn)
-              .Append(" = ")
-              .Append(modelPk);
-
-            return queryBuilder.ToString();
+            return _resM.GetQuery("UPDATE", tableName, setClause, dbModel.PrimaryKeyColumn, modelPk) ?? string.Empty;
         }
 
         private Func<PropertyInfo, SqlParameter> FormatPropertyForDatabase<T>(T? dbModel) where T : IDatabaseObject

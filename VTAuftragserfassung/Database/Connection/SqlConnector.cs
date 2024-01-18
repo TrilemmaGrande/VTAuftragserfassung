@@ -1,6 +1,8 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
+using System.Resources;
 using VTAuftragserfassung.Database.Connection.Interfaces;
+using VTAuftragserfassung.Extensions;
 
 namespace VTAuftragserfassung.Database.Connection
 {
@@ -9,12 +11,17 @@ namespace VTAuftragserfassung.Database.Connection
         #region Private Fields
 
         private readonly string _connectionString;
+        private readonly ResourceManager _resM;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public SqlConnector(string connectionString) => _connectionString = connectionString;
+        public SqlConnector(string connectionString, ResourceManager resM)
+        {
+            _connectionString = connectionString;
+            _resM = resM;
+        }
 
         #endregion Public Constructors
 
@@ -90,36 +97,43 @@ namespace VTAuftragserfassung.Database.Connection
             {
                 return 0;
             }
-            try
+
+            using (SqlConnection sqlConn = new(_connectionString))
             {
-                using (SqlConnection sqlConn = new(_connectionString))
+                if (sqlConn.State != ConnectionState.Open)
                 {
-                    if (sqlConn.State != ConnectionState.Open)
-                    {
-                        sqlConn.Open();
-                    }
-
-                    using (SqlCommand cmd = new(command, sqlConn))
-                    {
-                        cmd.Parameters.AddRange(parameters);
-                        cmd.CommandText += "; SELECT SCOPE_IDENTITY();";
-
-                        var result = cmd.ExecuteScalar();
-
-                        if (result != null && result != DBNull.Value)
-                        {
-                            dataSetPrimaryKey = Convert.ToInt32(result);
-                        }
-                    }
-                    sqlConn.Close();
+                    sqlConn.Open();
                 }
+
+                SqlTransaction transaction;
+                transaction = sqlConn.BeginTransaction();
+                using (SqlCommand cmd = new(command, sqlConn))
+                {
+                    cmd.Transaction = transaction;
+                    cmd.Parameters.AddRange(parameters);
+                    cmd.CommandText += _resM.GetQuery("SELECT_IDENTITY") ?? string.Empty;
+
+                    try
+                    {
+                        var result = cmd.ExecuteScalar();
+                        dataSetPrimaryKey = Convert.ToInt32(result);
+                        if (dataSetPrimaryKey <= 0)
+                        {
+                            transaction.Rollback();
+                            sqlConn.Close();
+                            return 0;
+                        }
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Fehler beim Schreiben in Datenbank: {ex.Message}");
+                    }
+                }
+                sqlConn.Close();
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Fehler beim Schreiben in Datenbank: {ex.Message}");
-            }
-            return dataSetPrimaryKey == -1 ? 0 : dataSetPrimaryKey;
-        }        
+            return dataSetPrimaryKey;
+        }
 
         public void ConnectionWrite(List<Tuple<string, SqlParameter[]?>> queryList)
         {

@@ -117,25 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="INSERT" xml:space="preserve">
+    <value>INSERT INTO {0} ({1}) VALUES ({2});</value>
+  </data>
   <data name="SELECT" xml:space="preserve">
-    <value>SELECT {0} FROM {1} {2}</value>
+    <value>SELECT {0} FROM {1} {2};</value>
   </data>
   <data name="SelectAssignmentsPaginatedByUserId" xml:space="preserve">
-    <value>SELECT * FROM vta_Auftrag INNER JOIN vta_Vertriebsmitarbeiter ON (vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) WHERE MitarbeiterId = '{0}' ORDER BY ErstelltAm DESC, LetzteStatusAenderung DESC, PK_Auftrag DESC OFFSET {1} ROWS FETCH NEXT {2} ROWS ONLY</value>
+    <value>SELECT * FROM vta_Auftrag INNER JOIN vta_Vertriebsmitarbeiter ON (vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) WHERE MitarbeiterId = '{0}' ORDER BY ErstelltAm DESC, LetzteStatusAenderung DESC, PK_Auftrag DESC OFFSET {1} ROWS FETCH NEXT {2} ROWS ONLY;</value>
   </data>
   <data name="SelectPositionsByAssignmentPKs" xml:space="preserve">
-    <value>INNER JOIN vta_Auftrag ON ( vta_Position.FK_Auftrag = vta_Auftrag.PK_Auftrag)INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter)WHERE FK_Auftrag IN ({0})</value>
+    <value>INNER JOIN vta_Auftrag ON ( vta_Position.FK_Auftrag = vta_Auftrag.PK_Auftrag)INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter)WHERE FK_Auftrag IN ({0});</value>
   </data>
   <data name="SELECT_*" xml:space="preserve">
-    <value>SELECT * FROM {0}</value>
+    <value>SELECT * FROM {0};</value>
+  </data>
+  <data name="SELECT_IDENTITY" xml:space="preserve">
+    <value>SELECT SCOPE_IDENTITY();</value>
   </data>
   <data name="SELECT_TOP_1" xml:space="preserve">
-    <value>SELECT TOP 1 {0} FROM {1} {2}</value>
+    <value>SELECT TOP 1 {0} FROM {1} {2};</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>UPDATE {0} SET {1} WHERE {2} = {3};</value>
   </data>
   <data name="WHERE_FK" xml:space="preserve">
-    <value>WHERE FK_{0} = {1}</value>
+    <value>WHERE FK_{0} = {1};</value>
   </data>
   <data name="WHERE_MitarbeiterId" xml:space="preserve">
-    <value>WHERE MitarbeiterId = '{0}'</value>
+    <value>WHERE MitarbeiterId = '{0}';</value>
   </data>
 </root>

@@ -28,10 +28,11 @@ namespace VTAuftragserfassung
 
             var builder = WebApplication.CreateBuilder(args);
             string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
+            ResourceManager resM = new("VTAuftragserfassung.Database.DataAccess.MSSqlQueries", Assembly.GetExecutingAssembly());
 
             // Add services to the container.
-            builder.Services.AddSingleton<ISqlConnector>(conn => new SqlConnector(connectionString));
-            builder.Services.AddSingleton<ResourceManager>(resM => new("VTAuftragserfassung.Database.DataAccess.MSSqlQueries", Assembly.GetExecutingAssembly()));
+            builder.Services.AddSingleton(resM);
+            builder.Services.AddSingleton<ISqlConnector>(conn => new SqlConnector(connectionString, resM));
             builder.Services.AddScoped<ICachingService, CachingService>();
             builder.Services.AddScoped<ISessionService, SessionService>();
             builder.Services.AddScoped<IDataAccessService, DataAccessService>();

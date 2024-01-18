@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using System.Resources;
 using System.Transactions;
 using VTAuftragserfassung.Database.DataAccess.Interfaces;
 using VTAuftragserfassung.Database.DataAccess.Services.Interfaces;
@@ -10,8 +11,8 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
     {
         #region Private Fields
 
-        private readonly MemoryCacheEntryOptions _cacheEntryOptions;
         private readonly IMemoryCache _memoryCache;
+        private readonly MemoryCacheEntryOptions _cacheEntryOptions;
 
         #endregion Private Fields
 
