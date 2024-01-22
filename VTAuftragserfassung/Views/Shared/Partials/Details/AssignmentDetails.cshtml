@@ -20,6 +20,9 @@
         @await Html.PartialAsync("NoticeDetails", @Model?.Auftrag?.Hinweis)
     </div>
     <div class="alignContentEndContainer">
-        <a class="btn btn-primary" onclick="cancelAssignment(@Model?.Auftrag?.PK_Auftrag)">stornieren</a>
+        @if (Model?.Auftrag?.Auftragsstatus != null && !((int)Model.Auftrag.Auftragsstatus > 1))
+        {
+            <a class="btn btn-primary" onclick="cancelAssignment(@Model?.Auftrag?.PK_Auftrag)">stornieren</a>
+        }
     </div>
 </div>
