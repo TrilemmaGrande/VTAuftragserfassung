@@ -1,39 +1,39 @@
 ﻿
 <div class="keyValue" id="company">
-    <input property-name="customerData" name="Firma" type="text" placeholder="Firma" />
-</div>
-<div class="keyValue" id="customerId">
-    <input property-name="customerData" name="Kundennummer" type="text" required placeholder="Kd.-Nr." />
-</div>
-<div class="keyValue" id="firstName">
-    <input property-name="customerData" name="Vorname" type="text" required placeholder="Vorname" />
-</div>
-<div class="keyValue" id="lastName">
-    <input property-name="customerData" name="Nachname" type="text" required placeholder="Nachname" />
-</div>
-<div class="keyValue" id="mail">
-    <input property-name="NotImplementedYet" name="E-Mail" type="text" placeholder="E-Mail" disabled />
-</div>
-<div class="keyValue" id="telephone">
-    <input property-name="customerData" name="Telefon" type="tel" placeholder="Tel." />
-</div>
-<div class="keyValue" id="street">
-    <input property-name="customerData" name="Strasse" type="text" required placeholder="Straße" />
-</div>
-<div class="keyValue" id="postalCode">
-    <input property-name="customerData" name="Postleitzahl" type="text" required placeholder="PLZ" />
-</div>
-<div class="keyValue" id="city">
-    <input property-name="customerData" name="Ort" type="text" required placeholder="Ort" />
+    <input property-name="customerData" name="Firma" type="text" placeholder="Firma" tabindex="1"/>
 </div>
 <div id="isWorkshopOrTrader">
     <div>
-        <input id="isWorkshopCheckbox" data-name="isWorkshopCheckbox" type="checkbox" />
+        <input id="isWorkshopCheckbox" data-name="isWorkshopCheckbox" type="checkbox" tabindex="2" />
         <label for="isWorkshopCheckbox">Werkstatt</label>
-        <input id="isSaleCheckbox" data-name="isSaleCheckbox" type="checkbox" />
+        <input id="isSaleCheckbox" data-name="isSaleCheckbox" type="checkbox" tabindex="3" />
         <label for="isSaleCheckbox">Handel</label>
     </div>
 </div>
+<div class="keyValue" id="customerId">
+    <input property-name="customerData" name="Kundennummer" type="text" required placeholder="Kd.-Nr."  tabindex="4"/>
+</div>
+<div class="keyValue" id="telephone">
+    <input property-name="customerData" name="Telefon" type="tel" placeholder="Tel."  tabindex="5"/>
+</div>
+<div class="keyValue" id="firstName">
+    <input property-name="customerData" name="Vorname" type="text" required placeholder="Vorname"  tabindex="6"/>
+</div>
+<div class="keyValue" id="lastName">
+    <input property-name="customerData" name="Nachname" type="text" required placeholder="Nachname"  tabindex="7"/>
+</div>
+<div class="keyValue" id="mail">
+    <input property-name="NotImplementedYet" name="E-Mail" type="text" placeholder="E-Mail" disabled  tabindex="8"/>
+</div>
+<div class="keyValue" id="street">
+    <input property-name="customerData" name="Strasse" type="text" required placeholder="Straße"  tabindex="9"/>
+</div>
+<div class="keyValue" id="postalCode">
+    <input property-name="customerData" name="Postleitzahl" type="text" required placeholder="PLZ"  tabindex="10"/>
+</div>
+<div class="keyValue" id="city">
+    <input property-name="customerData" name="Ort" type="text" required placeholder="Ort"  tabindex="11"/>
+</div>
 <div  id="btnAddCustomer" >
-    <a class="btn btn-primary" onclick="saveNewCustomer()">Kunden speichern</a>
+    <a class="btn btn-primary" onclick="saveNewCustomer()"  tabindex="13">Kunden speichern</a>
 </div>
