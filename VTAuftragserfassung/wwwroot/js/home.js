@@ -26,6 +26,9 @@ function setMainPage(view) {
 // Pagination
 
 function calcMaxPage(paginationModel) {
+    if (paginationModel.page == null || paginationModel.linesPerPage == null) {
+        return;
+    }
     let assignmentCount = backendRequestGET("/home/GetAssignmentsCount/")
     _maxPage = Math.ceil(assignmentCount / paginationModel.linesPerPage);
 }
@@ -76,13 +79,11 @@ function changePageAssignmentList(page, linesPerPage) {
 function openAssignmentList() {
     let userId = backendRequestGET("/Home/GetUserId")
     let paginationModel = getPagination(userId, 'assignment'); 
-    if (paginationModel.page == null || paginationModel.linesPerPage == null) {
+    calcMaxPage(paginationModel);
+    if (paginationModel.page == null || paginationModel.linesPerPage == null
+        || paginationModel.page < 1 || paginationModel.page > _maxPage) {
         setPaginationToDefault(userId, 'assignment');
         paginationModel = getPagination(userId, 'assignment');
-    }
-    calcMaxPage(paginationModel);
-    if (paginationModel.page < 1 || paginationModel.page > _maxPage) {
-        setPaginationToDefault(userId, 'assignment');
     }
     setAssignmentList(paginationModel);
 }
