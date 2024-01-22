@@ -9,23 +9,13 @@ using VTAuftragserfassung.Extensions;
 
 namespace VTAuftragserfassung.Database.DataAccess.Services
 {
-    public class DataAccessService : IDataAccessService
+    public class DataAccessService(ISqlConnector _conn, ResourceManager _resM) : IDataAccessService
     {
         #region Private Fields
-
-        private readonly ISqlConnector _conn;
-        private readonly ResourceManager _resM;
-
 
         #endregion Private Fields
 
         #region Public Constructors
-
-        public DataAccessService(ISqlConnector conn, ResourceManager resM)
-        {
-            _conn = conn;
-            _resM = resM;
-        }
 
         #endregion Public Constructors
 

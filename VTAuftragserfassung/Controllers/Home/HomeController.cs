@@ -10,17 +10,13 @@ using VTAuftragserfassung.Models.ViewModel;
 namespace VTAuftragserfassung.Controllers.Home
 {
     [Authorize]
-    public class HomeController : Controller
+    public class HomeController(IHomeLogic _logic) : Controller
     {
         #region Private Fields
-
-        private readonly IHomeLogic _logic;
 
         #endregion Private Fields
 
         #region Public Constructors
-
-        public HomeController(IHomeLogic logic) => _logic = logic;
 
         #endregion Public Constructors
 
@@ -96,7 +92,7 @@ namespace VTAuftragserfassung.Controllers.Home
         [HttpGet("/Home/ShareholderDetailsPartial/{shareholderPK}")]
         public PartialViewResult GetShareholderDetailsPartial(int shareholderPK)
         {
-            Gesellschafter? shareholder = _logic.GetShareholderByPK(shareholderPK);
+            Gesellschafter? shareholder = _logic.GetShareholderByPk(shareholderPK);
 
             return PartialView("ShareholderDetails", shareholder);
         }
@@ -111,7 +107,7 @@ namespace VTAuftragserfassung.Controllers.Home
         [HttpGet("/Home/AddCustomerDetailsPartial/{customerPK}")]
         public PartialViewResult AddCustomerDetailsPartial(int customerPK)
         {
-            Kunde? customer = _logic.GetCustomerByPK(customerPK);
+            Kunde? customer = _logic.GetCustomerByPk(customerPK);
             return PartialView("CustomerDetails", customer);
         }
 

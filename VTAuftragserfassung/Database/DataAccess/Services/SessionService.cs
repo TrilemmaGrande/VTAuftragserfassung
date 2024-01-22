@@ -4,20 +4,17 @@ using VTAuftragserfassung.Extensions;
 
 namespace VTAuftragserfassung.Database.DataAccess.Services
 {
-    public class SessionService : ISessionService
+    public class SessionService(IHttpContextAccessor _sessionAccess) : ISessionService
     {
-        private readonly ISession? _session;
-        public SessionService(IHttpContextAccessor sessionAccess)
-        {
-            _session = sessionAccess?.HttpContext?.Session;
-        }
+        private readonly ISession? _session = _sessionAccess?.HttpContext?.Session;
+
         public List<T>? GetSessionModels<T>(T? model, string sKey) where T : IDatabaseObject
         {
             if (!string.IsNullOrEmpty(sKey) && _session != null
                 && _session.TryGetValue(sKey, out byte[]? cachedModelJson)
                 && cachedModelJson.Length > 0)
             {
-                return CompressorExtension.DecompressAndDeserialize<List<T>>(cachedModelJson);
+                return cachedModelJson.DecompressAndDeserialize<List<T>>();
             }
             return null;
         }
@@ -30,7 +27,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
             _session.Remove(sKey);
             if (newModelData != null)
             {
-                _session.Set(sKey, CompressorExtension.SerializeAndCompress(newModelData));
+                _session.Set(sKey, newModelData.SerializeAndCompress());
             }
             return newModelData;
         }

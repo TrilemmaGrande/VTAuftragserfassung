@@ -8,24 +8,17 @@ using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Database.Repository
 {
-    public class HomeRepository : IHomeRepository
+    public class HomeRepository(
+        IDataAccess<IDatabaseObject> _dataAccess,
+        ICachingService _caching,
+        ISessionService _session)
+        : IHomeRepository
     {
         #region Private Fields
-
-        private readonly ICachingService _caching;
-        private readonly ISessionService _session;
-        private readonly IDataAccess<IDatabaseObject> _dataAccess;
 
         #endregion Private Fields
 
         #region Public Constructors
-
-        public HomeRepository(IDataAccess<IDatabaseObject> dataAccess, ICachingService caching, ISessionService session)
-        {
-            _dataAccess = dataAccess;
-            _caching = caching;
-            _session = session;
-        }
 
         #endregion Public Constructors
 

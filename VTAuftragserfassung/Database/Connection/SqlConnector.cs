@@ -4,20 +4,13 @@ using VTAuftragserfassung.Database.Connection.Interfaces;
 
 namespace VTAuftragserfassung.Database.Connection
 {
-    public class SqlConnector : ISqlConnector
+    public class SqlConnector(string _connectionString) : ISqlConnector
     {
         #region Private Fields
-
-        private readonly string _connectionString;
 
         #endregion Private Fields
 
         #region Public Constructors
-
-        public SqlConnector(string connectionString)
-        {
-            _connectionString = connectionString;
-        }
 
         #endregion Public Constructors
 
@@ -38,16 +31,12 @@ namespace VTAuftragserfassung.Database.Connection
                         sqlConn.Open();
                     }
 
-                    using (SqlCommand cmd = new(command, sqlConn))
-                    {
-                        using (SqlDataAdapter adapter = new(cmd))
-                        {
-                            DataTable ds = new();
-                            adapter.Fill(ds);
+                    using SqlCommand cmd = new(command, sqlConn);
+                    using SqlDataAdapter adapter = new(cmd);
+                    DataTable ds = new();
+                    adapter.Fill(ds);
 
-                            return ds;
-                        }
-                    }
+                    return ds;
                 }
             }
             catch (Exception ex)

@@ -2,7 +2,7 @@
 
 <div class="positionListRowWrapper">
     <div class="positionListRowContent">
-        @if (Model?.Artikel != null && Model?.Position != null)
+        @if (Model is { Artikel: not null, Position: not null })
         {
             <div>@Model.Artikel.Artikelnummer</div>
             <div>@Model.Artikel.Bezeichnung1</div>

@@ -9,16 +9,9 @@ using VTAuftragserfassung.Controllers.Login.Interfaces;
 
 namespace VTAuftragserfassung.Controllers.Login
 {
-    public class LoginLogic : ILoginLogic
+    public class LoginLogic(ILoginRepository _repo, IHttpContextAccessor _httpContextAccessor)
+        : ILoginLogic
     {
-        private readonly ILoginRepository _repo;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public LoginLogic(ILoginRepository repo, IHttpContextAccessor httpContextAccessor)
-        {
-            _repo = repo;
-            _httpContextAccessor = httpContextAccessor;
-        }
         public bool VerifyLogin(LoginViewModel loginViewModel)
         {
             Vertriebsmitarbeiter? user = _repo.GetUserByUserId(loginViewModel.UserId) ?? null;

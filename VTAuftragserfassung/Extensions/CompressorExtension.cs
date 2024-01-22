@@ -7,14 +7,12 @@ namespace VTAuftragserfassung.Extensions
     {
         public static byte[] SerializeAndCompress(this object obj)
         {
-            using (MemoryStream ms = new MemoryStream())
+            using MemoryStream ms = new MemoryStream();
+            using (GZipStream zs = new GZipStream(ms, CompressionMode.Compress, true))
             {
-                using (GZipStream zs = new GZipStream(ms, CompressionMode.Compress, true))
-                {
-                    JsonSerializer.Serialize(zs, obj);
-                }
-                return ms.ToArray();
-            }            
+                JsonSerializer.Serialize(zs, obj);
+            }
+            return ms.ToArray();
         }
         public static T? DecompressAndDeserialize<T>(this byte[] data)
         {

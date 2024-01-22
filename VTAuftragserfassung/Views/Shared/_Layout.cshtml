@@ -1,14 +1,16 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/VTAuftragserfassung.styles.css" asp-append-version="true" />
-    <link rel="icon" type="image" href="~/Resources/img/facicon-gas.png">
-</head>
+<cache expires-after="@TimeSpan.FromSeconds(300)">
+    <head>
+        <meta charset=" utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"]</title>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/VTAuftragserfassung.styles.css" asp-append-version="true" />
+        <link rel="icon" type="image" href="~/Resources/img/facicon-gas.png">
+    </head>
+</cache>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -30,7 +32,7 @@
                         </li>
                     </ul>
                     <div class="horizontal-group align-self-end" style="margin:2rem;">
-                        <img src="~/Resources/img/person-circle-outline.svg" width="40" style="margin: 0.2rem"/>
+                        <img src="~/Resources/img/person-circle-outline.svg" width="40" style="margin: 0.2rem" />
                         <label style="font-size:16px; font-weight:bold"> @User?.Identity?.Name</label>
                     </div>
                     <a class="btn btnLogout" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>

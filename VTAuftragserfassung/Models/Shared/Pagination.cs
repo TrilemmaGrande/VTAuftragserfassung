@@ -6,8 +6,8 @@ namespace VTAuftragserfassung.Models.Shared
     {
         #region Private Fields
 
-        private readonly IReadOnlyList<int> linesPerPageOptions = [5, 10, 20, 30, 40, 50];
-        private int linesPerPage = 20;
+        private readonly IReadOnlyList<int> _linesPerPageOptions = [5, 10, 20, 30, 40, 50];
+        private int _linesPerPage = 20;
 
         #endregion Private Fields
 
@@ -15,20 +15,14 @@ namespace VTAuftragserfassung.Models.Shared
 
         public int LinesPerPage
         {
-            get { return linesPerPage; }
-            set => linesPerPage = LinesPerPageOptions.Contains(value) ? value : 20;
+            get { return _linesPerPage; }
+            set => _linesPerPage = LinesPerPageOptions.Contains(value) ? value : 20;
         }
 
         public IReadOnlyList<int> LinesPerPageOptions
-        { get { return linesPerPageOptions.OrderBy(x => x).ToImmutableList(); } }
+        { get { return _linesPerPageOptions.OrderBy(x => x).ToImmutableList(); } }
 
-        public int Offset
-        {
-            get
-            {
-                return (Page - 1) * linesPerPage;
-            }
-        }
+        public int Offset => (Page - 1) * _linesPerPage;
 
         public int Page { get; set; } = 1;
 

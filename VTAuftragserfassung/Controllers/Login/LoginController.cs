@@ -4,20 +4,13 @@ using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Controllers.Login
 {
-    public class LoginController : Controller
+    public class LoginController(ILoginLogic _logic) : Controller
     {
         #region Private Fields
-
-        private readonly ILoginLogic _logic;
 
         #endregion Private Fields
 
         #region Public Constructors
-
-        public LoginController(ILoginLogic logic)
-        {
-            _logic = logic;
-        }
 
         #endregion Public Constructors
 

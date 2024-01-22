@@ -14,9 +14,7 @@ namespace VTAuftragserfassung.Controllers.Home.Interfaces
 
         AssignmentFormViewModel? GetAssignmentFormViewModel();
 
-        Artikel? GetArticleByPK(int articlePK);
-
-        Kunde? GetCustomerByPK(int customerPK);
+        Kunde? GetCustomerByPk(int customerPK);
 
         PositionViewModel? GetPositionViewModel(int articlePK, int positionNr);
 
@@ -26,7 +24,7 @@ namespace VTAuftragserfassung.Controllers.Home.Interfaces
 
         void Logout();
 
-        Gesellschafter? GetShareholderByPK(int shareholderPK);
+        Gesellschafter? GetShareholderByPk(int shareholderPK);
 
         List<Gesellschafter>? GetAllShareholders();
 

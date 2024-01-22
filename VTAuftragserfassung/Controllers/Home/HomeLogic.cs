@@ -9,26 +9,16 @@ using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Controllers.Home
 {
-    public class HomeLogic : IHomeLogic
+    public class HomeLogic(IHomeRepository _repo, IHttpContextAccessor _httpContextAccessor)
+        : IHomeLogic
     {
         #region Private Fields
 
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IHomeRepository _repo;
-        private string _userId
-        {
-            get { return _httpContextAccessor.HttpContext?.User.Identity?.Name ?? string.Empty; }
-        }
+        private string _userId => _httpContextAccessor.HttpContext?.User.Identity?.Name ?? string.Empty;
 
         #endregion Private Fields
 
         #region Public Constructors
-
-        public HomeLogic(IHomeRepository repo, IHttpContextAccessor httpContextAccessor)
-        {
-            _repo = repo;
-            _httpContextAccessor = httpContextAccessor;
-        }
 
         #endregion Public Constructors
 
@@ -42,15 +32,13 @@ namespace VTAuftragserfassung.Controllers.Home
 
         public string GetUserId() => _userId;
 
-        public Artikel? GetArticleByPK(int articlePK) => _repo.GetAllArticlesCached()?.Find(i => i.PK_Artikel == articlePK);
-
-        public Kunde? GetCustomerByPK(int customerPK) => _repo.GetAllCustomersCached()?.Find(i => i.PK_Kunde == customerPK);
+        public Kunde? GetCustomerByPk(int customerPK) => _repo.GetAllCustomersCached()?.Find(i => i.PK_Kunde == customerPK);
 
         public AssignmentFormViewModel? GetAssignmentFormViewModel() => !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentFormVMByUserId(_userId) : null;
 
         public List<Gesellschafter>? GetAllShareholders() => _repo.GetAllShareholdersCached();
 
-        public Gesellschafter? GetShareholderByPK(int shareholderPK) => _repo.GetAllShareholdersCached()?.Find(i => i.PK_Gesellschafter == shareholderPK);
+        public Gesellschafter? GetShareholderByPk(int shareholderPK) => _repo.GetAllShareholdersCached()?.Find(i => i.PK_Gesellschafter == shareholderPK);
 
         public PositionViewModel? GetPositionViewModel(int articlePK, int positionNr)
         {
