@@ -31,7 +31,7 @@ namespace VTAuftragserfassung
             ResourceManager resM = new("VTAuftragserfassung.Database.DataAccess.MSSqlQueries", Assembly.GetExecutingAssembly());
 
             builder.Services.AddSingleton(resM);
-            builder.Services.AddSingleton<ISqlConnector>(conn => new SqlConnector(connectionString, resM));
+            builder.Services.AddSingleton<ISqlConnector>(conn => new SqlConnector(connectionString));
             builder.Services.AddScoped<ICachingService, CachingService>();
             builder.Services.AddScoped<ISessionService, SessionService>();
             builder.Services.AddScoped<IDataAccessService, DataAccessService>();

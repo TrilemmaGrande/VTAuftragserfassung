@@ -1,8 +1,6 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
-using System.Resources;
 using VTAuftragserfassung.Database.Connection.Interfaces;
-using VTAuftragserfassung.Extensions;
 
 namespace VTAuftragserfassung.Database.Connection
 {
@@ -11,16 +9,14 @@ namespace VTAuftragserfassung.Database.Connection
         #region Private Fields
 
         private readonly string _connectionString;
-        private readonly ResourceManager _resM;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public SqlConnector(string connectionString, ResourceManager resM)
+        public SqlConnector(string connectionString)
         {
             _connectionString = connectionString;
-            _resM = resM;
         }
 
         #endregion Public Constructors
@@ -111,7 +107,6 @@ namespace VTAuftragserfassung.Database.Connection
                 {
                     cmd.Transaction = transaction;
                     cmd.Parameters.AddRange(parameters);
-                    cmd.CommandText += _resM.GetQuery("SELECT_IDENTITY") ?? string.Empty;
 
                     try
                     {

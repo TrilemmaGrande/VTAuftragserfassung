@@ -39,6 +39,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
             }
 
             string cmd = CreateInsertString(dbModel);
+            cmd += _resM.GetQuery("SELECT_IDENTITY") ?? string.Empty;
             SqlParameter[]? parameters = GenerateParameters(dbModel);
 
             return _conn.ConnectionWrite(cmd, parameters!);
@@ -119,6 +120,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
                 return;
             }
             string cmd = CreateUpdateString(dbModel, columnsToUpdate);
+            cmd += _resM.GetQuery("SELECT_IDENTITY") ?? string.Empty;
             SqlParameter[]? parameters = GenerateParameters(dbModel);
 
             _conn.ConnectionWrite(cmd, parameters);
