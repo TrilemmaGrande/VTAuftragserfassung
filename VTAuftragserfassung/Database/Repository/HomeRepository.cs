@@ -14,14 +14,6 @@ namespace VTAuftragserfassung.Database.Repository
         ISessionService _session)
         : IHomeRepository
     {
-        #region Private Fields
-
-        #endregion Private Fields
-
-        #region Public Constructors
-
-        #endregion Public Constructors
-
         #region Public Methods
 
         public List<Artikel>? GetAllArticlesCached() => GetCachedModels(new Artikel());
@@ -31,16 +23,6 @@ namespace VTAuftragserfassung.Database.Repository
         public List<Kunde>? GetAllCustomersCached() => GetCachedModels(new Kunde());
 
         public List<Gesellschafter>? GetAllShareholdersCached() => GetCachedModels(new Gesellschafter());
-
-        public Vertriebsmitarbeiter? GetUserFromSession(string userId)
-        {
-            Vertriebsmitarbeiter? user = GetSessionModels(new Vertriebsmitarbeiter(), userId)?.FirstOrDefault() ?? _dataAccess.ReadUserByUserId(userId);
-            if (user != null)
-            {
-                _session.SetSessionModels(userId, new List<Vertriebsmitarbeiter>() { user });
-            }
-            return user;
-        }
 
         public AssignmentFormViewModel? GetAssignmentFormVMByUserId(string userId)
         {
@@ -56,6 +38,11 @@ namespace VTAuftragserfassung.Database.Repository
                 Kunden = customers ?? []
             };
             return afvm;
+        }
+
+        public int GetAssignmentsCount(string userId)
+        {
+            return _dataAccess.CountAssignmentsByUserId(userId);
         }
 
         public List<AssignmentViewModel>? GetAssignmentVMsPaginatedByUserId(string userId, Pagination? pagination)
@@ -111,7 +98,15 @@ namespace VTAuftragserfassung.Database.Repository
             return pvm;
         }
 
-      
+        public Vertriebsmitarbeiter? GetUserFromSession(string userId)
+        {
+            Vertriebsmitarbeiter? user = GetSessionModels(new Vertriebsmitarbeiter(), userId)?.FirstOrDefault() ?? _dataAccess.ReadUserByUserId(userId);
+            if (user != null)
+            {
+                _session.SetSessionModels(userId, new List<Vertriebsmitarbeiter>() { user });
+            }
+            return user;
+        }
 
         public int SaveAssignmentVM(AssignmentViewModel? avm)
         {
@@ -149,6 +144,16 @@ namespace VTAuftragserfassung.Database.Repository
 
         #region Private Methods
 
+        private List<T>? GetCachedModels<T>(T model) where T : IDatabaseObject
+        {
+            return _caching.GetCachedModels(model) ?? _caching.UpdateCachedModels(_dataAccess.ReadAll(model));
+        }
+
+        private List<T>? GetSessionModels<T>(T model, string sKey) where T : IDatabaseObject
+        {
+            return _session.GetSessionModels(model, sKey);
+        }
+
         private void MatchPositions(List<PositionViewModel>? positions, int pkAssignment)
         {
             if (positions == null || positions.Count == 0)
@@ -164,16 +169,6 @@ namespace VTAuftragserfassung.Database.Repository
                 }).ToList();
 
             _dataAccess.CreateAll(positionList);
-        }
-
-        private List<T>? GetCachedModels<T>(T model) where T : IDatabaseObject
-        {
-            return _caching.GetCachedModels(model) ?? _caching.UpdateCachedModels(_dataAccess.ReadAll(model));
-        }
-
-        private List<T>? GetSessionModels<T>(T model, string sKey) where T : IDatabaseObject
-        {
-            return _session.GetSessionModels(model, sKey);
         }
 
         #endregion Private Methods

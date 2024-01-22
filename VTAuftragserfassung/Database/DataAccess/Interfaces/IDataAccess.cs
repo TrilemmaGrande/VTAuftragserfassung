@@ -7,6 +7,8 @@ namespace VTAuftragserfassung.Database.DataAccess
     {
         #region Public Methods
 
+        int CountAssignmentsByUserId(string userId);
+
         int Create<T>(T? dbModel) where T : Interfaces.IDatabaseObject;
 
         void CreateAll<T>(List<T>? dbModels) where T : Interfaces.IDatabaseObject;

@@ -4,6 +4,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services.Interfaces
 {
     public interface IDataAccessService
     {
+        int ReadScalar(string cmd);
         #region Public Methods
 
         void CreateAll<T>(List<T>? dbModels) where T : IDatabaseObject;

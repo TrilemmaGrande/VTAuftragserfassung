@@ -12,81 +12,76 @@ namespace VTAuftragserfassung.Controllers.Home
     [Authorize]
     public class HomeController(IHomeLogic _logic) : Controller
     {
-        #region Private Fields
-
-        #endregion Private Fields
-
-        #region Public Constructors
-
-        #endregion Public Constructors
-
         #region Public Methods
 
-        public IActionResult Dashboard() => View();
-
-        public IActionResult Logout()
+        [HttpPost("/Home/AddCreatedCustomerDetailsPartial/")]
+        public PartialViewResult AddCreatedCustomerDetailsPartial([FromBody] Kunde customer)
         {
-
-            _logic.Logout();
-            return RedirectToAction("Index", "Login");
+            return PartialView("CustomerDetails", customer);
         }
 
-        [HttpGet("Home/GetUserId")]
-        public string GetUserId()
+        [HttpGet("/Home/AddCustomerDetailsPartial/{customerPK}")]
+        public PartialViewResult AddCustomerDetailsPartial(int customerPK)
         {
-            return _logic.GetUserId();
-        }
-
-        [HttpPost("/Home/AssignmentsPartial/")]
-        public PartialViewResult Assignments([FromBody] Pagination pagination)
-        {
-        
-            List<AssignmentViewModel>? avm = _logic.GetAssignmentViewModels(pagination);
-            if (avm == null)
-            {
-                return new();
-            }
-            else
-            {
-                return PartialView("Assignments", avm);
-            }
-        }
-
-        [HttpPost("/Home/PaginationMenuPartial")]
-        public PartialViewResult GetPaginationMenuPartial([FromBody] Pagination pagination)
-        {
-            return PartialView("PaginationMenu", pagination);
-        }
-
-        [HttpGet("/Home/NewAssignment")]
-        public PartialViewResult NewAssignment()
-        {
-            AssignmentFormViewModel? afvm = _logic.GetAssignmentFormViewModel();
-            return PartialView("AssignmentForm", afvm);
-        }
-
-        [HttpPost("/Home/SearchResultPartialArticle/")]
-        public PartialViewResult SearchResultPartialArticle([FromBody] List<Artikel> modelList)
-        {
-            return PartialView("SearchResultArticle", modelList);
-        }
-
-        [HttpPost("/Home/SearchResultPartialCustomer/")]
-        public PartialViewResult SearchResultPartialCustomer([FromBody] List<Kunde> modelList)
-        {
-            return PartialView("SearchResultCustomer", modelList);
-        }
-
-        [HttpPost("/Home/SearchResultPartialAssignment/")]
-        public PartialViewResult SearchResultPartialAssignment([FromBody] List<AssignmentViewModel> modelList)
-        {
-            return PartialView("SearchResultAssignment", modelList);
+            Kunde? customer = _logic.GetCustomerByPk(customerPK);
+            return PartialView("CustomerDetails", customer);
         }
 
         [HttpGet("/Home/AddCustomerForm/")]
         public PartialViewResult AddCustomerForm()
         {
             return PartialView("CustomerForm");
+        }
+
+        [HttpGet("/Home/AddPositionListRowFormPartial/{articlePK}")]
+        public PartialViewResult AddPositionListRowFormPartial(int articlePK, int positionNr)
+        {
+            PositionViewModel? pvm = _logic.GetPositionViewModel(articlePK, positionNr);
+            if (pvm?.Position != null)
+            {
+                pvm.Position.PositionsNummer = positionNr;
+            }
+            return PartialView("PositionListRowForm", pvm);
+        }
+
+        [HttpGet("/Home/GetAssignmentsCount")]
+        public int GetAssignmentsCount()
+        {
+            return _logic.GetAssignmentsCount();
+        }
+
+        [HttpPost("/Home/AssignmentsPartial/")]
+        public PartialViewResult Assignments([FromBody] Pagination pagination)
+        {
+            List<AssignmentViewModel>? avm = _logic.GetAssignmentViewModels(pagination);
+
+            return PartialView("Assignments", avm);
+        }
+
+        [HttpPost("/Home/CreateNewAssignment/")]
+        public int CreateNewAssignment([FromBody] AssignmentViewModel avm)
+        {
+            return _logic.CreateAssignment(avm);
+        }
+
+        [HttpPost("/Home/CreateNewCustomer/")]
+        public int CreateNewCustomer([FromBody] Kunde customer)
+        {
+            return _logic.CreateCustomer(customer);
+        }
+
+        public IActionResult Dashboard() => View();
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpPost("/Home/PaginationMenuPartial")]
+        public PartialViewResult GetPaginationMenuPartial([FromBody] Pagination pagination)
+        {
+            return PartialView("PaginationMenu", pagination);
         }
 
         [HttpGet("/Home/ShareholderDetailsPartial/{shareholderPK}")]
@@ -104,52 +99,47 @@ namespace VTAuftragserfassung.Controllers.Home
             return PartialView("ShareholderForm", shareholders);
         }
 
-        [HttpGet("/Home/AddCustomerDetailsPartial/{customerPK}")]
-        public PartialViewResult AddCustomerDetailsPartial(int customerPK)
+        [HttpGet("Home/GetUserId")]
+        public string GetUserId()
         {
-            Kunde? customer = _logic.GetCustomerByPk(customerPK);
-            return PartialView("CustomerDetails", customer);
+            return _logic.GetUserId();
         }
 
-        [HttpPost("/Home/AddCreatedCustomerDetailsPartial/")]
-        public PartialViewResult AddCreatedCustomerDetailsPartial([FromBody] Kunde customer)
+        public IActionResult Logout()
         {
-            return PartialView("CustomerDetails", customer);
+            _logic.Logout();
+            return RedirectToAction("Index", "Login");
         }
 
-        [HttpGet("/Home/AddPositionListRowFormPartial/{articlePK}")]
-        public PartialViewResult AddPositionListRowFormPartial(int articlePK, int positionNr)
+        [HttpGet("/Home/NewAssignment")]
+        public PartialViewResult NewAssignment()
         {
-            PositionViewModel? pvm = _logic.GetPositionViewModel(articlePK, positionNr);
-            if (pvm?.Position != null)
-            {
-                pvm.Position.PositionsNummer = positionNr;
-            }
-            return PartialView("PositionListRowForm", pvm);
+            AssignmentFormViewModel? afvm = _logic.GetAssignmentFormViewModel();
+            return PartialView("AssignmentForm", afvm);
         }
 
-        [HttpPost("/Home/CreateNewAssignment/")]
-        public int CreateNewAssignment([FromBody] AssignmentViewModel avm)
+        [HttpPost("/Home/SearchResultPartialArticle/")]
+        public PartialViewResult SearchResultPartialArticle([FromBody] List<Artikel> modelList)
         {
-            return _logic.CreateAssignment(avm);
+            return PartialView("SearchResultArticle", modelList);
         }
 
-        [HttpPost("/Home/CreateNewCustomer/")]
-        public int CreateNewCustomer([FromBody] Kunde customer)
+        [HttpPost("/Home/SearchResultPartialAssignment/")]
+        public PartialViewResult SearchResultPartialAssignment([FromBody] List<AssignmentViewModel> modelList)
         {
-            return _logic.CreateCustomer(customer);
+            return PartialView("SearchResultAssignment", modelList);
+        }
+
+        [HttpPost("/Home/SearchResultPartialCustomer/")]
+        public PartialViewResult SearchResultPartialCustomer([FromBody] List<Kunde> modelList)
+        {
+            return PartialView("SearchResultCustomer", modelList);
         }
 
         [HttpPost("/Home/UpdateAssignmentStatus/{assignmentPK}")]
         public void UpdateAssignmentStatus(int assignmentPK, string assignmentStatus)
         {
             _logic.UpdateAssignmentStatus(assignmentPK, assignmentStatus);
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         #endregion Public Methods

@@ -18,7 +18,7 @@ namespace VTAuftragserfassung.Database.Repository.Interfaces
         List<Gesellschafter>? GetAllShareholdersCached();
 
         AssignmentFormViewModel? GetAssignmentFormVMByUserId(string userId);
-
+        int GetAssignmentsCount(string userId);
         List<AssignmentViewModel>? GetAssignmentVMsPaginatedByUserId(string userId, Pagination? pagination);
 
         PositionViewModel? GetNewPositionVMByArticlePK(int articlePK);

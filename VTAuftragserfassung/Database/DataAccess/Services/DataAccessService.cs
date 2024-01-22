@@ -11,29 +11,10 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
 {
     public class DataAccessService(ISqlConnector _conn, ResourceManager _resM) : IDataAccessService
     {
-        #region Private Fields
-
-        #endregion Private Fields
-
-        #region Public Constructors
-
-        #endregion Public Constructors
 
         #region Public Methods
 
-        public int CreateSingle<T>(T? dbModel) where T : IDatabaseObject
-        {
-            if (dbModel == null)
-            {
-                return 0;
-            }
-
-            string cmd = CreateInsertString(dbModel);
-            cmd += _resM.GetQuery("SELECT_IDENTITY") ?? string.Empty;
-            SqlParameter[]? parameters = GenerateParameters(dbModel);
-
-            return _conn.ConnectionWrite(cmd, parameters!);
-        }
+        public int ReadScalar(string cmd) => Convert.ToInt32(_conn.ConnectionReadScalar(cmd));
 
         public void CreateAll<T>(List<T>? dbModels) where T : IDatabaseObject
         {
@@ -50,6 +31,20 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
                 queryList.Add(new Tuple<string, SqlParameter[]?>(cmd, parameters));
             }
             _conn.ConnectionWrite(queryList);
+        }
+
+        public int CreateSingle<T>(T? dbModel) where T : IDatabaseObject
+        {
+            if (dbModel == null)
+            {
+                return 0;
+            }
+
+            string cmd = CreateInsertString(dbModel);
+            cmd += _resM.GetQuery("SELECT_IDENTITY") ?? string.Empty;
+            SqlParameter[]? parameters = GenerateParameters(dbModel);
+
+            return _conn.ConnectionWrite(cmd, parameters!);
         }
 
         public List<T>? ReadAll<T>(string cmd) where T : IDatabaseObject
@@ -229,5 +224,6 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
         }
 
         #endregion Private Methods
+
     }
 }

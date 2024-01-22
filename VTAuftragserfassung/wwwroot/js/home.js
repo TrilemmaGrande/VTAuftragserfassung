@@ -1,6 +1,7 @@
 ﻿
 // Global Variables
-let positionNr = 0;
+let _positionNr = 0;
+let _maxPage = 1;
 
 // Format
 function formatToCurrency(value) {
@@ -23,6 +24,11 @@ function setMainPage(view) {
 }
 
 // Pagination
+
+function calcMaxPage(paginationModel) {
+    let assignmentCount = backendRequestGET("/home/GetAssignmentsCount/")
+    _maxPage = Math.ceil(assignmentCount / paginationModel.linesPerPage);
+}
 
 function getPagination(userId, viewName) {
     let paginationModel = { page: 1, linesPerPage: 20 };
@@ -56,22 +62,27 @@ function changePageAssignmentList(page, linesPerPage) {
     let paginationModel = getPagination(userId, 'assignment');
     paginationModel.page = page ?? paginationModel.page;
     paginationModel.linesPerPage = linesPerPage ?? paginationModel.linesPerPage;
+    calcMaxPage(paginationModel);
+    if (paginationModel.page > _maxPage) {
+        paginationModel.page = _maxPage;
+    }
     if (paginationModel.page < 1) {
-        return;
+        paginationModel.page = 1;
     }
-    let assignmentList = setAssignmentList(paginationModel);
-    if (assignmentList == null) {
-        return;
-    }
+    setAssignmentList(paginationModel);
     setPagination(userId, 'assignment', paginationModel);
 }
 
 function openAssignmentList() {
     let userId = backendRequestGET("/Home/GetUserId")
-    let paginationModel = getPagination(userId, 'assignment');
+    let paginationModel = getPagination(userId, 'assignment'); 
     if (paginationModel.page == null || paginationModel.linesPerPage == null) {
         setPaginationToDefault(userId, 'assignment');
         paginationModel = getPagination(userId, 'assignment');
+    }
+    calcMaxPage(paginationModel);
+    if (paginationModel.page < 1 || paginationModel.page > _maxPage) {
+        setPaginationToDefault(userId, 'assignment');
     }
     setAssignmentList(paginationModel);
 }
@@ -107,13 +118,11 @@ function openAssignmentForm() {
     };
 }
 
-
-
 function removeOldAssignmentForm() {
     let oldAssignment = document.getElementsByClassName('assignmentModalContainer');
     if (oldAssignment.length > 0) {
         oldAssignment[0].remove();
-        positionNr = 0;
+        _positionNr = 0;
     }
 }
 
@@ -168,7 +177,7 @@ function cancelAssignment(modelPK) {
 function closeNewAssignment() {
     let modalDiv = document.getElementsByClassName('assignmentModalContainer');
     modalDiv[0].remove();
-    positionNr = 0;
+    _positionNr = 0;
 }
 
 // Assignment PositionRow Amount
@@ -375,8 +384,8 @@ function setSelectedArticlePartialByPk(modelPK, targetElementId) {
         incrementArticleButton.click();
         return;
     }
-    positionNr++;
-    let targetPartial = backendRequestGET("/Home/AddPositionListRowFormPartial/" + modelPK + "?positionNr=" + positionNr);
+    _positionNr++;
+    let targetPartial = backendRequestGET("/Home/AddPositionListRowFormPartial/" + modelPK + "?positionNr=" + _positionNr);
     let targetElement = document.getElementById(targetElementId);
     targetElement.innerHTML = targetElement.innerHTML + targetPartial;
     updateAssignmentSum();

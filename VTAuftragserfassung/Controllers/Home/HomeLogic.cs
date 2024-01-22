@@ -35,6 +35,7 @@ namespace VTAuftragserfassung.Controllers.Home
         public Kunde? GetCustomerByPk(int customerPK) => _repo.GetAllCustomersCached()?.Find(i => i.PK_Kunde == customerPK);
 
         public AssignmentFormViewModel? GetAssignmentFormViewModel() => !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentFormVMByUserId(_userId) : null;
+        public int GetAssignmentsCount() => !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentsCount(_userId) : default;
 
         public List<Gesellschafter>? GetAllShareholders() => _repo.GetAllShareholdersCached();
 

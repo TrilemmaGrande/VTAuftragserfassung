@@ -127,10 +127,13 @@
     <value>SELECT * FROM vta_Auftrag INNER JOIN vta_Vertriebsmitarbeiter ON (vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) WHERE MitarbeiterId = '{0}' ORDER BY ErstelltAm DESC, LetzteStatusAenderung DESC, PK_Auftrag DESC OFFSET {1} ROWS FETCH NEXT {2} ROWS ONLY;</value>
   </data>
   <data name="SelectPositionsByAssignmentPKs" xml:space="preserve">
-    <value>INNER JOIN vta_Auftrag ON ( vta_Position.FK_Auftrag = vta_Auftrag.PK_Auftrag)INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter)WHERE FK_Auftrag IN ({0});</value>
+    <value>INNER JOIN vta_Auftrag ON ( vta_Position.FK_Auftrag = vta_Auftrag.PK_Auftrag) INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) WHERE FK_Auftrag IN ({0});</value>
   </data>
   <data name="SELECT_*" xml:space="preserve">
     <value>SELECT * FROM {0};</value>
+  </data>
+  <data name="SELECT_COUNT_ByUserId" xml:space="preserve">
+    <value>SELECT COUNT({0}) FROM {1} INNER JOIN vta_Vertriebsmitarbeiter ON ( vta_Auftrag.FK_Vertriebsmitarbeiter = vta_Vertriebsmitarbeiter.PK_Vertriebsmitarbeiter) {2}</value>
   </data>
   <data name="SELECT_IDENTITY" xml:space="preserve">
     <value>SELECT SCOPE_IDENTITY();</value>
@@ -146,5 +149,8 @@
   </data>
   <data name="WHERE_MitarbeiterId" xml:space="preserve">
     <value>WHERE MitarbeiterId = '{0}';</value>
+  </data>
+  <data name="WHERE_PK" xml:space="preserve">
+    <value>WHERE {0} = {1}</value>
   </data>
 </root>
