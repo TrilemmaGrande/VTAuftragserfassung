@@ -9,48 +9,16 @@ using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Controllers.Home
 {
-    public class HomeLogic(IHomeRepository _repo, IHttpContextAccessor _httpContextAccessor)
+    public class HomeLogic(IHomeRepository _repo)
         : IHomeLogic
     {
-        #region Private Fields
+        #region Private Properties
 
-        private string _userId => _httpContextAccessor.HttpContext?.User.Identity?.Name ?? string.Empty;
+        private string _userId => _repo.GetSessionUser()?.Identity?.Name ?? string.Empty;
 
-        #endregion Private Fields
-
-        #region Public Constructors
-
-        #endregion Public Constructors
+        #endregion Private Properties
 
         #region Public Methods
-
-        public List<AssignmentViewModel>? GetAssignmentViewModels(Pagination? pagination) =>
-            (!string.IsNullOrEmpty(_userId) && pagination != null && pagination.Page > 0)
-                ? _repo.GetAssignmentVMsPaginatedByUserId(_userId, pagination)
-                : null;
-
-
-        public string GetUserId() => _userId;
-
-        public Kunde? GetCustomerByPk(int customerPK) => _repo.GetAllCustomersCached()?.Find(i => i.PK_Kunde == customerPK);
-
-        public AssignmentFormViewModel? GetAssignmentFormViewModel() => !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentFormVMByUserId(_userId) : null;
-        public int GetAssignmentsCount() => !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentsCount(_userId) : default;
-
-        public List<Gesellschafter>? GetAllShareholders() => _repo.GetAllShareholdersCached();
-
-        public Gesellschafter? GetShareholderByPk(int shareholderPK) => _repo.GetAllShareholdersCached()?.Find(i => i.PK_Gesellschafter == shareholderPK);
-
-        public PositionViewModel? GetPositionViewModel(int articlePK, int positionNr)
-        {
-            PositionViewModel? pvm = _repo.GetNewPositionVMByArticlePK(articlePK);
-            if (pvm?.Position == null)
-            {
-                return null;
-            }
-            pvm.Position.PositionsNummer = positionNr;
-            return pvm;
-        }
 
         public int CreateAssignment(AssignmentViewModel avm)
         {
@@ -67,6 +35,37 @@ namespace VTAuftragserfassung.Controllers.Home
 
         public int CreateCustomer(Kunde? customer) => customer != null ? _repo.SaveCustomer(customer) : 0;
 
+        public List<Gesellschafter>? GetAllShareholders() => _repo.GetAllShareholdersCached();
+
+        public AssignmentFormViewModel? GetAssignmentFormViewModel() => !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentFormVMByUserId(_userId) : null;
+
+        public int GetAssignmentsCount() => !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentsCount(_userId) : default;
+
+        public List<AssignmentViewModel>? GetAssignmentViewModels(Pagination? pagination) =>
+                                                    (!string.IsNullOrEmpty(_userId) && pagination != null && pagination.Page > 0)
+                ? _repo.GetAssignmentVMsPaginatedByUserId(_userId, pagination)
+                : null;
+
+        public Kunde? GetCustomerByPk(int customerPK) => _repo.GetAllCustomersCached()?.Find(i => i.PK_Kunde == customerPK);
+
+        public PositionViewModel? GetPositionViewModel(int articlePK, int positionNr)
+        {
+            PositionViewModel? pvm = _repo.GetNewPositionVMByArticlePK(articlePK);
+            if (pvm?.Position == null)
+            {
+                return null;
+            }
+            pvm.Position.PositionsNummer = positionNr;
+            return pvm;
+        }
+
+        public Gesellschafter? GetShareholderByPk(int shareholderPK) => _repo.GetAllShareholdersCached()?.Find(i => i.PK_Gesellschafter == shareholderPK);
+
+        public string GetUserId() => _userId;
+
+        public void Logout() =>
+            _httpContextAccessor.HttpContext?.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
         public void UpdateAssignmentStatus(int assignmentPK, string assignmentStatus)
         {
             if (!Enum.TryParse(assignmentStatus, out Auftragsstatus status) || assignmentPK <= 0)
@@ -76,9 +75,6 @@ namespace VTAuftragserfassung.Controllers.Home
             Auftrag? assignment = new() { PK_Auftrag = assignmentPK, Auftragsstatus = status };
             _repo.Update(assignment, "Auftragsstatus");
         }
-
-        public void Logout() =>
-            _httpContextAccessor.HttpContext?.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
         #endregion Public Methods
     }

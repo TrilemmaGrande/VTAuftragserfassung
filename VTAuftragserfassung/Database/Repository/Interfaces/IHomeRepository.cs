@@ -1,4 +1,5 @@
-﻿using VTAuftragserfassung.Database.DataAccess.Interfaces;
+﻿using System.Security.Claims;
+using VTAuftragserfassung.Database.DataAccess.Interfaces;
 using VTAuftragserfassung.Models.DBO;
 using VTAuftragserfassung.Models.Shared;
 using VTAuftragserfassung.Models.ViewModel;
@@ -18,10 +19,14 @@ namespace VTAuftragserfassung.Database.Repository.Interfaces
         List<Gesellschafter>? GetAllShareholdersCached();
 
         AssignmentFormViewModel? GetAssignmentFormVMByUserId(string userId);
+
         int GetAssignmentsCount(string userId);
+
         List<AssignmentViewModel>? GetAssignmentVMsPaginatedByUserId(string userId, Pagination? pagination);
 
         PositionViewModel? GetNewPositionVMByArticlePK(int articlePK);
+
+        ClaimsPrincipal? GetSessionUser();
 
         Vertriebsmitarbeiter? GetUserFromSession(string userId);
 

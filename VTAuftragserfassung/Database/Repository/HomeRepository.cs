@@ -1,4 +1,5 @@
-﻿using VTAuftragserfassung.Database.DataAccess;
+﻿using System.Security.Claims;
+using VTAuftragserfassung.Database.DataAccess;
 using VTAuftragserfassung.Database.DataAccess.Interfaces;
 using VTAuftragserfassung.Database.DataAccess.Services.Interfaces;
 using VTAuftragserfassung.Database.Repository.Interfaces;
@@ -15,6 +16,8 @@ namespace VTAuftragserfassung.Database.Repository
         : IHomeRepository
     {
         #region Public Methods
+
+        public ClaimsPrincipal? GetSessionUser() => _session.GetSessionUser() ?? default;  
 
         public List<Artikel>? GetAllArticlesCached() => GetCachedModels(new Artikel());
 
