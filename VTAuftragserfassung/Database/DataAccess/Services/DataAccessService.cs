@@ -11,10 +11,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
 {
     public class DataAccessService(ISqlConnector _conn, ResourceManager _resM) : IDataAccessService
     {
-
         #region Public Methods
-
-        public int ReadScalar(string cmd) => Convert.ToInt32(_conn.ConnectionReadScalar(cmd));
 
         public void CreateAll<T>(List<T>? dbModels) where T : IDatabaseObject
         {
@@ -69,6 +66,8 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
             }
             return default;
         }
+
+        public int ReadScalar(string cmd) => !string.IsNullOrEmpty(cmd) ? Convert.ToInt32(_conn.ConnectionReadScalar(cmd)) : default;
 
         public T? ReadSingle<T>(T? dbModel, string cmd) where T : IDatabaseObject
         {
@@ -224,6 +223,5 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
         }
 
         #endregion Private Methods
-
     }
 }

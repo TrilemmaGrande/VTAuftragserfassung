@@ -11,16 +11,14 @@ namespace VTAuftragserfassung.Database.DataAccess
     {
         #region Public Methods
 
-
-
-        public int Create<T>(T? dbModel) where T : IDatabaseObject => _dbAccess.CreateSingle(dbModel);
+        public int CountAssignmentsByUserId(string userId)
+          => !string.IsNullOrEmpty(userId)
+          ? CountDataSetByCondition(new Auftrag(), "*", _resM.GetQuery("WHERE_MitarbeiterId", userId) ?? string.Empty)
+          : default;
 
         public void CreateAll<T>(List<T>? dbModels) where T : IDatabaseObject => _dbAccess.CreateAll(dbModels);
 
-        public int CountAssignmentsByUserId(string userId)
-            => !string.IsNullOrEmpty(userId)
-            ? CountDataSetByCondition(new Auftrag(), "*", _resM.GetQuery("WHERE_MitarbeiterId", userId) ?? string.Empty)
-            : default;
+        public int CreateSingle<T>(T? dbModel) where T : IDatabaseObject => _dbAccess.CreateSingle(dbModel);
 
         public List<T>? ReadAll<T>(T? dbModel) where T : IDatabaseObject
             => dbModel != null
@@ -40,8 +38,8 @@ namespace VTAuftragserfassung.Database.DataAccess
             : default;
 
         public T? ReadObjectByPrimaryKey<T>(T? dbModel, int pk) where T : IDatabaseObject
-            => dbModel != null 
-            ? ReadByCondition(dbModel, "*", _resM.GetQuery("WHERE_PK", dbModel.PrimaryKeyColumn, pk) ?? string.Empty) 
+            => dbModel != null
+            ? ReadByCondition(dbModel, "*", _resM.GetQuery("WHERE_PK", dbModel.PrimaryKeyColumn, pk) ?? string.Empty)
             : default;
 
         public List<T1>? ReadObjectListByForeignKey<T1, T2>(T1? dbModel, T2? foreignModel, int fk)
@@ -68,8 +66,13 @@ namespace VTAuftragserfassung.Database.DataAccess
 
         #region Private Methods
 
-        private List<T>? ReadAllByCondition<T>(T? dbModel, string getterColumn, string condition) where T : IDatabaseObject
+        private int CountDataSetByCondition<T>(T dbModel, string getterColumn, string condition) where T : IDatabaseObject
             => dbModel != null
+            ? _dbAccess.ReadScalar(_resM.GetQuery("SELECT_COUNT_ByUserId", getterColumn, dbModel.TableName, condition.Trim('"')) ?? string.Empty)
+            : default;
+
+        private List<T>? ReadAllByCondition<T>(T? dbModel, string getterColumn, string condition) where T : IDatabaseObject
+                    => dbModel != null
             ? _dbAccess.ReadAll<T>(_resM.GetQuery("SELECT", getterColumn, dbModel.TableName, condition.Trim('"')) ?? string.Empty)
             : default;
 
@@ -77,12 +80,6 @@ namespace VTAuftragserfassung.Database.DataAccess
             => dbModel != null
             ? _dbAccess.ReadSingle(dbModel, _resM.GetQuery("SELECT_TOP_1", getterColumn, dbModel.TableName, condition.Trim('"')) ?? string.Empty)
             : default;
-
-        private int CountDataSetByCondition<T>(T dbModel, string getterColumn, string condition) where T : IDatabaseObject
-            => dbModel != null
-            ? _dbAccess.ReadScalar(_resM.GetQuery("SELECT_COUNT_ByUserId", getterColumn, dbModel.TableName, condition.Trim('"')) ?? string.Empty)
-            : default;
-
 
         #endregion Private Methods
     }

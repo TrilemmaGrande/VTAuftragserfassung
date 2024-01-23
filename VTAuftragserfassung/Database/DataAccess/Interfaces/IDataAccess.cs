@@ -9,11 +9,11 @@ namespace VTAuftragserfassung.Database.DataAccess
 
         int CountAssignmentsByUserId(string userId);
 
-        int Create<T>(T? dbModel) where T : Interfaces.IDatabaseObject;
+        int CreateSingle<T>(T? dbModel) where T : Interfaces.IDatabaseObject;
 
         void CreateAll<T>(List<T>? dbModels) where T : Interfaces.IDatabaseObject;
 
-        public List<T>? ReadAll<T>(T? dbModel) where T : IDatabaseObject;
+        List<T>? ReadAll<T>(T? dbModel) where T : IDatabaseObject;
 
         List<Auftrag>? ReadAssignmentsPaginatedByUserId(string userId, Pagination? pagination);
 

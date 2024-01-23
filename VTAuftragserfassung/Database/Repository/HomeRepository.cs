@@ -114,7 +114,7 @@ namespace VTAuftragserfassung.Database.Repository
             {
                 return 0;
             }
-            int pkAssignment = _dataAccess.Create(avm.Auftrag);
+            int pkAssignment = _dataAccess.CreateSingle(avm.Auftrag);
             if (avm.PositionenVM != null && avm.PositionenVM.Count > 0)
             {
                 MatchPositions(avm.PositionenVM, pkAssignment);
@@ -128,7 +128,7 @@ namespace VTAuftragserfassung.Database.Repository
             {
                 return 0;
             }
-            int pk = _dataAccess.Create(customer);
+            int pk = _dataAccess.CreateSingle(customer);
             _caching.InvalidateCacheModels(new Kunde());
             return pk;
         }

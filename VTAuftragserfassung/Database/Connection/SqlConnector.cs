@@ -6,14 +6,6 @@ namespace VTAuftragserfassung.Database.Connection
 {
     public class SqlConnector(string _connectionString) : ISqlConnector
     {
-        #region Private Fields
-
-        #endregion Private Fields
-
-        #region Public Constructors
-
-        #endregion Public Constructors
-
         #region Public Methods
 
         public DataTable? ConnectionRead(string command)
@@ -44,7 +36,6 @@ namespace VTAuftragserfassung.Database.Connection
                 Console.WriteLine($"Fehler beim Lesen aus Datenbank: {ex.Message}");
                 return null;
             }
-
         }
 
         public object? ConnectionReadScalar(string command)
