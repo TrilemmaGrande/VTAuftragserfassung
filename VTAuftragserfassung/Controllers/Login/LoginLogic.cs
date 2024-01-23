@@ -12,28 +12,29 @@ namespace VTAuftragserfassung.Controllers.Login
     public class LoginLogic(ILoginRepository _repo, IHttpContextAccessor _httpContextAccessor)
         : ILoginLogic
     {
+        #region Public Methods
+
+        public void Logout() =>
+       _httpContextAccessor.HttpContext?.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
         public bool VerifyLogin(LoginViewModel loginViewModel)
         {
-            Vertriebsmitarbeiter? user = _repo.GetUserByUserId(loginViewModel.UserId) ?? null;
-            PasswordVerificationResult result = 0;
-            string hashedAuth = string.Empty;
-
-            if (user != null)
-            {
-                Auth? auth = _repo.GetAuthByUserPk(user.PK_Vertriebsmitarbeiter);
-                hashedAuth = auth?.HashedAuth ?? string.Empty;
-            }
-            else
+            Vertriebsmitarbeiter? user = _repo.GetUserByUserId(loginViewModel.UserId) ?? null;   
+            if (user == null)
             {
                 return false;
             }
+            Auth? auth = _repo.GetAuthByUserPk(user.PK_Vertriebsmitarbeiter);
+
+            PasswordVerificationResult result;
+
             var pwhasher = new PasswordHasher<Vertriebsmitarbeiter>();
-            if (!string.IsNullOrEmpty(hashedAuth))
+            if (!string.IsNullOrEmpty(auth?.HashedAuth))
             {
                 result = pwhasher
                     .VerifyHashedPassword(
-                user!,
-                hashedAuth,
+                user,
+                auth.HashedAuth,
                 loginViewModel.Auth);
             }
             // delete below later
@@ -58,6 +59,8 @@ namespace VTAuftragserfassung.Controllers.Login
             _httpContextAccessor.HttpContext?.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
             return result != 0;
-        }       
+        }
+
+        #endregion Public Methods
     }
 }

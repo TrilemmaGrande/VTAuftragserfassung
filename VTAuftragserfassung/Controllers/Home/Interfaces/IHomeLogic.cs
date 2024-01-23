@@ -22,8 +22,6 @@ namespace VTAuftragserfassung.Controllers.Home.Interfaces
 
         int CreateCustomer(Kunde? customer);
 
-        void Logout();
-
         Gesellschafter? GetShareholderByPk(int shareholderPK);
 
         List<Gesellschafter>? GetAllShareholders();

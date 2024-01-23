@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using VTAuftragserfassung.Controllers.Home.Interfaces;
+﻿using VTAuftragserfassung.Controllers.Home.Interfaces;
 using VTAuftragserfassung.Database.Repository.Interfaces;
 using VTAuftragserfassung.Models.DBO;
 using VTAuftragserfassung.Models.Enum;
@@ -62,9 +60,6 @@ namespace VTAuftragserfassung.Controllers.Home
         public Gesellschafter? GetShareholderByPk(int shareholderPK) => _repo.GetAllShareholdersCached()?.Find(i => i.PK_Gesellschafter == shareholderPK);
 
         public string GetUserId() => _userId;
-
-        public void Logout() =>
-            _httpContextAccessor.HttpContext?.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
         public void UpdateAssignmentStatus(int assignmentPK, string assignmentStatus)
         {

@@ -21,6 +21,12 @@ namespace VTAuftragserfassung.Controllers.Login
             return View();
         }
 
+        public IActionResult Logout()
+        {
+            _logic.Logout();
+            return RedirectToAction("Index");
+        }
+
         [HttpPost("/LoginVerification")]
         public IActionResult LoginVerification([FromBody] LoginViewModel loginViewModel)
         {

@@ -37,10 +37,6 @@ namespace VTAuftragserfassung.Controllers.Home
         public PartialViewResult AddPositionListRowFormPartial(int articlePK, int positionNr)
         {
             PositionViewModel? pvm = _logic.GetPositionViewModel(articlePK, positionNr);
-            if (pvm?.Position != null)
-            {
-                pvm.Position.PositionsNummer = positionNr;
-            }
             return PartialView("PositionListRowForm", pvm);
         }
 
@@ -54,7 +50,6 @@ namespace VTAuftragserfassung.Controllers.Home
         public PartialViewResult Assignments([FromBody] Pagination pagination)
         {
             List<AssignmentViewModel>? avm = _logic.GetAssignmentViewModels(pagination);
-
             return PartialView("Assignments", avm);
         }
 
@@ -103,12 +98,6 @@ namespace VTAuftragserfassung.Controllers.Home
         public string GetUserId()
         {
             return _logic.GetUserId();
-        }
-
-        public IActionResult Logout()
-        {
-            _logic.Logout();
-            return RedirectToAction("Index", "Login");
         }
 
         [HttpGet("/Home/NewAssignment")]
