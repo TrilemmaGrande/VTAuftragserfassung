@@ -9,15 +9,22 @@ using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Database.Repository
 {
-    public class HomeRepository(
-        IDataAccess<IDatabaseObject> _dataAccess,
-        ICachingService _caching,
-        ISessionService _session)
-        : IHomeRepository
+    public class HomeRepository : IHomeRepository
     {
+        private readonly IDataAccess<IDatabaseObject> _dataAccess;
+        private readonly ICachingService _caching;
+        private readonly ISessionService _session;
+
+        public HomeRepository(IDataAccess<IDatabaseObject> dataAccess, ICachingService caching, ISessionService session)
+        {
+            _dataAccess = dataAccess;
+            _caching = caching;
+            _session = session;
+        }
+
         #region Public Methods
 
-        public ClaimsPrincipal? GetSessionUser() => _session.GetSessionUser() ?? default;  
+        public ClaimsPrincipal? GetSessionUser() => _session.GetSessionUser() ?? default;
 
         public List<Artikel>? GetAllArticlesCached() => GetCachedModels(new Artikel());
 
@@ -36,9 +43,9 @@ namespace VTAuftragserfassung.Database.Repository
             AssignmentFormViewModel? afvm = new()
             {
                 Vertriebsmitarbeiter = salesStaff,
-                Gesellschafter = shareholders ?? [],
-                Artikel = articles ?? [],
-                Kunden = customers ?? []
+                Gesellschafter = shareholders ?? new(),
+                Artikel = articles ?? new(),
+                Kunden = customers ?? new()
             };
             return afvm;
         }
@@ -59,8 +66,8 @@ namespace VTAuftragserfassung.Database.Repository
             List<Gesellschafter>? shareholders = GetAllShareholdersCached();
             List<Artikel>? articles = GetAllArticlesCached();
             List<Kunde>? customers = GetAllCustomersCached();
-            List<Position>? positions = _dataAccess.ReadPositionsByAssignmentPKs(assignmentPKs) ?? [];
-            List<PositionViewModel>? pvms = positions?.Select(p => new PositionViewModel() { Position = p }).ToList() ?? [];
+            List<Position>? positions = _dataAccess.ReadPositionsByAssignmentPKs(assignmentPKs) ?? new();
+            List<PositionViewModel>? pvms = positions?.Select(p => new PositionViewModel() { Position = p }).ToList() ?? new();
             List<AssignmentViewModel>? avms = assignments.Select(i => new AssignmentViewModel() { Auftrag = i }).ToList();
             if (articles == null || customers == null || shareholders == null)
             {
@@ -68,7 +75,7 @@ namespace VTAuftragserfassung.Database.Repository
             }
             foreach (var avm in avms)
             {
-                avm.PositionenVM = [.. pvms.Where(i => i.Position?.FK_Auftrag == avm.Auftrag?.PK_Auftrag)];
+                avm.PositionenVM = pvms.Where(i => i.Position?.FK_Auftrag == avm.Auftrag?.PK_Auftrag).ToList();
                 avm.PositionenVM.ForEach(item => item.Artikel = articles.Find(i => i.PK_Artikel == item.Position?.FK_Artikel));
                 avm.Kunde = customers.Find(i => i.PK_Kunde == avm.Auftrag?.FK_Kunde);
                 avm.Gesellschafter = shareholders.Find(i => i.PK_Gesellschafter == avm.Kunde?.FK_Gesellschafter);

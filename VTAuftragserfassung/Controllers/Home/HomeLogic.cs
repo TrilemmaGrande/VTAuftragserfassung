@@ -7,9 +7,23 @@ using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Controllers.Home
 {
-    public class HomeLogic(IHomeRepository _repo)
-        : IHomeLogic
+    public class HomeLogic : IHomeLogic
     {
+        #region Private Fields
+
+        private readonly IHomeRepository _repo;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
+        public HomeLogic(IHomeRepository repo)
+        {
+            _repo = repo;
+        }
+
+        #endregion Public Constructors
+
         #region Private Properties
 
         private string _userId => _repo.GetSessionUser()?.Identity?.Name ?? string.Empty;

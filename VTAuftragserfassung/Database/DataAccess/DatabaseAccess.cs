@@ -7,8 +7,25 @@ using VTAuftragserfassung.Models.Shared;
 
 namespace VTAuftragserfassung.Database.DataAccess
 {
-    public class DatabaseAccess(IDataAccessService _dbAccess, ResourceManager _resM) : IDataAccess<IDatabaseObject>
+    public class DatabaseAccess : IDataAccess<IDatabaseObject>
     {
+        #region Private Fields
+
+        private readonly IDataAccessService _dbAccess;
+        private readonly ResourceManager _resM;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
+        public DatabaseAccess(IDataAccessService dbAccess, ResourceManager resM)
+        {
+            _dbAccess = dbAccess;
+            _resM = resM;
+        }
+
+        #endregion Public Constructors
+
         #region Public Methods
 
         public int CountAssignmentsByUserId(string userId)

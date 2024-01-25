@@ -9,7 +9,9 @@ namespace VTAuftragserfassung.Controllers.Home.Interfaces
         #region Public Methods
 
         string GetUserId();
+
         int GetAssignmentsCount();
+
         List<AssignmentViewModel>? GetAssignmentViewModels(Pagination pagination);
 
         AssignmentFormViewModel? GetAssignmentFormViewModel();

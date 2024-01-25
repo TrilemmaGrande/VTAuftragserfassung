@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAmjDAvR37/EWtIVKwxdHO/wAAAAACAAAAAAADZgAAwAAAABAAAAAxLbMVXOzPl9iGnFnnhvZjAAAAAASAAACgAAAAEAAAAAOz+Kh85GcWpWl5+w//00sYAAAA+OHCL7J6QNZ/hcef8Ct0CRwqxT+hk1mkFAAAAE7Ty5cjkK+z0UeGXOkqer5oyYyA</EncryptedPassword>
+    <History>True|2024-01-25T10:31:45.7634394Z;True|2024-01-25T10:23:54.6619238+01:00;True|2024-01-25T10:21:19.5893577+01:00;True|2024-01-25T10:03:30.6360086+01:00;True|2024-01-25T09:46:10.0017132+01:00;True|2024-01-25T09:38:29.1826707+01:00;True|2024-01-25T09:38:15.9018133+01:00;True|2024-01-25T09:22:28.4852952+01:00;False|2024-01-25T09:21:27.3087159+01:00;True|2024-01-25T09:20:15.0753933+01:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Server=JANUS%3bDatabase=mechanik_test%3bUser Id=dbgol%3bPassword=+#Gol1518%3bMultipleActiveResultSets=True%3b</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>

@@ -14,6 +14,7 @@ namespace VTAuftragserfassung.Extensions
             }
             return ms.ToArray();
         }
+
         public static T? DecompressAndDeserialize<T>(this byte[] data)
         {
             using (MemoryStream ms = new MemoryStream(data))

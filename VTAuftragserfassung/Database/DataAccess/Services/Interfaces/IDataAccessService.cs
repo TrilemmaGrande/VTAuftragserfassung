@@ -5,6 +5,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services.Interfaces
     public interface IDataAccessService
     {
         #region Public Methods
+
         int CreateSingle<T>(T? dbModel) where T : IDatabaseObject;
 
         void CreateAll<T>(List<T>? dbModels) where T : IDatabaseObject;

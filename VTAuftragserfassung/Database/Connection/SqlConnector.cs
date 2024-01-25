@@ -4,8 +4,15 @@ using VTAuftragserfassung.Database.Connection.Interfaces;
 
 namespace VTAuftragserfassung.Database.Connection
 {
-    public class SqlConnector(string _connectionString) : ISqlConnector
+    public class SqlConnector : ISqlConnector
     {
+        private readonly string _connectionString;
+
+        public SqlConnector(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
         #region Public Methods
 
         public DataTable? ConnectionRead(string command)

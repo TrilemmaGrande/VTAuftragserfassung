@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="VT-Auftragserfassung-Test" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\nils\.reinshagen\\source\\repos\\VTAuftragserfassung\\VTAuftragserfassung\\obj\\Release\\net7\.0-windows7\.0\\win-x64\\PubTmp\\Out\\$" />
+  </parameter>
+</parameters>

@@ -6,7 +6,8 @@ namespace VTAuftragserfassung.Models.Shared
     {
         #region Private Fields
 
-        private readonly IReadOnlyList<int> _linesPerPageOptions = [5, 10, 20, 30, 40, 50];
+        private readonly IReadOnlyList<int> _linesPerPageOptions = new List<int> { 5, 10, 20, 30, 40, 50 };
+
         private int _linesPerPage = 20;
 
         #endregion Private Fields

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "GhM1O7tAUhicz/orpKZqFjpr3SaqB4MaSRF4TmIBBdMw/D3/ZMlSGpC0jHlOVphjqwawXftABheT3uoThzGDbA==",
+  "dgSpecHash": "dSKccXy5J+Dn3fPZ0sYKa7lchuBvS1nMuAo4a5TI+a9a6rljFKANCdpAhO2w/86I6Eumlgn1/CnjXBwqC8Mmyw==",
   "success": true,
   "projectFilePath": "C:\\Users\\nils.reinshagen\\source\\repos\\VTAuftragserfassung\\VTAuftragserfassung\\VTAuftragserfassung.csproj",
   "expectedPackageFiles": [
@@ -10,7 +10,7 @@
     "C:\\Users\\nils.reinshagen\\.nuget\\packages\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\nils.reinshagen\\.nuget\\packages\\runtime.win-x64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\nils.reinshagen\\.nuget\\packages\\runtime.win-x86.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
-    "C:\\Users\\nils.reinshagen\\.nuget\\packages\\system.data.sqlclient\\4.8.5\\system.data.sqlclient.4.8.5.nupkg.sha512",
+    "C:\\Users\\nils.reinshagen\\.nuget\\packages\\system.data.sqlclient\\4.8.6\\system.data.sqlclient.4.8.6.nupkg.sha512",
     "C:\\Users\\nils.reinshagen\\.nuget\\packages\\system.security.accesscontrol\\4.7.0\\system.security.accesscontrol.4.7.0.nupkg.sha512",
     "C:\\Users\\nils.reinshagen\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512"
   ],

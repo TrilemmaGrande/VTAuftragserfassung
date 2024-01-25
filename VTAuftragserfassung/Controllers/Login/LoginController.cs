@@ -4,13 +4,20 @@ using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Controllers.Login
 {
-    public class LoginController(ILoginLogic _logic) : Controller
+    public class LoginController : Controller
     {
         #region Private Fields
+
+        private readonly ILoginLogic _logic;
 
         #endregion Private Fields
 
         #region Public Constructors
+
+        public LoginController(ILoginLogic logic)
+        {
+            _logic = logic;
+        }
 
         #endregion Public Constructors
 
@@ -28,9 +35,9 @@ namespace VTAuftragserfassung.Controllers.Login
         }
 
         [HttpPost("/LoginVerification")]
-        public IActionResult LoginVerification([FromBody] LoginViewModel loginViewModel)
+        public bool LoginVerification([FromBody] LoginViewModel loginViewModel)
         {
-            return _logic.VerifyLogin(loginViewModel) ? RedirectToAction("Dashboard", "Home") : RedirectToAction("Index");
+            return _logic.VerifyLogin(loginViewModel);
         }
 
         #endregion Public Methods

@@ -1,17 +1,25 @@
-﻿using System.Security.Claims;
-using VTAuftragserfassung.Models.ViewModel;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using VTAuftragserfassung.Models.DBO;
-using VTAuftragserfassung.Database.Repository.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 using VTAuftragserfassung.Controllers.Login.Interfaces;
+using VTAuftragserfassung.Database.Repository.Interfaces;
+using VTAuftragserfassung.Models.DBO;
+using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Controllers.Login
 {
-    public class LoginLogic(ILoginRepository _repo, IHttpContextAccessor _httpContextAccessor)
-        : ILoginLogic
+    public class LoginLogic : ILoginLogic
     {
+        private readonly ILoginRepository _repo;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public LoginLogic(ILoginRepository repo, IHttpContextAccessor httpContextAccessor)
+        {
+            _repo = repo;
+            _httpContextAccessor = httpContextAccessor;
+        }
+
         #region Public Methods
 
         public void Logout() =>
@@ -19,7 +27,7 @@ namespace VTAuftragserfassung.Controllers.Login
 
         public bool VerifyLogin(LoginViewModel loginViewModel)
         {
-            Vertriebsmitarbeiter? user = _repo.GetUserByUserId(loginViewModel.UserId) ?? null;   
+            Vertriebsmitarbeiter? user = _repo.GetUserByUserId(loginViewModel.UserId) ?? null;
             if (user == null)
             {
                 return false;

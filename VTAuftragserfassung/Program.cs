@@ -61,10 +61,14 @@ namespace VTAuftragserfassung
                 options.IdleTimeout = TimeSpan.FromMinutes(1);
                 options.Cookie.IsEssential = true;
             });
-
+            builder.Services.Configure<IISServerOptions>(options =>
+            {
+                options.AutomaticAuthentication = false;
+            });
             builder.Services.Configure<GzipCompressionProviderOptions>(
                 options =>
                 {
+
                     options.Level = CompressionLevel.Fastest;
                 });
 
@@ -84,8 +88,8 @@ namespace VTAuftragserfassung
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            app.UseHsts();
             app.UseHttpsRedirection();
+            app.UseHsts();
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -93,10 +97,15 @@ namespace VTAuftragserfassung
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.MapDefaultControllerRoute();
             app.MapControllerRoute(
                 name: "default",
+                pattern: "{controller=Home}/{action=Dashboard}/{id?}");
+
+            app.MapControllerRoute(
+                name: "Login",
                 pattern: "{controller=Login}/{action=Index}/{id?}");
+
+
 
             app.Run();
         }

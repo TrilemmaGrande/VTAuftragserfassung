@@ -9,8 +9,17 @@ using VTAuftragserfassung.Extensions;
 
 namespace VTAuftragserfassung.Database.DataAccess.Services
 {
-    public class DataAccessService(ISqlConnector _conn, ResourceManager _resM) : IDataAccessService
+    public class DataAccessService : IDataAccessService
     {
+        private readonly ISqlConnector _conn;
+        private readonly ResourceManager _resM;
+
+        public DataAccessService(ISqlConnector conn, ResourceManager resM)
+        {
+            _conn = conn;
+            _resM = resM;
+        }
+
         #region Public Methods
 
         public void CreateAll<T>(List<T>? dbModels) where T : IDatabaseObject
@@ -50,7 +59,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
             {
                 return default;
             }
-            List<T> listOfT = [];
+            List<T> listOfT = new();
             DataTable? dt = _conn.ConnectionRead(cmd);
             if (dt != null && dt.Rows.Count > 0)
             {

@@ -6,8 +6,15 @@ using VTAuftragserfassung.Extensions;
 
 namespace VTAuftragserfassung.Database.DataAccess.Services
 {
-    public class CachingService(IMemoryCache _memoryCache) : ICachingService
+    public class CachingService : ICachingService
     {
+        private readonly IMemoryCache _memoryCache;
+
+        public CachingService(IMemoryCache memoryCache)
+        {
+            _memoryCache = memoryCache;
+        }
+
         #region Private Fields
 
         private readonly MemoryCacheEntryOptions _cacheEntryOptions = new()
@@ -18,37 +25,29 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
 
         #endregion Private Fields
 
-        #region Public Constructors
-
-        #endregion Public Constructors
-
         #region Public Methods
 
-        private string GenerateCacheKey<T>(T? model)
-        {
-            return model != null ? model.GetType().Name : string.Empty;
-        }
         public List<T>? GetCachedModels<T>(T? model) where T : IDatabaseObject
         {
             string cKey = GenerateCacheKey(model);
-            if (!string.IsNullOrEmpty(cKey)
-                && _memoryCache.TryGetValue(cKey, out byte[]? cachedModelJson)
-                && cachedModelJson != null)
+            if (string.IsNullOrEmpty(cKey)
+                || !_memoryCache.TryGetValue(cKey, out byte[]? cachedModelJson)
+                || cachedModelJson == null)
             {
-                return cachedModelJson.DecompressAndDeserialize<List<T>>();
+                return null;
             }
-            return null;
+            return cachedModelJson.DecompressAndDeserialize<List<T>>();
         }
 
         public bool InvalidateCacheModels<T>(T? model, string cKey = "")
         {
             cKey = string.IsNullOrEmpty(cKey) ? GenerateCacheKey(model) : cKey;
-            if (!string.IsNullOrEmpty(cKey))
+            if (string.IsNullOrEmpty(cKey))
             {
-                _memoryCache.Remove(cKey);
-                return true;
+                return false;
             }
-            return false;
+            _memoryCache.Remove(cKey);
+            return true;
         }
 
         public List<T>? UpdateCachedModels<T>(List<T>? newModelData) where T : IDatabaseObject
@@ -66,6 +65,16 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
 
             return null;
         }
+
         #endregion Public Methods
+
+        #region Private Methods
+
+        private string GenerateCacheKey<T>(T? model)
+        {
+            return model != null ? model.GetType().Name : string.Empty;
+        }
+
+        #endregion Private Methods
     }
 }

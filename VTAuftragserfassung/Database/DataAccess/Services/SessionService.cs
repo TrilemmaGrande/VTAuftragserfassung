@@ -1,15 +1,20 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using VTAuftragserfassung.Database.DataAccess.Interfaces;
 using VTAuftragserfassung.Database.DataAccess.Services.Interfaces;
 using VTAuftragserfassung.Extensions;
 
 namespace VTAuftragserfassung.Database.DataAccess.Services
 {
-    public class SessionService(IHttpContextAccessor _sessionAccess) : ISessionService
+    public class SessionService : ISessionService
     {
-        private readonly ISession? _session = _sessionAccess?.HttpContext?.Session;
-        private readonly ClaimsPrincipal? _sessionUser = _sessionAccess?.HttpContext?.User;
+        private readonly ISession? _session;
+        private readonly ClaimsPrincipal? _sessionUser;
+
+        public SessionService(IHttpContextAccessor sessionAccess)
+        {
+            _session = sessionAccess?.HttpContext?.Session;
+            _sessionUser = sessionAccess?.HttpContext?.User;
+        }
 
         public ClaimsPrincipal? GetSessionUser() => _sessionUser;
 
@@ -23,6 +28,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
             }
             return null;
         }
+
         public List<T>? SetSessionModels<T>(string sKey, List<T>? newModelData) where T : IDatabaseObject
         {
             if (string.IsNullOrEmpty(sKey) || _session == null)

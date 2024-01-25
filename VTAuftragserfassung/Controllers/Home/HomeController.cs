@@ -10,9 +10,18 @@ using VTAuftragserfassung.Models.ViewModel;
 namespace VTAuftragserfassung.Controllers.Home
 {
     [Authorize]
-    public class HomeController(IHomeLogic _logic) : Controller
+    public class HomeController : Controller
     {
+        private readonly IHomeLogic _logic;
+
+        public HomeController(IHomeLogic logic)
+        {
+            _logic = logic;
+        }
+
         #region Public Methods
+
+        public IActionResult Dashboard() => View();
 
         [HttpPost("/Home/AddCreatedCustomerDetailsPartial/")]
         public PartialViewResult AddCreatedCustomerDetailsPartial([FromBody] Kunde customer)
@@ -65,7 +74,6 @@ namespace VTAuftragserfassung.Controllers.Home
             return _logic.CreateCustomer(customer);
         }
 
-        public IActionResult Dashboard() => View();
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

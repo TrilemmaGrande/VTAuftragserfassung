@@ -7,8 +7,10 @@ namespace VTAuftragserfassung.Models.DBO
     {
         [JsonIgnore]
         public string TableName { get; set; } = "vta_Position";
+
         [JsonIgnore]
         public string PrimaryKeyColumn { get; set; } = "PK_Position";
+
         public int PK_Position { get; set; }
         public int FK_Artikel { get; set; }
         public int FK_Auftrag { get; set; }
