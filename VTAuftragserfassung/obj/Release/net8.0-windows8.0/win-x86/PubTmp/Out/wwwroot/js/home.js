@@ -1,6 +1,7 @@
 ﻿// Global Variables
 let _positionNr = 0;
 let _maxPage = 1;
+let searchTimeout;
 
 // Format
 function formatToCurrency(value) {
@@ -304,32 +305,22 @@ function saveNewCustomer() {
 
 // Search
 
-function search(ele, searchTerm, model, backendMethod) {
-    let modelList = model;
-    let propertyArray = [];
-    let resultList = [];
+function search(ele, searchTerm, backendMethod) {
+    clearTimeout(searchTimeout);
     let searchResultDiv = document.getElementsByClassName('searchResult');
-    if (searchResultDiv.length > 0) {
-        searchResultDiv[0].remove();
-    }
-    for (const element of modelList) {
-        propertyArray.push(Object.values(element));
-
-        if (JSON.stringify(propertyArray).toLowerCase().includes(searchTerm.trim().toLowerCase()) && searchTerm.length > 0) {
-            resultList.push(element);
+    searchTimeout = setTimeout(function () {
+        if (searchResultDiv.length > 0 || searchTerm.length == 0) {
+            searchResultDiv[0].remove();
+        }
+        if (!searchTimeout || searchTerm.length == 0) {
+            return;
         }
 
-        propertyArray = [];
-    }
-
-    searchResultDiv = document.createElement('div');
-    searchResultDiv.classList.add('searchResult');
-    ele.after(searchResultDiv);
-    if (resultList.length > 0) {
-        searchResultDiv.innerHTML = backendRequestPOST(backendMethod, resultList);
-    } else {
-        searchResultDiv.innerHTML = '';
-    }
+        searchResultDiv = document.createElement('div');
+        searchResultDiv.classList.add('searchResult');
+        ele.after(searchResultDiv);
+        searchResultDiv.innerHTML = backendRequestGET(backendMethod + searchTerm);
+    }, 200);
 }
 
 function searchResultSelected(modelPK, targetElementId) {

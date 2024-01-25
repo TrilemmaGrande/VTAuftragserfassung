@@ -1,6 +1,4 @@
-﻿@{
-    var jsonModel = System.Text.Json.JsonSerializer.Serialize(Model?.Kunden) ?? string.Empty;
-}
+﻿
 @model AssignmentFormViewModel?
 
 <input data-name="assigmentCustomerFK" value="" type="hidden" />
@@ -15,7 +13,7 @@
                 <div class="form" id="customerSearchForm">
                     <span id="customerSearch">
                         <label id="searchBarLabel">Kunden auswählen:</label><br />
-                        <input class="searchBar" id="customerSearchBar" placeholder="Suche ..." oninput="search(this, this.value, @jsonModel, '/Home/SearchResultPartialCustomer/')" required />
+                        <input class="searchBar" id="customerSearchBar" placeholder="Suche ..." oninput="search(this, this.value, '/Home/SearchResultPartialCustomer/')" required />
                     </span>
                     <span>
                         <a id="btnAddCustomer" class="btn btn-secondary" onclick="openCustomerForm(this)">Kunde anlegen</a>

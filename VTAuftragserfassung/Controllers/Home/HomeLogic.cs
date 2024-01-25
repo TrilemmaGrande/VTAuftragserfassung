@@ -1,4 +1,5 @@
-﻿using VTAuftragserfassung.Controllers.Home.Interfaces;
+﻿using System.Text.Json;
+using VTAuftragserfassung.Controllers.Home.Interfaces;
 using VTAuftragserfassung.Database.Repository.Interfaces;
 using VTAuftragserfassung.Models.DBO;
 using VTAuftragserfassung.Models.Enum;
@@ -52,6 +53,39 @@ namespace VTAuftragserfassung.Controllers.Home
         public AssignmentFormViewModel? GetAssignmentFormViewModel() => !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentFormVMByUserId(_userId) : null;
 
         public int GetAssignmentsCount() => !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentsCount(_userId) : default;
+
+
+
+
+        public List<Kunde> GetCustomersBySearchTerm(string searchTerm)
+        {
+            List<Kunde>? modelList = _repo.GetAllCustomersCached() ?? new();
+            searchTerm = searchTerm.ToLower();
+
+            return modelList
+                      .Where(a =>
+                      {
+                          var json = JsonSerializer.Serialize(a);
+                          return json.ToLower().Contains(searchTerm);
+                      })
+                      .ToList();
+        }
+
+
+        public List<Artikel> GetArticlesBySearchTerm(string searchTerm)
+        {
+            List<Artikel>? modelList = _repo.GetAllArticlesCached() ?? new();
+
+            searchTerm = searchTerm.ToLower();
+
+            return modelList
+                    .Where(a =>
+                    {
+                        var json = JsonSerializer.Serialize(a);
+                        return json.ToLower().Contains(searchTerm);
+                    })
+                    .ToList();    
+        }
 
         public List<AssignmentViewModel>? GetAssignmentViewModels(Pagination? pagination) =>
                                                     (!string.IsNullOrEmpty(_userId) && pagination != null && pagination.Page > 0)

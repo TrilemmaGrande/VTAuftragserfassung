@@ -1,9 +1,9 @@
 ﻿@model List<Kunde>?
 
-<div id="searchTable">
-    <div class="gridContainer" id="resultTblBody">
-        @if (Model != null)
-        {
+@if (Model != null && Model.Any())
+{
+    <div id="searchTable">
+        <div class="gridContainer" id="resultTblBody">
             @foreach (var item in Model)
             {
                 <a class="gridListContentContainer gridListContentSearchResult"
@@ -17,6 +17,6 @@
                     <div>@item.Ort</div>
                 </a>
             }
-        }
+        </div>
     </div>
-</div>
+}

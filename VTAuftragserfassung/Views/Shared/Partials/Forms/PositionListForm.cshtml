@@ -1,11 +1,8 @@
-﻿@{
-    var jsonModel = System.Text.Json.JsonSerializer.Serialize(Model) ?? string.Empty;
-}
-@model List<Artikel>?
+﻿@model List<Artikel>?
 
 <div>
     <label id="searchBarLabel">Artikel auswählen:</label><br />
-    <input class="searchBar" placeholder="Suche ..." oninput="search(this, this.value, @jsonModel, '/Home/SearchResultPartialArticle/')" />
+    <input class="searchBar" placeholder="Suche ..." oninput="search(this, this.value, '/Home/SearchResultPartialArticle/')" />
 </div>
 <div class="headerListWrapper">
     <div class="gridListContentContainer gridListContent8">

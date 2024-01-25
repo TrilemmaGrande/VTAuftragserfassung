@@ -29,6 +29,8 @@ namespace VTAuftragserfassung.Controllers.Home.Interfaces
         List<Gesellschafter>? GetAllShareholders();
 
         void UpdateAssignmentStatus(int assignmentPK, string assignmentStatus);
+        List<Artikel> GetArticlesBySearchTerm(string searchTerm);
+        List<Kunde> GetCustomersBySearchTerm(string searchTerm);
 
         #endregion Public Methods
     }

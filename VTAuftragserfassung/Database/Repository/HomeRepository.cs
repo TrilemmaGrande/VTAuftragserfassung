@@ -67,7 +67,7 @@ namespace VTAuftragserfassung.Database.Repository
             List<Artikel>? articles = GetAllArticlesCached();
             List<Kunde>? customers = GetAllCustomersCached();
             List<Position>? positions = _dataAccess.ReadPositionsByAssignmentPKs(assignmentPKs) ?? new();
-            List<PositionViewModel>? pvms = positions?.Select(p => new PositionViewModel() { Position = p }).ToList() ?? new();
+            List<PositionViewModel>? pvms = positions.Select(p => new PositionViewModel() { Position = p }).ToList();
             List<AssignmentViewModel>? avms = assignments.Select(i => new AssignmentViewModel() { Auftrag = i }).ToList();
             if (articles == null || customers == null || shareholders == null)
             {

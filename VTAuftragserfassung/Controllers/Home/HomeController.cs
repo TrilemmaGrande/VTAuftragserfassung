@@ -115,22 +115,18 @@ namespace VTAuftragserfassung.Controllers.Home
             return PartialView("AssignmentForm", afvm);
         }
 
-        [HttpPost("/Home/SearchResultPartialArticle/")]
-        public PartialViewResult SearchResultPartialArticle([FromBody] List<Artikel> modelList)
+
+        [HttpGet("/Home/SearchResultPartialArticle/{searchTerm}")]
+        public PartialViewResult SearchResultPartialArticle(string searchTerm)
         {
-            return PartialView("SearchResultArticle", modelList);
+            return PartialView("SearchResultArticle", _logic.GetArticlesBySearchTerm(searchTerm));
         }
 
-        [HttpPost("/Home/SearchResultPartialAssignment/")]
-        public PartialViewResult SearchResultPartialAssignment([FromBody] List<AssignmentViewModel> modelList)
-        {
-            return PartialView("SearchResultAssignment", modelList);
-        }
 
-        [HttpPost("/Home/SearchResultPartialCustomer/")]
-        public PartialViewResult SearchResultPartialCustomer([FromBody] List<Kunde> modelList)
+        [HttpGet("/Home/SearchResultPartialCustomer/{searchTerm}")]
+        public PartialViewResult SearchResultPartialCustomer(string searchTerm)
         {
-            return PartialView("SearchResultCustomer", modelList);
+            return PartialView("SearchResultCustomer", _logic.GetCustomersBySearchTerm(searchTerm));
         }
 
         [HttpPost("/Home/UpdateAssignmentStatus/{assignmentPK}")]
