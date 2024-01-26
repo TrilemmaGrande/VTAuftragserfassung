@@ -52,30 +52,8 @@ namespace VTAuftragserfassung.Controllers.Home
 
         public List<Artikel> GetArticlesBySearchTerm(string searchTerm)
         {
-            List<Artikel>? modelList = _repo.GetAllArticlesCached() ?? new();
-            searchTerm = searchTerm.ToLower();
-
-            return modelList
-                    .Where(a =>
-                    {
-                        var json = JsonSerializer.Serialize(a);
-                        return json.ToLower().Contains(searchTerm);
-                    })
-                    .ToList();
-        }
-
-        public List<Kunde> GetCustomersBySearchTerm(string searchTerm)
-        {
-            List<Kunde>? modelList = _repo.GetAllCustomersCached() ?? new();
-            searchTerm = searchTerm.ToLower();
-
-            return modelList
-                      .Where(a =>
-                      {
-                          var json = JsonSerializer.Serialize(a);
-                          return json.ToLower().Contains(searchTerm);
-                      })
-                      .ToList();
+            List<Artikel>? searchTarget = _repo.GetAllArticlesCached() ?? new();
+            return GetModelsBySearchterm(searchTerm, searchTarget);
         }
 
         public AssignmentFormViewModel? GetAssignmentFormViewModel() => !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentFormVMByUserId(_userId) : null;
@@ -88,6 +66,12 @@ namespace VTAuftragserfassung.Controllers.Home
                 : null;
 
         public Kunde? GetCustomerByPk(int customerPK) => _repo.GetAllCustomersCached()?.Find(i => i.PK_Kunde == customerPK);
+
+        public List<Kunde> GetCustomersBySearchTerm(string searchTerm)
+        {
+            List<Kunde>? searchTarget = _repo.GetAllCustomersCached() ?? new();
+            return GetModelsBySearchterm(searchTerm, searchTarget);
+        }
 
         public PositionViewModel? GetPositionViewModel(int articlePK, int positionNr)
         {
@@ -115,5 +99,21 @@ namespace VTAuftragserfassung.Controllers.Home
         }
 
         #endregion Public Methods
+
+        #region Private Methods
+
+        private static List<T> GetModelsBySearchterm<T>(string searchTerm, List<T> modelList)
+        {
+            searchTerm = searchTerm.ToLower();
+            return modelList
+                      .Where(model =>
+                      {
+                          var json = JsonSerializer.Serialize(model);
+                          return json.ToLower().Contains(searchTerm);
+                      }).Take(1000)
+                      .ToList();
+        }
+
+        #endregion Private Methods
     }
 }
