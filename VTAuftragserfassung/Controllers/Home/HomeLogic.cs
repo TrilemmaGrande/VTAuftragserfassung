@@ -50,12 +50,19 @@ namespace VTAuftragserfassung.Controllers.Home
 
         public List<Gesellschafter>? GetAllShareholders() => _repo.GetAllShareholdersCached();
 
-        public AssignmentFormViewModel? GetAssignmentFormViewModel() => !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentFormVMByUserId(_userId) : null;
+        public List<Artikel> GetArticlesBySearchTerm(string searchTerm)
+        {
+            List<Artikel>? modelList = _repo.GetAllArticlesCached() ?? new();
+            searchTerm = searchTerm.ToLower();
 
-        public int GetAssignmentsCount() => !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentsCount(_userId) : default;
-
-
-
+            return modelList
+                    .Where(a =>
+                    {
+                        var json = JsonSerializer.Serialize(a);
+                        return json.ToLower().Contains(searchTerm);
+                    })
+                    .ToList();
+        }
 
         public List<Kunde> GetCustomersBySearchTerm(string searchTerm)
         {
@@ -71,21 +78,9 @@ namespace VTAuftragserfassung.Controllers.Home
                       .ToList();
         }
 
+        public AssignmentFormViewModel? GetAssignmentFormViewModel() => !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentFormVMByUserId(_userId) : null;
 
-        public List<Artikel> GetArticlesBySearchTerm(string searchTerm)
-        {
-            List<Artikel>? modelList = _repo.GetAllArticlesCached() ?? new();
-
-            searchTerm = searchTerm.ToLower();
-
-            return modelList
-                    .Where(a =>
-                    {
-                        var json = JsonSerializer.Serialize(a);
-                        return json.ToLower().Contains(searchTerm);
-                    })
-                    .ToList();    
-        }
+        public int GetAssignmentsCount() => !string.IsNullOrEmpty(_userId) ? _repo.GetAssignmentsCount(_userId) : default;
 
         public List<AssignmentViewModel>? GetAssignmentViewModels(Pagination? pagination) =>
                                                     (!string.IsNullOrEmpty(_userId) && pagination != null && pagination.Page > 0)

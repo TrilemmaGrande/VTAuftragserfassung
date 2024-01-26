@@ -11,13 +11,13 @@
         <div>
             <div id="customerSelection">
                 <div class="form" id="customerSearchForm">
-                    <span id="customerSearch">
-                        <label id="searchBarLabel">Kunden auswählen:</label><br />
-                        <input class="searchBar" id="customerSearchBar" placeholder="Suche ..." oninput="search(this, this.value, '/Home/SearchResultPartialCustomer/')" required />
-                    </span>
-                    <span>
-                        <a id="btnAddCustomer" class="btn btn-secondary" onclick="openCustomerForm(this)">Kunde anlegen</a>
-                    </span>
+                    <label id="searchBarLabel">Kunden auswählen:</label><br />
+                    <div>
+                        <span class="horizontal-group" id="customerSearch">
+                            <input class="searchBar" id="customerSearchBar" placeholder="Suche ..." oninput="search(this.parentElement, this.value, '/Home/SearchResultPartialCustomer/')" required />
+                            <a id="btnAddCustomer" class="btn btn-secondary" onclick="openCustomerForm(this)">Kunde anlegen</a>
+                        </span>
+                    </div>
                 </div>
                 <div class="gridContentContainer gridListContent3">
                     <div class="customerFormContainer" id="selectedCustomer">

@@ -166,8 +166,10 @@ body {
         box-shadow: 0 0 4px 2px #165b9e6b;
     }
 
+#btnAddCustomer {
+    margin-left: 1rem;
+}
 /* Nav */
-
 .btnNav {
     padding: 5px;
     font-size: 18px;
@@ -216,7 +218,6 @@ label {
 }
 
 /* Search Table */
-
 #searchTable {
     position: absolute;
     z-index: 100;
