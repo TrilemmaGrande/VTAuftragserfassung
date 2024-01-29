@@ -236,8 +236,8 @@ function openCustomerForm(btn) {
     btn.setAttribute("onclick", "closeCustomerForm(this);");
     document.getElementById("customerSearch").style.display = "none";
     let targetElement = document.getElementById('selectedCustomer');
-    let customerForm = backendRequestGET("/Home/AddCustomerForm/")
-    let shareholderPartial = backendRequestGET("/Home/ShareholderFormPartial/");
+    let customerForm = backendRequestGET("/Home/AddCustomerFormPartial/")
+    let shareholderPartial = backendRequestGET("/Home/AddShareholderFormPartial/");
     targetElement.innerHTML = customerForm;
     document.getElementById("selectedShareholder").innerHTML = shareholderPartial;
 }

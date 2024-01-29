@@ -1,4 +1,8 @@
-﻿@model Pagination?
+﻿@*
+    // Small pagination Menu will be rendered in Assignment Overview Page.
+*@
+
+@model Pagination?
 
 <a class="btn btn-small btn-secondary" onclick="changePageAssignmentList(((@Model?.Page ?? 2) - 1), null)"><</a>
 <div class="pageValue">@Model?.Page</div>

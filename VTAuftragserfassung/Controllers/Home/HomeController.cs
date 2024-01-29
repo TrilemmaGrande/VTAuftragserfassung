@@ -36,8 +36,8 @@ namespace VTAuftragserfassung.Controllers.Home
             return PartialView("CustomerDetails", customer);
         }
 
-        [HttpGet("/Home/AddCustomerForm/")]
-        public PartialViewResult AddCustomerForm()
+        [HttpGet("/Home/AddCustomerFormPartial/")]
+        public PartialViewResult AddCustomerFormPartial()
         {
             return PartialView("CustomerForm");
         }
@@ -95,8 +95,8 @@ namespace VTAuftragserfassung.Controllers.Home
             return PartialView("ShareholderDetails", shareholder);
         }
 
-        [HttpGet("/Home/ShareholderFormPartial/")]
-        public PartialViewResult GetShareholderFormPartial()
+        [HttpGet("/Home/AddShareholderFormPartial/")]
+        public PartialViewResult AddShareholderFormPartial()
         {
             List<Gesellschafter>? shareholders = _logic.GetAllShareholders();
             return PartialView("ShareholderForm", shareholders);

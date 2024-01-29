@@ -1,4 +1,8 @@
-﻿
+﻿@*
+    // Displays input Form for new Assignment.
+    // Displayed in Modal.
+*@
+
 @model AssignmentFormViewModel?
 
 <input data-name="assigmentCustomerFK" value="" type="hidden" />
@@ -20,8 +24,10 @@
                     </div>
                 </div>
                 <div class="gridContentContainer gridListContent3">
+                    @* "/Home/AddCustomerFormPartial/" *@
                     <div class="customerFormContainer" id="selectedCustomer">
                     </div>
+                    @* "/Home/AddShareholderFormPartial/" *@
                     <div class="shareholderFormContainer" id="selectedShareholder">
                     </div>
                 </div>

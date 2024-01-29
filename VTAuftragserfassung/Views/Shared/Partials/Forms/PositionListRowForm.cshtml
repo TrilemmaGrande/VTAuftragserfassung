@@ -1,4 +1,9 @@
-﻿@{
+﻿@*
+    // Displays a new Position with options to change Amount of selected Article.
+    // Parent: PositionListForm.cshtml.
+*@
+
+@{
     string jsonPriceFormat = Model?.Artikel?.Preis.ToString().Replace(',', '.') ?? string.Empty;
     Position? position = Model?.Position;
     Artikel? artikel = Model?.Artikel;

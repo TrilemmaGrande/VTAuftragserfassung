@@ -1,4 +1,9 @@
-﻿@{
+﻿@*
+    // A single Row in the List of Assignments.
+    // Parent: Assignments.cshtml
+*@
+
+@{
     var jsonModel = System.Text.Json.JsonSerializer.Serialize(@Model) ?? string.Empty;
 }
 @model AssignmentViewModel?
