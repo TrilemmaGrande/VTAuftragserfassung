@@ -1,0 +1,20 @@
+﻿@*
+    // Displays selected Shareholder as selected Item in Dropdown (disabled).
+    // Parent: AssignmentDetails.cshtml.
+*@
+
+@model Gesellschafter?
+
+<div class="form" id="shareholderDetails">
+    <label>Gesellschafter</label>
+    <select property-name="shareholderData" name="PK_Gesellschafter" class="form-control" disabled>
+        @if (Model?.PK_Gesellschafter != null)
+        {
+            <option value="@Model.PK_Gesellschafter">@Model.Firmenname</option>
+        }
+        else
+        {
+            <option value="0">...</option>
+        }
+    </select>
+</div>

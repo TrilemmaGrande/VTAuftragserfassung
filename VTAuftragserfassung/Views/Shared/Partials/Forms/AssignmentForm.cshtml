@@ -1,0 +1,60 @@
+﻿@*
+    // Displays input Form for new Assignment.
+    // Displayed in Modal.
+*@
+
+@model AssignmentFormViewModel?
+
+<input data-name="assigmentCustomerFK" value="" type="hidden" />
+<input data-row-id="hiddenAssignmentSum" property-name="assignmentData" name="SummeAuftrag" value="" type="hidden" />
+<div class="assignmentModal">
+    <div class="alignContentEndContainer">
+        <a class="btn btn-small btn-primary" onclick="closeNewAssignment()">X</a>
+    </div>
+    <div class="ModuleWrapper">
+        <div>
+            <div id="customerSelection">
+                <div class="form" id="customerSearchForm">
+                    <label id="searchBarLabel">Kunden auswählen:</label><br />
+                    <div>
+                        <span class="horizontal-group" id="customerSearch">
+                            <input class="searchBar" id="customerSearchBar" placeholder="Suche ..." oninput="search(this.parentElement, this.value, '/Home/SearchResultPartialCustomer/')" required />
+                            <a id="btnAddCustomer" class="btn btn-secondary" onclick="openCustomerForm(this)">Kunde anlegen</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="gridContentContainer gridListContent3">
+                    @* "/Home/AddCustomerFormPartial/" *@
+                    <div class="customerFormContainer" id="selectedCustomer">
+                    </div>
+                    @* "/Home/AddShareholderFormPartial/" *@
+                    <div class="shareholderFormContainer" id="selectedShareholder">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ModuleWrapper">
+        @await Html.PartialAsync("PositionListForm", Model?.Artikel)
+        @await Html.PartialAsync("AssignmentSumForm")
+    </div>
+    <div class="ModuleWrapper">
+        @await Html.PartialAsync("BonusForm")
+    </div>
+    <div class="ModuleWrapper">
+        @await Html.PartialAsync("NoticeForm")
+    </div>
+    <div class="ModuleWrapper">
+        <div class="gridContentContainer gridListContent2 ">
+            <div>
+                @if (Model?.Vertriebsmitarbeiter != null)
+                {
+                    @Html.DisplayFor(modelItem => Model.Vertriebsmitarbeiter, "SalesStaffInformation")
+                }
+            </div>
+            <div class="alignContentEndContainer">
+                <a class="btn btn-primary" onclick="saveNewAssignment()">Auftrag anlegen</a>
+            </div>
+        </div>
+    </div>
+</div>

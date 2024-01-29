@@ -1,0 +1,29 @@
+﻿@*
+    // Displays a searchbox and selected Positions.
+    // New Articles will be wrapped in a Position and appended to id="selectedArticle".
+    // Parent: AssignmentForm.cshtml.
+*@
+
+@model List<Artikel>?
+
+<div>
+    <label id="searchBarLabel">Artikel auswählen:</label><br />
+    <input class="searchBar" placeholder="Suche ..." oninput="search(this.parentElement, this.value, '/Home/SearchResultPartialArticle/')" />
+</div>
+<div>
+    <div class="headerListWrapper">
+        <div class="gridListContentContainer gridListContent8">
+            <div>Art. Nr.</div>
+            <div>Bezeichnung</div>
+            <div>Zusatzbezeichnung</div>
+            <div>Einzelpreis Netto</div>
+            <div>Menge</div>
+            <div>Verpackungseinheit</div>
+            <div>Pos. Gesamtpreis Netto</div>
+        </div>
+    </div>
+    <div>
+        @* "/Home/AddPositionListRowFormPartial/" *@
+        <div id="selectedArticle"></div>
+    </div>
+</div>

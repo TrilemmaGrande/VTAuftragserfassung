@@ -1,0 +1,20 @@
+﻿@*
+    // Displays Dropdown to select Shareholder for new Customer.
+    // Parent: AssignmentForm.cshtml.
+*@
+
+@model List<Gesellschafter>?
+
+<div class="form" id="shareholderForm">
+    <label>Gesellschafter</label>
+    <select property-name="customerData" name="FK_Gesellschafter" class="form-control" id="selectedShareholder" required tabindex="12">
+        <option value="0">...</option>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <option value="@item.PK_Gesellschafter">@item.Firmenname</option>
+            }
+        }
+    </select>
+</div>

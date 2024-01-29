@@ -1,0 +1,12 @@
+﻿@*
+    // Displays complete sum of whole Assignment = Sum(PositionListRows).
+    // Parent: AssignmentDetails.cshtml.
+*@
+
+@model double
+
+<div class="alignContentEndContainer">
+    <div class="keyValue">
+        <div class="key"><span>Gesamt: </span></div><div class="value">  @Html.DisplayFor(modelItem => Model, "FormatCurrency")</div>
+    </div>
+</div>

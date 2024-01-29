@@ -1,0 +1,33 @@
+﻿@*
+    // Container for Assignment Partials, displays data for a single Assignment.
+    // Parent: AssignmentListRow.cshtml
+*@
+
+@model AssignmentViewModel?
+
+<div class="assignmentDetailsWrapper">
+    <div class="gridListContentContainer gridListContent3">
+        <div class="customerDetailsContainer">
+            @await Html.PartialAsync("CustomerDetails", @Model?.Kunde)
+        </div>
+        <div class="shareholderDetailsContainer">
+            @await Html.PartialAsync("ShareholderDetails", @Model?.Gesellschafter)
+        </div>
+    </div>
+    <div class="gridListContentContainer">
+        @await Html.PartialAsync("PositionListDetails", @Model?.PositionenVM)
+        @await Html.PartialAsync("AssignmentSumDetails", @Model?.Auftrag?.SummeAuftrag)
+    </div>
+    <div class="gridListContent gridListContent2">
+        @await Html.PartialAsync("BonusDetails", @Model?.Auftrag?.HatZugabe)
+    </div>
+    <div class="gridListContentContainer">
+        @await Html.PartialAsync("NoticeDetails", @Model?.Auftrag?.Hinweis)
+    </div>
+    <div class="alignContentEndContainer">
+        @if (Model?.Auftrag?.Auftragsstatus != null && !((int)Model.Auftrag.Auftragsstatus > 1))
+        {
+            <a class="btn btn-primary" onclick="cancelAssignment(@Model?.Auftrag?.PK_Auftrag)">stornieren</a>
+        }
+    </div>
+</div>

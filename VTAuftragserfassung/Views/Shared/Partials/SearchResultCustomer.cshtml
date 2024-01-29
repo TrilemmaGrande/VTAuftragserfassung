@@ -1,0 +1,37 @@
+﻿@* 
+// Partial will be rendered into SearchModules.    
+*@
+
+@model List<Kunde>?
+
+@if (Model != null && Model.Any())
+{
+    <div id="searchTable">
+        <div class="headerListWrapper">
+            <div class="gridListContentContainer gridListContent5">
+                <div>Kd.-Nr.</div>
+                <div>Vorname</div>
+                <div>Nachname</div>
+                <div>Firma</div>
+                <div>Ort</div>
+            </div>
+        </div>
+        <div style="overflow:auto;">
+            <div class="gridContainer" id="resultTblBody">
+                @foreach (var item in Model)
+                {
+                    <a class="gridListContentContainer gridListContentSearchResult"
+                       onMouseOut="this.style.color='#000'"
+                       onMouseOver="this.style.color='#165b9e'"
+                       onclick="searchResultSelected(@item.PK_Kunde.ToString(), 'selectedCustomer')">
+                        <div>@item.Kundennummer</div>
+                        <div>@item.Vorname</div>
+                        <div>@item.Nachname</div>
+                        <div>@item.Firma.</div>
+                        <div>@item.Ort</div>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+}

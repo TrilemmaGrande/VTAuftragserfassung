@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<cache expires-after="@TimeSpan.FromSeconds(300)">
+    <head>
+        <meta charset=" utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"]</title>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/VTAuftragserfassung.styles.css" asp-append-version="true" />
+        <link rel="icon" type="image" href="~/Resources/img/facicon-gas.png">
+    </head>
+</cache>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <cache expires-after="@TimeSpan.FromSeconds(300)">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Dashboard"><img src="~/Resources/img/GAS_Logo_Balken.jpg" /></a>
+                </cache>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <div class="btn btnNav" onclick="openAssignmentList()">Aufträge</div>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <div class="btn btnNav" onclick="openAssignmentForm()">Neuer Auftrag</div>
+                        </li>
+                    </ul>
+                    <div class="horizontal-group align-self-end" style="margin:2rem;">
+                        <img src="~/Resources/img/person-circle-outline.svg" width="40" style="margin: 0.2rem" />
+                        <label style="font-size:16px; font-weight:bold"> @User?.Identity?.Name</label>
+                    </div>
+                    <a class="btn btnLogout" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer">
+        <div class="container">
+            Global Automotive Service - Auftragserfassung
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/home.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
