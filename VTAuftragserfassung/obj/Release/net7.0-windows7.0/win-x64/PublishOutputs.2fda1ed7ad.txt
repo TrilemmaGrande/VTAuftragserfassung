@@ -1,9 +1,0 @@
-C:\Users\nils.reinshagen\source\repos\VTAuftragserfassung\VTAuftragserfassung\obj\Release\net7.0-windows7.0\win-x64\PubTmp\Out\VTAuftragserfassung.exe
-C:\Users\nils.reinshagen\source\repos\VTAuftragserfassung\VTAuftragserfassung\obj\Release\net7.0-windows7.0\win-x64\PubTmp\Out\appsettings.Development.json
-C:\Users\nils.reinshagen\source\repos\VTAuftragserfassung\VTAuftragserfassung\obj\Release\net7.0-windows7.0\win-x64\PubTmp\Out\appsettings.json
-C:\Users\nils.reinshagen\source\repos\VTAuftragserfassung\VTAuftragserfassung\obj\Release\net7.0-windows7.0\win-x64\PubTmp\Out\VTAuftragserfassung.dll
-C:\Users\nils.reinshagen\source\repos\VTAuftragserfassung\VTAuftragserfassung\obj\Release\net7.0-windows7.0\win-x64\PubTmp\Out\VTAuftragserfassung.deps.json
-C:\Users\nils.reinshagen\source\repos\VTAuftragserfassung\VTAuftragserfassung\obj\Release\net7.0-windows7.0\win-x64\PubTmp\Out\VTAuftragserfassung.runtimeconfig.json
-C:\Users\nils.reinshagen\source\repos\VTAuftragserfassung\VTAuftragserfassung\obj\Release\net7.0-windows7.0\win-x64\PubTmp\Out\VTAuftragserfassung.pdb
-C:\Users\nils.reinshagen\source\repos\VTAuftragserfassung\VTAuftragserfassung\obj\Release\net7.0-windows7.0\win-x64\PubTmp\Out\System.Data.SqlClient.dll
-C:\Users\nils.reinshagen\source\repos\VTAuftragserfassung\VTAuftragserfassung\obj\Release\net7.0-windows7.0\win-x64\PubTmp\Out\sni.dll
