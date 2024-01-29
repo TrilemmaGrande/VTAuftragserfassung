@@ -1,11 +1,9 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
-using System.Resources;
 using VTAuftragserfassung.Database.Connection.Interfaces;
 using VTAuftragserfassung.Database.DataAccess.Interfaces;
 using VTAuftragserfassung.Database.DataAccess.Services.Interfaces;
-using VTAuftragserfassung.Extensions;
 
 namespace VTAuftragserfassung.Database.DataAccess.Services
 {
@@ -19,7 +17,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
 
         #region Public Constructors
 
-        public DataAccessService(ISqlConnector conn, ResourceManager resM)
+        public DataAccessService(ISqlConnector conn)
         {
             _conn = conn;
         }
