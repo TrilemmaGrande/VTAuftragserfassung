@@ -1,4 +1,5 @@
-﻿using System.Resources;
+﻿using System.Reflection;
+using System.Resources;
 using VTAuftragserfassung.Database.DataAccess.Interfaces;
 using VTAuftragserfassung.Database.DataAccess.Services.Interfaces;
 using VTAuftragserfassung.Extensions;
@@ -33,9 +34,32 @@ namespace VTAuftragserfassung.Database.DataAccess
           ? CountDataSetByCondition(new Auftrag(), "*", _resM.GetQuery("WHERE_MitarbeiterId", userId) ?? string.Empty)
           : default;
 
-        public void CreateAll<T>(List<T>? dbModels) where T : IDatabaseObject => _dbAccess.CreateAll(dbModels);
+        public void CreateAll<T>(List<T>? dbModels) where T : IDatabaseObject
+        {
+            if (dbModels == null)
+            {
+                return;
+            }
+            string cmd;
+            List<KeyValuePair<T, string>> dbModelsWithCmds = new();
+            foreach (var model in dbModels)
+            {
+                cmd = CreateInsertString(model);
+                dbModelsWithCmds.Add(new KeyValuePair<T, string>(model, cmd));
+            }
+            _dbAccess.CreateAll(dbModelsWithCmds);
+        }
 
-        public int CreateSingle<T>(T? dbModel) where T : IDatabaseObject => _dbAccess.CreateSingle(dbModel);
+        public int CreateSingle<T>(T? dbModel) where T : IDatabaseObject
+        {
+            if (dbModel == null)
+            {
+                return 0;
+            }
+            string cmd = CreateInsertString(dbModel);
+            cmd += _resM.GetQuery("SELECT_IDENTITY") ?? string.Empty;
+            return _dbAccess.CreateSingle(dbModel, cmd);
+        }
 
         public List<T>? ReadAll<T>(T? dbModel) where T : IDatabaseObject
             => dbModel != null
@@ -77,7 +101,15 @@ namespace VTAuftragserfassung.Database.DataAccess
             : null;
 
         public void Update<T>(T? dbModel, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject
-            => _dbAccess.Update(dbModel, columnsToUpdate);
+        {
+            if (dbModel == null || columnsToUpdate == null)
+            {
+                return;
+            }
+            string cmd = CreateUpdateString(dbModel, columnsToUpdate);
+            cmd += _resM.GetQuery("SELECT_IDENTITY") ?? string.Empty;
+            _dbAccess.Update(dbModel, cmd);
+        }
 
         #endregion Public Methods
 
@@ -97,6 +129,45 @@ namespace VTAuftragserfassung.Database.DataAccess
             => dbModel != null
             ? _dbAccess.ReadSingle(dbModel, _resM.GetQuery("SELECT_TOP_1", getterColumn, dbModel.TableName, condition.Trim('"')) ?? string.Empty)
             : default;
+
+        private string CreateInsertString<T>(T? dbModel) where T : IDatabaseObject
+        {
+            if (dbModel == null)
+            {
+                return string.Empty;
+            }
+
+            IEnumerable<PropertyInfo> properties = typeof(T).GetProperties()
+                .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "TableName" && prop.Name != dbModel.PrimaryKeyColumn);
+
+            string tableName = dbModel.TableName;
+            string columns = string.Join(", ", properties.Where(prop => prop.Name != "PrimaryKeyColumn").Select(prop => prop.Name));
+            string values = string.Join(", ", properties.Where(prop => prop.Name != "PrimaryKeyColumn").Select(prop => $"@{prop.Name}"));
+
+            return _resM.GetQuery("INSERT", tableName, columns, values) ?? string.Empty;
+        }
+
+        private string CreateUpdateString<T>(T? dbModel, IEnumerable<string>? columnsToUpdate) where T : IDatabaseObject
+        {
+            if (dbModel == null)
+            {
+                return string.Empty;
+            }
+
+            IEnumerable<PropertyInfo> properties = typeof(T).GetProperties()
+                .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "TableName" && prop.Name != dbModel.PrimaryKeyColumn);
+
+            int modelPk = (int)(typeof(T).GetProperty(dbModel.PrimaryKeyColumn)?.GetValue(dbModel) ?? 0);
+            string tableName = dbModel.TableName;
+
+            IEnumerable<PropertyInfo> propertiesToUpdate = columnsToUpdate != null
+                ? properties.Where(prop => columnsToUpdate.Contains(prop.Name))
+                : properties.Skip(1);
+
+            string setClause = string.Join(", ", propertiesToUpdate.Select(prop => $"{prop.Name} = @{prop.Name}"));
+
+            return _resM.GetQuery("UPDATE", tableName, setClause, dbModel.PrimaryKeyColumn, modelPk) ?? string.Empty;
+        }
 
         #endregion Private Methods
     }

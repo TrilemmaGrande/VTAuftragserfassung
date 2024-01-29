@@ -11,43 +11,45 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
 {
     public class DataAccessService : IDataAccessService
     {
+        #region Private Fields
+
         private readonly ISqlConnector _conn;
-        private readonly ResourceManager _resM;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public DataAccessService(ISqlConnector conn, ResourceManager resM)
         {
             _conn = conn;
-            _resM = resM;
         }
+
+        #endregion Public Constructors
 
         #region Public Methods
 
-        public void CreateAll<T>(List<T>? dbModels) where T : IDatabaseObject
+        public void CreateAll<T>(List<KeyValuePair<T, string>> dbModelsWithCmds) where T : IDatabaseObject
         {
-            if (dbModels == null || dbModels.Count == 0)
+            if (dbModelsWithCmds == null || dbModelsWithCmds.Count == 0)
             {
                 return;
             }
 
             List<Tuple<string, SqlParameter[]?>> queryList = new();
-            foreach (var dbModel in dbModels)
+            foreach (var dbModelWithCmd in dbModelsWithCmds)
             {
-                string cmd = CreateInsertString(dbModel);
-                SqlParameter[]? parameters = GenerateParameters(dbModel);
-                queryList.Add(new Tuple<string, SqlParameter[]?>(cmd, parameters));
+                SqlParameter[]? parameters = GenerateParameters(dbModelWithCmd.Key);
+                queryList.Add(new Tuple<string, SqlParameter[]?>(dbModelWithCmd.Value, parameters));
             }
             _conn.ConnectionWrite(queryList);
         }
 
-        public int CreateSingle<T>(T? dbModel) where T : IDatabaseObject
+        public int CreateSingle<T>(T? dbModel, string cmd) where T : IDatabaseObject
         {
-            if (dbModel == null)
+            if (dbModel == null || string.IsNullOrEmpty(cmd))
             {
                 return 0;
             }
-
-            string cmd = CreateInsertString(dbModel);
-            cmd += _resM.GetQuery("SELECT_IDENTITY") ?? string.Empty;
             SqlParameter[]? parameters = GenerateParameters(dbModel);
 
             return _conn.ConnectionWrite(cmd, parameters!);
@@ -106,14 +108,12 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
             return default;
         }
 
-        public void Update<T>(T? dbModel, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject
+        public void Update<T>(T? dbModel, string cmd) where T : IDatabaseObject
         {
-            if (dbModel == null)
+            if (dbModel == null || string.IsNullOrEmpty(cmd))
             {
                 return;
             }
-            string cmd = CreateUpdateString(dbModel, columnsToUpdate);
-            cmd += _resM.GetQuery("SELECT_IDENTITY") ?? string.Empty;
             SqlParameter[]? parameters = GenerateParameters(dbModel);
 
             _conn.ConnectionWrite(cmd, parameters);
@@ -122,45 +122,6 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
         #endregion Public Methods
 
         #region Private Methods
-
-        private string CreateInsertString<T>(T? dbModel) where T : IDatabaseObject
-        {
-            if (dbModel == null)
-            {
-                return string.Empty;
-            }
-
-            IEnumerable<PropertyInfo> properties = typeof(T).GetProperties()
-                .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "TableName" && prop.Name != dbModel.PrimaryKeyColumn);
-
-            string tableName = dbModel.TableName;
-            string columns = string.Join(", ", properties.Where(prop => prop.Name != "PrimaryKeyColumn").Select(prop => prop.Name));
-            string values = string.Join(", ", properties.Where(prop => prop.Name != "PrimaryKeyColumn").Select(prop => $"@{prop.Name}"));
-
-            return _resM.GetQuery("INSERT", tableName, columns, values) ?? string.Empty;
-        }
-
-        private string CreateUpdateString<T>(T? dbModel, IEnumerable<string>? columnsToUpdate) where T : IDatabaseObject
-        {
-            if (dbModel == null)
-            {
-                return string.Empty;
-            }
-
-            IEnumerable<PropertyInfo> properties = typeof(T).GetProperties()
-                .Where(prop => prop.GetValue(dbModel) != null && prop.Name != "TableName" && prop.Name != dbModel.PrimaryKeyColumn);
-
-            int modelPk = (int)(typeof(T).GetProperty(dbModel.PrimaryKeyColumn)?.GetValue(dbModel) ?? 0);
-            string tableName = dbModel.TableName;
-
-            IEnumerable<PropertyInfo> propertiesToUpdate = columnsToUpdate != null
-                ? properties.Where(prop => columnsToUpdate.Contains(prop.Name))
-                : properties.Skip(1);
-
-            string setClause = string.Join(", ", propertiesToUpdate.Select(prop => $"{prop.Name} = @{prop.Name}"));
-
-            return _resM.GetQuery("UPDATE", tableName, setClause, dbModel.PrimaryKeyColumn, modelPk) ?? string.Empty;
-        }
 
         private Func<PropertyInfo, SqlParameter> FormatPropertyForDatabase<T>(T? dbModel) where T : IDatabaseObject
         {

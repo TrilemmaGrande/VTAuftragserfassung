@@ -6,9 +6,9 @@ namespace VTAuftragserfassung.Database.DataAccess.Services.Interfaces
     {
         #region Public Methods
 
-        int CreateSingle<T>(T? dbModel) where T : IDatabaseObject;
+        void CreateAll<T>(List<KeyValuePair<T, string>> dbModelsWithCmds) where T : IDatabaseObject;
 
-        void CreateAll<T>(List<T>? dbModels) where T : IDatabaseObject;
+        int CreateSingle<T>(T? dbModel, string cmd) where T : IDatabaseObject;
 
         List<T>? ReadAll<T>(string cmd) where T : IDatabaseObject;
 
@@ -16,7 +16,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services.Interfaces
 
         T? ReadSingle<T>(T? dbModel, string cmd) where T : IDatabaseObject;
 
-        void Update<T>(T? dbModel, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject;
+        void Update<T>(T? dbModel, string cmd) where T : IDatabaseObject;
 
         #endregion Public Methods
     }
