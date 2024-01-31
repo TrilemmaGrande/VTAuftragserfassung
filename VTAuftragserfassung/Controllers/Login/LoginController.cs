@@ -4,6 +4,13 @@ using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Controllers.Login
 {
+    /// <summary>
+    /// [Relationship]: connects View with Logic. 
+    /// [Input]: only verification data from View, 
+    /// [Output]: provides verification result.
+    /// [Dependencies]: uses ILoginLogic Object to handle login verification.
+    /// [Notice]: -
+    /// </summary>
     public class LoginController : Controller
     {
         #region Private Fields

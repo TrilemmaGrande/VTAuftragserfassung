@@ -5,6 +5,13 @@ using VTAuftragserfassung.Extensions;
 
 namespace VTAuftragserfassung.Database.DataAccess.Services
 {
+    /// <summary>
+    /// [Relationship]: connects Webserver-Session-Cache with application.
+    /// [Input]: DataBaseObjects.
+    /// [Output]: DataBaseObjects, SessionUser.
+    /// [Dependencies]: uses ISession, HttpContextAceessor and Compression-Extension.
+    /// [Notice]: - 
+    /// </summary>
     public class SessionService : ISessionService
     {
         private readonly ISession? _session;
@@ -35,7 +42,6 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
             {
                 return null;
             }
-            _session.Remove(sKey);
             if (newModelData != null)
             {
                 _session.Set(sKey, newModelData.SerializeAndCompress());

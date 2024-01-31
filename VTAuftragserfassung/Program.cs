@@ -34,8 +34,8 @@ namespace VTAuftragserfassung
             builder.Services.AddSingleton<ISqlConnector>(conn => new SqlConnector(connectionString));
             builder.Services.AddScoped<ICachingService, CachingService>();
             builder.Services.AddScoped<ISessionService, SessionService>();
-            builder.Services.AddScoped<IDataAccessService, DataAccessService>();
-            builder.Services.AddScoped<IDataAccess<IDatabaseObject>, DatabaseAccess>();
+            builder.Services.AddScoped<IDatabaseAccess, DatabaseAccess>();
+            builder.Services.AddScoped<IDatabaseService, DatabaseService>();
             builder.Services.AddScoped<ILoginRepository, LoginRepository>();
             builder.Services.AddScoped<IHomeRepository, HomeRepository>();
             builder.Services.AddScoped<ILoginLogic, LoginLogic>();

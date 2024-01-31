@@ -4,6 +4,13 @@ using VTAuftragserfassung.Database.Connection.Interfaces;
 
 namespace VTAuftragserfassung.Database.Connection
 {
+    /// <summary>
+    /// [Relationship]: connects external relational Database with Application. 
+    /// [Input]: SQL Query as String.
+    /// [Output]: DataTable, Object.
+    /// [Dependencies]: uses connectionString to build connection.
+    /// [Notice]: returns raw output from database.
+    /// </summary>
     public class SqlConnector : ISqlConnector
     {
         private readonly string _connectionString;

@@ -2,7 +2,7 @@
 
 namespace VTAuftragserfassung.Database.DataAccess.Services.Interfaces
 {
-    public interface IDataAccessService
+    public interface IDatabaseAccess
     {
         #region Public Methods
 

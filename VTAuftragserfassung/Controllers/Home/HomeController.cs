@@ -9,6 +9,13 @@ using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Controllers.Home
 {
+    /// <summary>
+    /// [Relationship]: connects View with Logic. 
+    /// [Input]: data from View.
+    /// [Output]: provides PartialViews.
+    /// [Dependencies]: uses IHomeLogic Object to handle business logic.
+    /// [Notice]: controller is only accessible when client is authorized.
+    /// </summary>
     [Authorize]
     public class HomeController : Controller
     {

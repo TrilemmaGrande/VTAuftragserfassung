@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using VTAuftragserfassung.Database.DataAccess;
 using VTAuftragserfassung.Database.DataAccess.Interfaces;
 using VTAuftragserfassung.Database.DataAccess.Services.Interfaces;
 using VTAuftragserfassung.Database.Repository.Interfaces;
@@ -9,16 +8,23 @@ using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Database.Repository
 {
+    /// <summary>
+    /// [Relationship]: connects HomeLogic with DatabaseAccess and Cache. 
+    /// [Input]: ViewModels.
+    /// [Output]: ViewModels, DataBaseObjects.
+    /// [Dependencies]: uses IDatabaseService, ICachingService and ISessionService to access DataBaseObjects.
+    /// [Notice]: joins and creates ViewModels for logic, separates ViewModels for saving.
+    /// </summary>
     public class HomeRepository : IHomeRepository
     {
-        private readonly IDataAccess<IDatabaseObject> _dataAccess;
-        private readonly ICachingService _caching;
+        private readonly IDatabaseService _database;
+        private readonly ICachingService _cache;
         private readonly ISessionService _session;
 
-        public HomeRepository(IDataAccess<IDatabaseObject> dataAccess, ICachingService caching, ISessionService session)
+        public HomeRepository(IDatabaseService database, ICachingService cache, ISessionService session)
         {
-            _dataAccess = dataAccess;
-            _caching = caching;
+            _database = database;
+            _cache = cache;
             _session = session;
         }
 
@@ -28,7 +34,7 @@ namespace VTAuftragserfassung.Database.Repository
 
         public List<Artikel>? GetAllArticlesCached() => GetCachedModels(new Artikel());
 
-        public List<Kunde>? GetAllCustomers() => _dataAccess.ReadAll(new Kunde());
+        public List<Kunde>? GetAllCustomers() => _database.ReadAll(new Kunde());
 
         public List<Kunde>? GetAllCustomersCached() => GetCachedModels(new Kunde());
 
@@ -52,12 +58,12 @@ namespace VTAuftragserfassung.Database.Repository
 
         public int GetAssignmentsCount(string userId)
         {
-            return _dataAccess.CountAssignmentsByUserId(userId);
+            return _database.CountAssignmentsByUserId(userId);
         }
 
         public List<AssignmentViewModel>? GetAssignmentVMsPaginatedByUserId(string userId, Pagination? pagination)
         {
-            List<Auftrag>? assignments = _dataAccess.ReadAssignmentsPaginatedByUserId(userId, pagination);
+            List<Auftrag>? assignments = _database.ReadAssignmentsPaginatedByUserId(userId, pagination);
             if (assignments == null)
             {
                 return null;
@@ -66,7 +72,7 @@ namespace VTAuftragserfassung.Database.Repository
             List<Gesellschafter>? shareholders = GetAllShareholdersCached();
             List<Artikel>? articles = GetAllArticlesCached();
             List<Kunde>? customers = GetAllCustomersCached();
-            List<Position>? positions = _dataAccess.ReadPositionsByAssignmentPKs(assignmentPKs) ?? new();
+            List<Position>? positions = _database.ReadPositionsByAssignmentPKs(assignmentPKs) ?? new();
             List<PositionViewModel>? pvms = positions.Select(p => new PositionViewModel() { Position = p }).ToList();
             List<AssignmentViewModel>? avms = assignments.Select(i => new AssignmentViewModel() { Auftrag = i }).ToList();
             if (articles == null || customers == null || shareholders == null)
@@ -110,7 +116,7 @@ namespace VTAuftragserfassung.Database.Repository
 
         public Vertriebsmitarbeiter? GetUserFromSession(string userId)
         {
-            Vertriebsmitarbeiter? user = GetSessionModels(new Vertriebsmitarbeiter(), userId)?.FirstOrDefault() ?? _dataAccess.ReadUserByUserId(userId);
+            Vertriebsmitarbeiter? user = GetSessionModels(new Vertriebsmitarbeiter(), userId)?.FirstOrDefault() ?? _database.ReadUserByUserId(userId);
             if (user != null)
             {
                 _session.SetSessionModels(userId, new List<Vertriebsmitarbeiter>() { user });
@@ -124,7 +130,7 @@ namespace VTAuftragserfassung.Database.Repository
             {
                 return 0;
             }
-            int pkAssignment = _dataAccess.CreateSingle(avm.Auftrag);
+            int pkAssignment = _database.CreateSingle(avm.Auftrag);
             if (avm.PositionenVM != null && avm.PositionenVM.Count > 0)
             {
                 MatchPositions(avm.PositionenVM, pkAssignment);
@@ -138,16 +144,16 @@ namespace VTAuftragserfassung.Database.Repository
             {
                 return 0;
             }
-            int pk = _dataAccess.CreateSingle(customer);
-            _caching.InvalidateCacheModels(new Kunde());
+            int pk = _database.CreateSingle(customer);
+            _cache.InvalidateCacheModels(new Kunde());
             return pk;
         }
 
-        public void Update<T>(T? model, string columnToUpdate) where T : IDatabaseObject => Update(model, new[] { columnToUpdate });
+        public void Update<T>(T? model, string columnToUpdate) where T : IDatabaseObject => Update(model, columnToUpdate);
 
         public void Update<T>(T? model, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject
         {
-            _dataAccess.Update(model, columnsToUpdate);
+            _database.Update(model, columnsToUpdate);
         }
 
         #endregion Public Methods
@@ -156,7 +162,7 @@ namespace VTAuftragserfassung.Database.Repository
 
         private List<T>? GetCachedModels<T>(T model) where T : IDatabaseObject
         {
-            return _caching.GetCachedModels(model) ?? _caching.UpdateCachedModels(_dataAccess.ReadAll(model));
+            return _cache.GetCachedModels(model) ?? _cache.UpdateCachedModels(_database.ReadAll(model));
         }
 
         private List<T>? GetSessionModels<T>(T model, string sKey) where T : IDatabaseObject
@@ -178,7 +184,7 @@ namespace VTAuftragserfassung.Database.Repository
                     return i.Position;
                 }).ToList();
 
-            _dataAccess.CreateAll(positionList);
+            _database.CreateAll(positionList);
         }
 
         #endregion Private Methods

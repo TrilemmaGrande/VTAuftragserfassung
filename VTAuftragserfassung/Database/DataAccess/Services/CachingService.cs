@@ -6,6 +6,13 @@ using VTAuftragserfassung.Extensions;
 
 namespace VTAuftragserfassung.Database.DataAccess.Services
 {
+    /// <summary>
+    /// [Relationship]: connects Webserver-Cache with application.
+    /// [Input]: DataBaseObjects.
+    /// [Output]: DataBaseObjects.
+    /// [Dependencies]: uses IMemoryCache and Compression-Extension.
+    /// [Notice]: performs CRUD operations on key-value stored Webserver-Cache. 
+    /// </summary>
     public class CachingService : ICachingService
     {
         private readonly IMemoryCache _memoryCache;

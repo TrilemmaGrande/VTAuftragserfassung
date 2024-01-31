@@ -8,6 +8,13 @@ using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Controllers.Home
 {
+    /// <summary>
+    /// [Relationship]: connects Controller with Repository
+    /// [Input]: data from Controller
+    /// [Output]: result-object from business logic.
+    /// [Dependencies]: uses IHomeRepository Object to access backend data.
+    /// [Notice]: -
+    /// </summary>
     public class HomeLogic : IHomeLogic
     {
         #region Private Fields

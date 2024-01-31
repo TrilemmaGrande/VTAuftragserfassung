@@ -9,6 +9,13 @@ using VTAuftragserfassung.Models.ViewModel;
 
 namespace VTAuftragserfassung.Controllers.Login
 {
+    /// <summary>
+    /// [Relationship]: connects Controller with Repository
+    /// [Input]: data from Controller
+    /// [Output]: result-object from business logic.
+    /// [Dependencies]: uses ILoginRepository Object to access backend data.
+    /// [Notice]: -
+    /// </summary>
     public class LoginLogic : ILoginLogic
     {
         private readonly ILoginRepository _repo;
