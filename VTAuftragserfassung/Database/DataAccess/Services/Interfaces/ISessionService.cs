@@ -7,11 +7,11 @@ namespace VTAuftragserfassung.Database.DataAccess.Services.Interfaces
     {
         #region Public Methods
 
-        List<T>? GetSessionModels<T>(T? model, string sKey) where T : IDatabaseObject;
+        List<T>? GetSessionModels<T>(T? model, string sKey);
 
         ClaimsPrincipal? GetSessionUser();
 
-        List<T>? SetSessionModels<T>(string sKey, List<T>? newModelData) where T : IDatabaseObject;
+        List<T>? SetSessionModels<T>(string sKey, List<T>? newModelData);
 
         #endregion Public Methods
     }

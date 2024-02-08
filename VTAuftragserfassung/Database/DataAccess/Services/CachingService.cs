@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using System.Transactions;
-using VTAuftragserfassung.Database.DataAccess.Interfaces;
 using VTAuftragserfassung.Database.DataAccess.Services.Interfaces;
 using VTAuftragserfassung.Extensions;
 
@@ -34,7 +33,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
 
         #region Public Methods
 
-        public List<T>? GetCachedModels<T>(T? model) where T : IDatabaseObject
+        public List<T>? GetCachedModels<T>(T? model)
         {
             string cKey = GenerateCacheKey(model);
             if (string.IsNullOrEmpty(cKey)
@@ -57,7 +56,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
             return true;
         }
 
-        public List<T>? UpdateCachedModels<T>(List<T>? newModelData) where T : IDatabaseObject
+        public List<T>? UpdateCachedModels<T>(List<T>? newModelData)
         {
             using TransactionScope scope = new();
             T? model = newModelData != null ? newModelData.FirstOrDefault() : default;

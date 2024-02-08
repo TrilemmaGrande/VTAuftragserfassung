@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using VTAuftragserfassung.Database.DataAccess.Interfaces;
 using VTAuftragserfassung.Database.DataAccess.Services.Interfaces;
 using VTAuftragserfassung.Extensions;
 
@@ -25,7 +24,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
 
         public ClaimsPrincipal? GetSessionUser() => _sessionUser;
 
-        public List<T>? GetSessionModels<T>(T? model, string sKey) where T : IDatabaseObject
+        public List<T>? GetSessionModels<T>(T? model, string sKey) 
         {
             if (!string.IsNullOrEmpty(sKey) && _session != null
                 && _session.TryGetValue(sKey, out byte[]? cachedModelJson)
@@ -36,7 +35,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
             return null;
         }
 
-        public List<T>? SetSessionModels<T>(string sKey, List<T>? newModelData) where T : IDatabaseObject
+        public List<T>? SetSessionModels<T>(string sKey, List<T>? newModelData) 
         {
             if (string.IsNullOrEmpty(sKey) || _session == null)
             {

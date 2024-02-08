@@ -6,11 +6,11 @@ namespace VTAuftragserfassung.Database.DataAccess.Services.Interfaces
     {
         #region Public Methods
 
-        List<T>? GetCachedModels<T>(T? model) where T : IDatabaseObject;
+        List<T>? GetCachedModels<T>(T? model);
 
         bool InvalidateCacheModels<T>(T? model, string cKey = "");
 
-        List<T>? UpdateCachedModels<T>(List<T>? newModelData) where T : IDatabaseObject;
+        List<T>? UpdateCachedModels<T>(List<T>? newModelData);
 
         #endregion Public Methods
     }
