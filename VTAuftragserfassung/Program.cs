@@ -60,6 +60,7 @@ namespace VTAuftragserfassung
                 options.Cookie.Name = "VTA.Session";
                 options.IdleTimeout = TimeSpan.FromMinutes(1);
                 options.Cookie.IsEssential = true;
+             
             });
             builder.Services.Configure<IISServerOptions>(options =>
             {
@@ -78,6 +79,9 @@ namespace VTAuftragserfassung
                     options.LoginPath = new PathString("/Login");
                     options.LogoutPath = new PathString("/Login");
                     options.AccessDeniedPath = new PathString("/Login");
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SameSite = SameSiteMode.Strict;
                 });
 
             #endregion Services

@@ -63,7 +63,10 @@ namespace VTAuftragserfassung.Controllers.Login
                 loginViewModel.Auth);
             }
             // delete above later
-
+            if (result == PasswordVerificationResult.Failed)
+            {
+                return false;
+            }
             var identity = new ClaimsIdentity(new[] {
                     new Claim(ClaimTypes.Name, user!.MitarbeiterId),
                     new Claim(ClaimTypes.Role, "User")
