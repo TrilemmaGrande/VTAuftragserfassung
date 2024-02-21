@@ -232,8 +232,6 @@ function removePosition(element) {
 // Customer Form
 
 function openCustomerForm(btn) {
-    btn.text = "Abbrechen";
-    btn.setAttribute("onclick", "closeCustomerForm(this);");
     document.getElementById("customerSearch").style.display = "none";
     let targetElement = document.getElementById('selectedCustomer');
     let customerForm = backendRequestGET("/Home/AddCustomerFormPartial/")
@@ -243,8 +241,6 @@ function openCustomerForm(btn) {
 }
 
 function closeCustomerForm(btn) {
-    btn.text = "Kunden anlegen";
-    btn.setAttribute("onclick", "openCustomerForm(this)");
     document.getElementById("customerSearch").style.display = "inline-block";
     document.getElementById('selectedCustomer').innerHTML = '';
     document.getElementById('selectedShareholder').innerHTML = '';
@@ -307,6 +303,11 @@ function saveNewCustomer() {
 
 function search(ele, searchTerm, backendMethod) {
     clearTimeout(searchTimeout);
+    let timeout = 0;
+    if (searchTerm.length < 2 && searchTerm.length > 0) {
+        timeout = 500;
+    }
+
     let searchResultDiv = document.getElementsByClassName('searchResult');
     searchTimeout = setTimeout(function () {
         if (searchResultDiv.length > 0 || searchTerm.length == 0) {
@@ -319,10 +320,98 @@ function search(ele, searchTerm, backendMethod) {
         searchResultDiv = document.createElement('div');
         searchResultDiv.classList.add('searchResult');
         ele.after(searchResultDiv);
-        searchResultDiv.innerHTML = backendRequestGET(backendMethod + searchTerm);
-    }, 200);
+        let model = backendRequestGET(backendMethod + searchTerm);
+        model = Array.from(JSON.parse(model));
+        searchResultDiv.innerHTML = searchResultController(backendMethod, model);
+    }, timeout);
 }
 
+function searchResultController(backendMethod, model) {
+    if (backendMethod == "/Home/SearchResultPartialArticle/") {
+        return searchResultArticle(model);
+    }
+    else if (backendMethod == "/Home/SearchResultPartialCustomer/") {
+        return searchResultCustomer(model);
+    }
+}
+function searchResultCustomer(model) {
+    let div = '';
+
+    if (model && model.length > 0) {
+        div = `
+        <div id="searchTable">
+            <div class="headerListWrapper">
+                <div class="gridListContentContainer gridListContent5">
+                    <div>Kd.-Nr.</div>
+                    <div>Vorname</div>
+                    <div>Nachname</div>
+                    <div>Firma</div>
+                    <div>Ort</div>
+                </div>
+            </div>
+            <div style="overflow:auto;">
+                <div class="gridContainer" id="resultTblBody">`;
+        model.forEach(item => {
+            div += `
+            <a class="gridListContentContainer gridListContentSearchResult"
+        onMouseOut = "this.style.color='#000'"
+        onMouseOver = "this.style.color='#165b9e'"
+        onclick = "searchResultSelected(${item.pK_Kunde}, 'selectedCustomer')" >
+                    <div>${item.kundennummer}</div>
+                    <div>${item.vorname}</div>
+                    <div>${item.nachname}</div>
+                    <div>${item.firma}</div>
+                    <div>${item.ort}</div>
+                </a > `;
+        });
+
+        div += `
+                </div >
+            </div >
+        </div >`;
+    }
+
+    return div;
+}
+function searchResultArticle(model) {
+    let div;
+    if (model && model.length > 0) {
+        div += `
+        <div id="searchTable" >
+            <div class="headerListWrapper">
+                <div class="gridListContentContainer gridListContent5">
+                    <div>Art. Nr.</div>
+                    <div>Bezeichnung</div>
+                    <div>Zusatzbezeichnung</div>
+                    <div>Einzelpreis Netto</div>
+                    <div>Verpackungseinheit</div>
+                </div>
+            </div>
+            <div style="overflow:auto;">
+               <div class="gridContainer" id="resultTblBody">`;
+        model.forEach(item => {
+            div += `
+                     <a class="gridListContentContainer gridListContentSearchResult"
+                       onMouseOut="this.style.color='#000'"
+                       onMouseOver="this.style.color='#165b9e'"
+                       onclick="searchResultSelected(${item.pK_Artikel}, 'selectedArticle')">
+                        <div>${item.artikelnummer}</div>
+                        <div>${item.bezeichnung1}</div>
+                        <div>${item.bezeichnung2}</div>
+                        <div>${formatToCurrency(item.preis)}</div>
+                        <div>${item.verpackungseinheit}</div>
+                    </a>
+                      </a>`;
+        });
+
+        div += `
+              </div>
+            </div>
+        </div>
+        `
+    }
+    return div;
+}
 function searchResultSelected(modelPK, targetElementId) {
     if (targetElementId == "selectedArticle") {
         setSelectedArticlePartialByPk(modelPK, targetElementId);
@@ -358,7 +447,7 @@ function setSelectedCustomerPartialByCustomer(customer, targetElementId) {
 }
 
 function setShareholderPartialByPk(modelPK) {
-    document.querySelector(`[data-name="assigmentCustomerFK"]`).value = modelPK;
+    document.querySelector(`[data-name= "assigmentCustomerFK"]`).value = modelPK;
 
     let shareholderPartial = backendRequestGET("/Home/ShareholderDetailsPartial/" + modelPK);
     document.getElementById("selectedShareholder").innerHTML = shareholderPartial;

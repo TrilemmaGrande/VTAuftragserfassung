@@ -102,7 +102,8 @@ namespace VTAuftragserfassung.Controllers.Home
                 return;
             }
             Auftrag? assignment = new() { PK_Auftrag = assignmentPK, Auftragsstatus = status };
-            _repo.Update(assignment, "Auftragsstatus");
+            List<string> columnsToUpdate = new() { "Auftragsstatus" };
+            _repo.Update(assignment, columnsToUpdate.AsEnumerable<string>());
         }
 
         #endregion Public Methods
@@ -117,7 +118,7 @@ namespace VTAuftragserfassung.Controllers.Home
                       {
                           var json = JsonSerializer.Serialize(model);
                           return json.ToLower().Contains(searchTerm);
-                      }).Take(1000)
+                      }).Take(5000)
                       .ToList();
         }
 

@@ -124,16 +124,16 @@ namespace VTAuftragserfassung.Controllers.Home
 
 
         [HttpGet("/Home/SearchResultPartialArticle/{searchTerm}")]
-        public PartialViewResult SearchResultPartialArticle(string searchTerm)
+        public List<Artikel> SearchResultPartialArticle(string searchTerm)
         {
-            return PartialView("SearchResultArticle", _logic.GetArticlesBySearchTerm(searchTerm));
+            return _logic.GetArticlesBySearchTerm(searchTerm);
         }
 
 
         [HttpGet("/Home/SearchResultPartialCustomer/{searchTerm}")]
-        public PartialViewResult SearchResultPartialCustomer(string searchTerm)
+        public List<Kunde> SearchResultPartialCustomer(string searchTerm)
         {
-            return PartialView("SearchResultCustomer", _logic.GetCustomersBySearchTerm(searchTerm));
+            return _logic.GetCustomersBySearchTerm(searchTerm);
         }
 
         [HttpPost("/Home/UpdateAssignmentStatus/{assignmentPK}")]

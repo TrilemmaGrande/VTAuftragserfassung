@@ -149,8 +149,6 @@ namespace VTAuftragserfassung.Database.Repository
             return pk;
         }
 
-        public void Update<T>(T? model, string columnToUpdate) where T : IDatabaseObject => Update(model, columnToUpdate);
-
         public void Update<T>(T? model, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject
         {
             _database.Update(model, columnsToUpdate);

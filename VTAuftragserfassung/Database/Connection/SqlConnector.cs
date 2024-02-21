@@ -80,7 +80,7 @@ namespace VTAuftragserfassung.Database.Connection
             }
         }
 
-        public int ConnectionWrite(string command, SqlParameter[]? parameters)
+        public int ConnectionWrite(string command, SqlParameter[]? parameters, bool isUpdate = false)
         {
             int dataSetPrimaryKey = 0;
             if (string.IsNullOrEmpty(command) || parameters == null)
@@ -106,7 +106,7 @@ namespace VTAuftragserfassung.Database.Connection
                     {
                         var result = cmd.ExecuteScalar();
                         dataSetPrimaryKey = Convert.ToInt32(result);
-                        if (dataSetPrimaryKey <= 0)
+                        if (dataSetPrimaryKey <= 0 && !isUpdate)
                         {
                             transaction.Rollback();
                             sqlConn.Close();

@@ -166,7 +166,7 @@ body {
         box-shadow: 0 0 4px 2px #165b9e6b;
     }
 
-#btnAddCustomer {
+#btnOpenCustomerForm {
     margin-left: 1rem;
 }
 /* Nav */
@@ -583,4 +583,8 @@ label {
 #btnAddCustomer {
     grid-row: 8;
     grid-column: 1;
+}
+#btnCloseCustomerForm {
+    grid-row: 8;
+    grid-column: 2;
 }

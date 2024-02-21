@@ -13,7 +13,7 @@ namespace VTAuftragserfassung.Database.Connection.Interfaces
 
         void ConnectionWrite(List<Tuple<string, SqlParameter[]?>> queryList);
 
-        int ConnectionWrite(string command, SqlParameter[]? parameters);
+        int ConnectionWrite(string command, SqlParameter[]? parameters, bool isUpdate = false);
 
         #endregion Public Methods
     }

@@ -36,8 +36,6 @@ namespace VTAuftragserfassung.Database.Repository.Interfaces
 
         void Update<T>(T? model, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject;
 
-        void Update<T>(T? model, string columnToUpdate) where T : IDatabaseObject;
-
         #endregion Public Methods
     }
 }

@@ -114,7 +114,6 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
                 return;
             }
             string cmd = BuildUpdateString(dbModel, columnsToUpdate);
-            cmd += _resM.GetQuery("SELECT_IDENTITY") ?? string.Empty;
             _dbAccess.Update(dbModel, cmd);
         }
 
