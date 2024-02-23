@@ -81,7 +81,7 @@ namespace VTAuftragserfassung
                     options.AccessDeniedPath = new PathString("/Login");
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.HttpOnly = true;
-                    options.Cookie.SameSite = SameSiteMode.Strict;
+                    options.Cookie.SameSite = SameSiteMode.Lax;
                 });
 
             #endregion Services

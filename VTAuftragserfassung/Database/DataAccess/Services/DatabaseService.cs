@@ -78,6 +78,12 @@ namespace VTAuftragserfassung.Database.DataAccess.Services
             ? _dbAccess.ReadAll<Auftrag>(_resM.GetQuery("SelectAssignmentsPaginatedByUserId", userId, pagination.Offset, pagination.LinesPerPage) ?? string.Empty)
             : null;
 
+        public bool CheckUserAssignmentMapping(string userId, int assignmentPk)
+        {          
+            return !string.IsNullOrEmpty(userId) && assignmentPk != 0 
+                && _dbAccess.ReadScalar(_resM.GetQuery("HasUserAssignment", userId, assignmentPk) ?? string.Empty) == 1;                   
+        }
+
         public T1? ReadObjectByForeignKey<T1, T2>(T1? dbModel, T2? foreignModel, int fk)
             where T1 : IDatabaseObject
             where T2 : IDatabaseObject

@@ -16,7 +16,7 @@ namespace VTAuftragserfassung.Models.DBO
         public string Kundennummer { get; set; } = string.Empty;
         public string Vorname { get; set; } = string.Empty;
         public string Nachname { get; set; } = string.Empty;
-        public string EMail { get; set; } = "generic@provider.com";
+        public string EMail { get; set; } = string.Empty;
         public int IstWerkstatt { get; set; }
         public int IstHandel { get; set; }
         public string Firma { get; set; } = string.Empty;

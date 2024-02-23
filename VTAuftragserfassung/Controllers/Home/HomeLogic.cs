@@ -101,9 +101,12 @@ namespace VTAuftragserfassung.Controllers.Home
             {
                 return;
             }
-            Auftrag? assignment = new() { PK_Auftrag = assignmentPK, Auftragsstatus = status };
-            List<string> columnsToUpdate = new() { "Auftragsstatus" };
-            _repo.Update(assignment, columnsToUpdate.AsEnumerable<string>());
+            if (_repo.CheckUserAssignmentMapping(_userId, assignmentPK))
+            {
+                Auftrag? assignment = new() { PK_Auftrag = assignmentPK, Auftragsstatus = status };
+                List<string> columnsToUpdate = new() { "Auftragsstatus" };
+                _repo.Update(assignment, columnsToUpdate.AsEnumerable<string>());
+            }
         }
 
         #endregion Public Methods

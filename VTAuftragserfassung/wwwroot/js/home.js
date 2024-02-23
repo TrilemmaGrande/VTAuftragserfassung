@@ -126,7 +126,7 @@ function removeOldAssignmentForm() {
 }
 
 function saveNewAssignment() {
-    let fk_customer = document.querySelector(`[data-name="assigmentCustomerFK"]`).value;
+    let fk_customer = document.querySelector(`[data-name="assignmentCustomerFK"]`).value;
     if (!(validationAddBorder(document.getElementById('customerSearchBar'), fk_customer !== ''))) {
         alert('Bitte Kunden auswählen oder anlegen');
         return;
@@ -137,7 +137,8 @@ function saveNewAssignment() {
 
     let positionList = [];
     let assignmentViewObj = {
-        PositionenVM: positionList, Auftrag: { FK_Kunde: fk_customer, SummeAuftrag: 0.00 }
+        PositionenVM: positionList,
+        Auftrag: { FK_Kunde: fk_customer, SummeAuftrag: 0.00, Hinweis: "", HatZugabe: 0}
     }
 
     positionsListData.forEach((obj, idx) => {
@@ -159,6 +160,10 @@ function saveNewAssignment() {
     assignmentData.forEach((obj4, idx4) => {
         assignmentViewObj.Auftrag[obj4.getAttribute('name')] = obj4.value;
     });
+
+    if (!assignmentViewObj.Auftrag.SummeAuftrag) {
+        assignmentViewObj.Auftrag.SummeAuftrag = '0';
+    }
 
     assignmentViewObj.Auftrag.HatZugabe = checkboxCheckedToInt(assignmentBonus);
     backendRequestPOST("/Home/CreateNewAssignment/", assignmentViewObj);
@@ -238,6 +243,9 @@ function openCustomerForm(btn) {
     let shareholderPartial = backendRequestGET("/Home/AddShareholderFormPartial/");
     targetElement.innerHTML = customerForm;
     document.getElementById("selectedShareholder").innerHTML = shareholderPartial;
+
+
+    closeSearchTable();
 }
 
 function closeCustomerForm(btn) {
@@ -294,8 +302,9 @@ function saveNewCustomer() {
     });
     customer.IstWerkstatt = checkboxCheckedToInt(isWorkshopData);
     customer.IstHandel = checkboxCheckedToInt(isSaleData);
-    backendRequestPOST("/Home/CreateNewCustomer/", customer);
+    let customerPK = backendRequestPOST("/Home/CreateNewCustomer/", customer);
     closeCustomerForm(document.getElementById("btnAddCustomer"));
+    customer.pK_Kunde = customerPK;
     setSelectedCustomerPartialByCustomer(customer, "selectedCustomer");
 }
 
@@ -374,7 +383,7 @@ function searchResultCustomer(model) {
     return div;
 }
 function searchResultArticle(model) {
-    let div;
+    let div = '';
     if (model && model.length > 0) {
         div += `
         <div id="searchTable" >
@@ -419,9 +428,18 @@ function searchResultSelected(modelPK, targetElementId) {
     else if (targetElementId == "selectedCustomer") {
         setSelectedCustomerPartialByPk(modelPK, targetElementId);
     }
+    closeSearchTable();
+}
 
-    document.getElementById("searchTable").remove();
-    document.getElementsByClassName("searchResult")[0].remove();
+function closeSearchTable() {
+    let searchTable = document.getElementById("searchTable")
+    if (searchTable) {
+        searchTable.remove();
+    }        
+    let searchResult = document.getElementsByClassName("searchResult")[0]
+    if (searchResult) {
+        searchResult.remove();
+    }        
     let searchBarElement = document.getElementsByClassName("searchBar");
     for (const element of searchBarElement) {
         element.value = '';
@@ -433,7 +451,9 @@ function setSelectedCustomerPartialByPk(modelPK, targetElementId) {
     let targetElement = document.getElementById(targetElementId);
     targetElement.innerHTML = targetPartial;
 
+    document.querySelector('[data-name="assignmentCustomerFK"]').value = modelPK;
     let shareholderFK = targetElement.querySelector(`[data-name="shareholderFK"]`).dataset.fk_shareholder;
+    
     setShareholderPartialByPk(shareholderFK);
 }
 
@@ -442,13 +462,12 @@ function setSelectedCustomerPartialByCustomer(customer, targetElementId) {
     let targetElement = document.getElementById(targetElementId);
     targetElement.innerHTML = targetPartial;
 
+    document.querySelector('[data-name="assignmentCustomerFK"]').value = customer.pK_Kunde;
     let shareholderFK = customer.FK_Gesellschafter;
     setShareholderPartialByPk(shareholderFK);
 }
 
 function setShareholderPartialByPk(modelPK) {
-    document.querySelector(`[data-name= "assigmentCustomerFK"]`).value = modelPK;
-
     let shareholderPartial = backendRequestGET("/Home/ShareholderDetailsPartial/" + modelPK);
     document.getElementById("selectedShareholder").innerHTML = shareholderPartial;
 }

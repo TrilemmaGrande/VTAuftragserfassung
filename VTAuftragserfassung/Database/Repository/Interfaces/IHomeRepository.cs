@@ -8,6 +8,7 @@ namespace VTAuftragserfassung.Database.Repository.Interfaces
 {
     public interface IHomeRepository
     {
+        bool CheckUserAssignmentMapping(string userId, int assignmentPk);
         #region Public Methods
 
         List<Artikel>? GetAllArticlesCached();

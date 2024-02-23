@@ -26,6 +26,7 @@ namespace VTAuftragserfassung.Database.DataAccess.Interfaces
         Vertriebsmitarbeiter? ReadUserByUserId(string userId);
 
         void Update<T>(T? dbModel, IEnumerable<string>? columnsToUpdate = null) where T : IDatabaseObject;
+        bool CheckUserAssignmentMapping(string userId, int assignmentPk);
 
         #endregion Public Methods
     }

@@ -56,6 +56,11 @@ namespace VTAuftragserfassung.Database.Repository
             return afvm;
         }
 
+        public bool CheckUserAssignmentMapping(string userId, int assignmentPk)
+        {
+            return _database.CheckUserAssignmentMapping(userId, assignmentPk);
+        }
+
         public int GetAssignmentsCount(string userId)
         {
             return _database.CountAssignmentsByUserId(userId);

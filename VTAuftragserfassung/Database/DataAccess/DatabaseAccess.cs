@@ -83,7 +83,9 @@ namespace VTAuftragserfassung.Database.DataAccess
             return default;
         }
 
-        public int ReadScalar(string cmd) => !string.IsNullOrEmpty(cmd) ? Convert.ToInt32(_conn.ConnectionReadScalar(cmd)) : default;
+        public int ReadScalar(string cmd) {
+            return !string.IsNullOrEmpty(cmd) ? Convert.ToInt32(_conn.ConnectionReadScalar(cmd)) : default;
+        }
 
         public T? ReadSingle<T>(T? dbModel, string cmd) where T : IDatabaseObject
         {
