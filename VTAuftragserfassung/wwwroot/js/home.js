@@ -458,6 +458,7 @@ function setSelectedCustomerPartialByPk(modelPK, targetElementId) {
 }
 
 function setSelectedCustomerPartialByCustomer(customer, targetElementId) {
+    if (!customer && !targetElementId) { return; }
     let targetPartial = backendRequestPOST("/Home/AddCreatedCustomerDetailsPartial/", customer);
     let targetElement = document.getElementById(targetElementId);
     targetElement.innerHTML = targetPartial;
