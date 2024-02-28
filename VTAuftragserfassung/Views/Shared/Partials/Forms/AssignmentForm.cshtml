@@ -16,14 +16,12 @@
             <div id="customerSelection">
                 <div class="form" id="customerSearchForm">
                     <label id="searchBarLabel">Kunden auswählen:</label><br />
-                    <div>
-                        <span class="horizontal-group" id="customerSearch">
+                        <div class="horizontal-group" id="customerSearch">
                             <input class="searchBar" id="customerSearchBar" placeholder="Suche ..." oninput="search(this.parentElement, this.value, '/Home/SearchResultPartialCustomer/')" required />
                             <a id="btnOpenCustomerForm" class="btn btn-secondary" onclick="openCustomerForm(this)">Kunde anlegen</a>
-                        </span>
-                    </div>
+                        </div>
                 </div>
-                <div class="gridContentContainer gridListContent3">
+                <div class="gridContentContainer gridListContent2">
                     @* "/Home/AddCustomerFormPartial/" *@
                     <div class="customerFormContainer" id="selectedCustomer">
                     </div>

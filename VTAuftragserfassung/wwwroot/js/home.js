@@ -249,7 +249,7 @@ function openCustomerForm(btn) {
 }
 
 function closeCustomerForm(btn) {
-    document.getElementById("customerSearch").style.display = "inline-block";
+    document.getElementById("customerSearch").style.display = "block";
     document.getElementById('selectedCustomer').innerHTML = '';
     document.getElementById('selectedShareholder').innerHTML = '';
 }
