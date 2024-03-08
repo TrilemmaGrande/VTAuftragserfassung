@@ -1,0 +1,18 @@
+USE mechanik_test;
+
+ALTER TABLE vta_Position NOCHECK CONSTRAINT all;
+ALTER TABLE vta_Auftrag NOCHECK CONSTRAINT all;
+ALTER TABLE vta_Kunde NOCHECK CONSTRAINT all;
+ALTER TABLE vta_Artikel NOCHECK CONSTRAINT all;
+ALTER TABLE vta_Auth NOCHECK CONSTRAINT all;
+ALTER TABLE vta_Vertriebsmitarbeiter NOCHECK CONSTRAINT all;
+ALTER TABLE vta_Gesellschafter NOCHECK CONSTRAINT all;
+
+DROP TABLE IF EXISTS vta_Position;
+DROP TABLE IF EXISTS vta_Auftrag;
+DROP TABLE IF EXISTS vta_Kunde;
+DROP TABLE IF EXISTS vta_Artikel;
+DROP TABLE IF EXISTS vta_Auth;
+DROP TABLE IF EXISTS vta_Vertriebsmitarbeiter;
+DROP TABLE IF EXISTS vta_Gesellschafter;
+
